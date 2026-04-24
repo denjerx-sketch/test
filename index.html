@@ -53,7 +53,7 @@ button,input,select{font:inherit}
 .container{max-width:1440px;margin:0 auto}
 .topbar{
   display:grid;
-  grid-template-columns:1.4fr .9fr;
+  grid-template-columns:1.53fr .9fr;
   gap:16px;
   align-items:stretch;
   margin-bottom:18px;
@@ -334,6 +334,7 @@ select:focus{
 
 .product-grid{
   display:grid;
+  grid-template-columns: 1fr 1fr;
   gap:10px;
   max-height:520px;
   overflow:auto;
@@ -910,17 +911,11 @@ select:focus-visible,
 <div class="container">
   <section class="topbar">
     <div class="hero">
-      <div class="kicker">📋 Матрица бандлов · банковский подбор</div>
       <h1>Подбор продуктов Т‑Банка и партнёрских офферов по отрасли</h1>
       <p class="subtitle">
         Выберите отрасль клиента, затем отметьте релевантные продукты банка и нужные офферы.
         Система соберёт коммерческое предложение с витриной партнёров и ссылками на офферы.
       </p>
-      <div class="progress" aria-label="Этапы работы">
-        <div class="step"><strong>1</strong> Отрасль</div>
-        <div class="step"><strong>2</strong> Продукты банка</div>
-        <div class="step"><strong>3</strong> Офферы и КП</div>
-      </div>
     </div>
     <div class="status-card">
       <div class="status-row">
@@ -1415,7 +1410,7 @@ select:focus-visible,
     if (state.industry) chips.push(`<span class="chip is-accent">Отрасль: <strong>${escapeHTML(state.industry)}</strong></span>`);
     if (state.selectedProducts.size) chips.push(`<span class="chip">Продуктов: <strong>${state.selectedProducts.size}</strong></span>`);
     if (state.selectedBundleIds.size) chips.push(`<span class="chip is-accent">Офферов: <strong>${state.selectedBundleIds.size}</strong></span>`);
-    if (!chips.length) chips.push('<span class="chip is-muted">Сначала выбери отрасль</span>');
+    // if (!chips.length) chips.push('<span class="chip is-muted">Сначала выбери отрасль</span>');
     els.chips.innerHTML = chips.join('');
   }
 
@@ -1527,10 +1522,10 @@ select:focus-visible,
         badges.appendChild(selectedBadge);
       }
 
-      const industryBadge = document.createElement('span');
-      industryBadge.className = 'badge is-muted';
-      industryBadge.textContent = industry;
-      badges.appendChild(industryBadge);
+      // const industryBadge = document.createElement('span');
+      // industryBadge.className = 'badge is-muted';
+      // industryBadge.textContent = industry;
+      // badges.appendChild(industryBadge);
 
       main.appendChild(nameRow);
       main.appendChild(desc);
@@ -1706,9 +1701,9 @@ select:focus-visible,
         benefit.className = 'bundle-benefit';
         benefit.textContent = bundle.benefit;
 
-        const details = document.createElement('p');
-        details.className = 'bundle-details';
-        details.textContent = bundle.details || 'Подробнее в окне оффера';
+        // const details = document.createElement('p');
+        // details.className = 'bundle-details';
+        // details.textContent = bundle.details || 'Подробнее в окне оффера';
 
         const actions = document.createElement('div');
         actions.className = 'bundle-actions';
