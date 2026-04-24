@@ -281,24 +281,7 @@ function parseCSV(text) {
     return obj;
   });
 }
-// 🧩 Feedback Modal Module (isolated, reusable)
-function initFeedbackModal() {
-  alert('Вы нажали на кнопку!')
-  
-  const FEEDBACK_URL = 'https://p.tbank.ru/polls/prod/poll-cmobly74g002q0dra49i7ba4n/index.html';
 
-  const btn = document.getElementById('feedback-btn');
-  const modal = document.getElementById('feedback-modal');
-  const closeBtn = document.getElementById('feedback-close');
-  const iframe = document.getElementById('feedback-iframe');
-
-  if (!btn || !modal || !closeBtn || !iframe) return;
-
-  const open = () => {
-    iframe.src = FEEDBACK_URL;
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden'; // lock scroll
-};
 // 📥 Загрузка и парсинг данных из CSV
 async function loadData() {
   try {
@@ -453,7 +436,24 @@ function generateResultText(bundleIds) {
   const firstAction = productEntries[0][1][0].fullScript.includes('Открой') ? 'Открой' : 'Подключи';
   return `${firstAction} ${joinWithAnd(allProductsList)} и получи ${joinWithAnd(allBenefits)}`;
 }
+// 🧩 Feedback Modal Module (isolated, reusable)
+function initFeedbackModal() {
+  alert('Вы нажали на кнопку!')
+  
+  const FEEDBACK_URL = 'https://p.tbank.ru/polls/prod/poll-cmobly74g002q0dra49i7ba4n/index.html';
 
+  const btn = document.getElementById('feedback-btn');
+  const modal = document.getElementById('feedback-modal');
+  const closeBtn = document.getElementById('feedback-close');
+  const iframe = document.getElementById('feedback-iframe');
+
+  if (!btn || !modal || !closeBtn || !iframe) return;
+
+  const open = () => {
+    iframe.src = FEEDBACK_URL;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden'; // lock scroll
+};
 // 🎨 Рендеринг
 function renderIndustries() {
   const select = document.getElementById('industry-select');
