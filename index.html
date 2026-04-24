@@ -167,8 +167,7 @@ select:focus { border-color: var(--border-active); outline: none; box-shadow: 0 
     </aside>
   </div>
 </div>
-<div class="modal-overlay" id="modal-overlay">
-    <!-- Feedback Modal -->
+      <!-- Feedback Modal -->
   <div class="modal-overlay" id="feedback-modal">
     <div class="modal" style="max-width: 900px; height: 80vh; padding: 0;">
       <button class="modal-close" id="feedback-close">&times;</button>
@@ -180,8 +179,8 @@ select:focus { border-color: var(--border-active); outline: none; box-shadow: 0 
       ></iframe>
     </div>
   </div>
-
-
+  
+<div class="modal-overlay" id="modal-overlay">
   <div class="modal">
     <button class="modal-close" id="modal-close">&times;</button>
     <h3 id="modal-title">Детали оффера</h3>
@@ -585,10 +584,9 @@ function toggleBundle(bundleId) {
   updateResult();
 }
 
-// 🧩 Feedback Modal Module (isolated, reusable)
-function initFeedbackModal() {
 
-  
+// 🧩 Feedback Modal Module (production-ready)
+function initFeedbackModal() {
   const FEEDBACK_URL = 'https://p.tbank.ru/polls/prod/poll-cmobly74g002q0dra49i7ba4n/index.html';
 
   const btn = document.getElementById('feedback-btn');
@@ -596,53 +594,33 @@ function initFeedbackModal() {
   const closeBtn = document.getElementById('feedback-close');
   const iframe = document.getElementById('feedback-iframe');
 
-  if (!btn || !modal || !closeBtn || !iframe) return;
+  if (!btn || !modal || !closeBtn || !iframe) {
+    console.error('[FeedbackModal] elements not found');
+    return;
+  }
 
   const open = () => {
+    console.log('[FeedbackModal] open click'); // ✅ лог
     iframe.src = FEEDBACK_URL;
     modal.classList.add('active');
-    document.body.style.overflow = 'hidden'; // lock scroll
-};
-  
-function setupEventListeners() {
-  document.getElementById('industry-select').addEventListener('change', (e) => {
-    selectedIndustry = e.target.value;
-    selectedProducts = [];
-    selectedBundleIds = [];
-    
-    const infoEl = document.getElementById('industry-info');
-    const descEl = document.getElementById('industry-desc');
-    if (selectedIndustry && CONFIG.INDUSTRY_DESCS[selectedIndustry]) {
-      descEl.textContent = CONFIG.INDUSTRY_DESCS[selectedIndustry];
-      infoEl.classList.add('active');
-    } else { infoEl.classList.remove('active'); }
-    
-    renderProducts(); renderBundles(); updateResult();
+    document.body.style.overflow = 'hidden';
+  };
+
+  const close = () => {
+    console.log('[FeedbackModal] close'); // ✅ лог
+    modal.classList.remove('active');
+    iframe.src = '';
+    document.body.style.overflow = '';
+  };
+
+  btn.addEventListener('click', open);
+  closeBtn.addEventListener('click', close);
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) close();
   });
-
-  document.getElementById('modal-close').addEventListener('click', () => document.getElementById('modal-overlay').classList.remove('active'));
-  document.getElementById('modal-overlay').addEventListener('click', (e) => { if (e.target === e.currentTarget) document.getElementById('modal-overlay').classList.remove('active'); });
-
-  document.getElementById('copy-btn').addEventListener('click', async () => {
-    const textEl = document.getElementById('result-text');
-    const text = textEl.dataset.plainText || textEl.textContent;
-    try {
-      await navigator.clipboard.writeText(text);
-      const btn = document.getElementById('copy-btn');
-      const original = btn.textContent;
-      btn.textContent = '✅ Скопировано!';
-      btn.style.background = 'var(--success-bg)';
-      setTimeout(() => { btn.textContent = original; btn.style.background = ''; }, 2000);
-    } catch (err) { alert('Не удалось скопировать. Выделите текст вручную.'); }
-  });
-
-  document.getElementById('reset-btn').addEventListener('click', () => { selectedBundleIds = []; renderBundles(); updateResult(); });
-  
-  initFeedbackModal();
 }
-
-
-
+  
   const close = () => {
     modal.classList.remove('active');
     iframe.src = ''; // cleanup (важно!)
@@ -656,6 +634,71 @@ function setupEventListeners() {
     if (e.target === modal) close();
   });
 }
+
+ function setupEventListeners() {
+  console.log('[App] setupEventListeners init');
+
+  document.getElementById('industry-select').addEventListener('change', (e) => {
+    selectedIndustry = e.target.value;
+    selectedProducts = [];
+    selectedBundleIds = [];
+    
+    const infoEl = document.getElementById('industry-info');
+    const descEl = document.getElementById('industry-desc');
+
+    if (selectedIndustry && CONFIG.INDUSTRY_DESCS[selectedIndustry]) {
+      descEl.textContent = CONFIG.INDUSTRY_DESCS[selectedIndustry];
+      infoEl.classList.add('active');
+    } else {
+      infoEl.classList.remove('active');
+    }
+    
+    renderProducts();
+    renderBundles();
+    updateResult();
+  });
+
+  document.getElementById('modal-close').addEventListener('click', () => {
+    document.getElementById('modal-overlay').classList.remove('active');
+  });
+
+  document.getElementById('modal-overlay').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) {
+      document.getElementById('modal-overlay').classList.remove('active');
+    }
+  });
+
+  document.getElementById('copy-btn').addEventListener('click', async () => {
+    const textEl = document.getElementById('result-text');
+    const text = textEl.dataset.plainText || textEl.textContent;
+
+    try {
+      await navigator.clipboard.writeText(text);
+      const btn = document.getElementById('copy-btn');
+      const original = btn.textContent;
+
+      btn.textContent = '✅ Скопировано!';
+      btn.style.background = 'var(--success-bg)';
+
+      setTimeout(() => {
+        btn.textContent = original;
+        btn.style.background = '';
+      }, 2000);
+
+    } catch (err) {
+      alert('Не удалось скопировать. Выделите текст вручную.');
+    }
+  });
+
+  document.getElementById('reset-btn').addEventListener('click', () => {
+    selectedBundleIds = [];
+    renderBundles();
+    updateResult();
+  });
+
+  // ✅ ИНИЦИАЛИЗАЦИЯ FEEDBACK
+  initFeedbackModal();
+} 
 
 // 🚀 Инициализация
  async function init() {
