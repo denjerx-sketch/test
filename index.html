@@ -501,7 +501,7 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(120deg, rgba(255,221,45,0.10), transparent 45%);
+      /* background: linear-gradient(120deg, rgba(255,221,45,0.10), transparent 45%); */
       opacity: 0;
       transition: opacity var(--transition);
       pointer-events: none;
@@ -518,7 +518,7 @@
     .bundle-card.selected {
       box-shadow: var(--shadow-selected);
       border-color: rgba(255, 221, 45, 0.9);
-      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,248,214,0.95));
+      /* background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,248,214,0.95)); */
     }
 
     .bundle-head {
@@ -1047,7 +1047,7 @@
   </div>
 
   <div class="modal-overlay" id="feedback-modal" aria-hidden="true">
-    <div class="modal" style="width:min(920px,100%); height:min(82vh,900px); padding:0; overflow:hidden;">
+    <div class="modal" style="height:min(82vh,900px); padding:0; overflow:hidden;">
       <button class="modal-close" id="feedback-close" type="button" aria-label="Закрыть">&times;</button>
       <iframe
         id="feedback-iframe"
