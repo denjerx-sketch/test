@@ -233,7 +233,7 @@
       content:"";
       position:absolute;
       right:16px;
-      top:50%;
+      top:53%;
       transform:translateY(-50%);
       width:18px;
       height:18px;
@@ -249,14 +249,14 @@
       transform:translateY(-50%) scale(1.1);
     }
 
-    .select-custom:focus-within::after{
+    .select-custom.open::after{
       transform:translateY(-50%) rotate(180deg);
     }
     .select-custom::after{
       transition:transform .25s cubic-bezier(.2,.8,.2,1);
     }
 
-    
+
     select:focus,
     input[type="search"]:focus,
     button:focus-visible,
@@ -1118,6 +1118,22 @@
         .replace(/\u200B/g, '')
         .trim();
     }
+
+
+    const select = document.getElementById('industry-select');
+    const wrapper = select.closest('.select-custom');
+
+    select.addEventListener('mousedown', () => {
+      wrapper.classList.add('open');
+    });
+
+    select.addEventListener('blur', () => {
+      wrapper.classList.remove('open');
+    });
+
+    select.addEventListener('change', () => {
+      wrapper.classList.remove('open');
+    });
 
     function safeUrl(url) {
       const value = normalizeText(url);
