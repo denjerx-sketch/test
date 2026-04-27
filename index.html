@@ -1005,7 +1005,7 @@
 
   <button class="feedback-btn" id="feedback-btn" type="button">Оставить отзыв</button>
 
-  <div class="modal-overlay" id="bundle-modal-overlay" aria-hidden="true">
+  <!-- <div class="modal-overlay" id="bundle-modal-overlay" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="bundle-modal-title">
       <button class="modal-close" id="bundle-modal-close" type="button" aria-label="Закрыть">&times;</button>
       <h3 id="bundle-modal-title">Детали оффера</h3>
@@ -1022,7 +1022,7 @@
         <a href="#" target="_blank" rel="noopener noreferrer" class="modal-link" id="bundle-modal-link">Открыть на витрине ↗</a>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <div class="modal-overlay" id="feedback-modal" aria-hidden="true">
     <div class="modal" style="height:min(82vh,900px); padding:0; overflow:hidden;">
@@ -1524,28 +1524,28 @@
       });
     }
 
-    function openBundleModal(bundle) {
-      els.bundleModalTitle.textContent = `${bundle.product} · ${bundle.vendor}`;
-      els.bundleModalScript.innerHTML = escapeHtml(buildBundleScript(bundle));
-      els.bundleModalDetails.textContent = normalizeText(bundle.details || 'Дополнительные условия будут отображаться здесь.');
-      const url = safeUrl(bundle.linkVendor);
-      if (url) {
-        els.bundleModalLink.href = url;
-        els.bundleModalLink.classList.remove('hidden');
-      } else {
-        els.bundleModalLink.href = '#';
-        els.bundleModalLink.classList.add('hidden');
-      }
-      els.bundleModalOverlay.classList.add('active');
-      els.bundleModalOverlay.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-    }
+    // function openBundleModal(bundle) {
+    //   els.bundleModalTitle.textContent = `${bundle.product} · ${bundle.vendor}`;
+    //   els.bundleModalScript.innerHTML = escapeHtml(buildBundleScript(bundle));
+    //   els.bundleModalDetails.textContent = normalizeText(bundle.details || 'Дополнительные условия будут отображаться здесь.');
+    //   const url = safeUrl(bundle.linkVendor);
+    //   if (url) {
+    //     els.bundleModalLink.href = url;
+    //     els.bundleModalLink.classList.remove('hidden');
+    //   } else {
+    //     els.bundleModalLink.href = '#';
+    //     els.bundleModalLink.classList.add('hidden');
+    //   }
+    //   els.bundleModalOverlay.classList.add('active');
+    //   els.bundleModalOverlay.setAttribute('aria-hidden', 'false');
+    //   document.body.style.overflow = 'hidden';
+    // }
 
-    function closeBundleModal() {
-      els.bundleModalOverlay.classList.remove('active');
-      els.bundleModalOverlay.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
-    }
+    // function closeBundleModal() {
+    //   els.bundleModalOverlay.classList.remove('active');
+    //   els.bundleModalOverlay.setAttribute('aria-hidden', 'true');
+    //   document.body.style.overflow = '';
+    // }
 
     function renderBundles() {
       const grid = els.bundlesGrid;
@@ -1598,8 +1598,15 @@
             <p class="bundle-benefit">${escapeHtml(bundle.benefit)}</p>
             <div class="bundle-actions">
               <button class="btn btn-primary" type="button" data-action="toggle">${selected ? 'Убрать' : 'Выбрать'}</button>
-              <button class="btn btn-ghost" type="button" data-action="details">Подробнее</button>
-              ${url ? `<a class="btn btn-link" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" data-action="open">Открыть оффер ↗</a>` : ''}
+              ${url ? `
+                <a class="btn btn-ghost"
+                  href="${escapeHtml(url)}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-action="open">
+                  Открыть оффер
+                </a>
+              ` : ''}
             </div>
             <div class="sr-only">${details}</div>
           </article>
@@ -1612,15 +1619,15 @@
         if (!bundle) return;
 
         const handleToggle = () => toggleBundle(bundleId);
-        const handleDetails = () => openBundleModal(bundle);
+        // const handleDetails = () => openBundleModal(bundle);
 
         card.addEventListener('click', (event) => {
           const action = event.target.closest('[data-action]')?.dataset.action;
-          if (action === 'details') {
-            event.stopPropagation();
-            handleDetails();
-            return;
-          }
+          // if (action === 'details') {
+          //   event.stopPropagation();
+          //   handleDetails();
+          //   return;
+          // }
           if (action === 'open') return;
           if (action === 'toggle') {
             event.stopPropagation();
@@ -1638,10 +1645,10 @@
           }
         });
 
-        card.querySelectorAll('[data-action="details"]').forEach((btn) => btn.addEventListener('click', (event) => {
-          event.stopPropagation();
-          handleDetails();
-        }));
+        // card.querySelectorAll('[data-action="details"]').forEach((btn) => btn.addEventListener('click', (event) => {
+        //   event.stopPropagation();
+        //   handleDetails();
+        // }));
       });
     }
 
@@ -1903,10 +1910,10 @@
       els.copyBtn.addEventListener('click', copyResult);
       els.resetBtn.addEventListener('click', resetSelection);
 
-      els.bundleModalClose.addEventListener('click', closeBundleModal);
-      els.bundleModalOverlay.addEventListener('click', (event) => {
-        if (event.target === els.bundleModalOverlay) closeBundleModal();
-      });
+      // els.bundleModalClose.addEventListener('click', closeBundleModal);
+      // els.bundleModalOverlay.addEventListener('click', (event) => {
+      //   if (event.target === els.bundleModalOverlay) closeBundleModal();
+      // });
 
       els.feedbackBtn.addEventListener('click', openFeedbackModal);
       els.feedbackClose.addEventListener('click', closeFeedbackModal);
