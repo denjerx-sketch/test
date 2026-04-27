@@ -171,10 +171,10 @@
     }
 
     .status-strip {
-      /* display: grid; */
-      /* grid-template-columns: 1fr auto; */
+      display: grid;
+      grid-template-columns: 1fr auto;
       gap: 12px;
-      /* margin: 18px 0 20px; */
+      margin: 18px 0 20px;
       align-items: stretch;
     }
 
@@ -333,13 +333,10 @@
 
     .product-list {
       display: grid;
-      grid-template-columns: 1fr 1fr;
       gap: 10px;
       max-height: 320px;
       overflow: auto;
       padding-right: 4px;
-      padding-top: 5px;
-
       scrollbar-width: thin;
     }
 
@@ -952,10 +949,10 @@
               <h2 class="section-title">2. Продукты банка</h2>
               <p class="section-subtitle">Это фильтр витрины: отмеченные продукты показывают только релевантные офферы.</p>
             </div>
-            <!-- <div style="min-width:min(360px,100%);">
+            <div style="min-width:min(360px,100%);">
               <label class="sr-only" for="product-search">Поиск по продуктам</label>
               <input id="product-search" type="search" placeholder="Поиск по продуктам или подсказкам…" autocomplete="off" />
-            </div> -->
+            </div>
           </div>
           <div class="toolbar-stats" id="product-hints"></div>
           <div class="product-list" id="products-list"></div>
@@ -1396,6 +1393,7 @@
       els.industryBadges.innerHTML = `
         <span class="badge">${stats.offers} офферов</span>
         <span class="badge">${stats.products} продуктов</span>
+        <span class="badge">${state.selectedProducts.length} фильтров</span>
       `;
       els.industryInfo.classList.add('active');
     }
@@ -1887,7 +1885,7 @@
       els.industrySelect = document.getElementById('industry-select');
       els.industryInfo = document.getElementById('industry-info');
       els.industryDesc = document.getElementById('industry-desc');
-      els.industryBadges = document.getElementById('industry-badges'); 
+      els.industryBadges = document.getElementById('industry-badges');
       els.globalStats = document.getElementById('global-stats');
       els.productHints = document.getElementById('product-hints');
       els.productsList = document.getElementById('products-list');
