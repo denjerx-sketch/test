@@ -170,29 +170,6 @@
       white-space: nowrap;
     }
 
-    .hero-panel {
-      background: rgba(255,255,255,0.68);
-      border: 1px solid rgba(181, 139, 96, 0.16);
-      border-radius: 22px;
-      padding: 18px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .hero-panel__title {
-      margin: 0 0 10px;
-      color: var(--text-dark);
-      font-size: 15px;
-      font-weight: 700;
-    }
-
-    .hero-panel ol {
-      margin: 0;
-      padding-left: 18px;
-      color: var(--text-primary);
-    }
-
-    .hero-panel li + li { margin-top: 8px; }
-
     .status-strip {
       display: grid;
       grid-template-columns: 1fr auto;
@@ -928,14 +905,6 @@
           <p class="subtitle">Выберите отрасль клиента, уточните релевантные продукты банка, отметьте нужные предложения и сразу соберите готовое коммерческое предложение.</p>
           <div class="hero-metrics" id="hero-metrics" aria-live="polite"></div>
         </div>
-        <div class="hero-panel">
-          <p class="hero-panel__title">Сценарий работы</p>
-          <ol>
-            <li>Выбор отрасли и подсказка по её специфике.</li>
-            <li>Подсветка банковских продуктов, которые сопутствуют этой отрасли.</li>
-            <li>Подбор офферов витрины и сбор коммерческого предложения.</li>
-          </ol>
-        </div>
       </div>
     </header>
 
@@ -961,11 +930,11 @@
           <div class="industry-badges" id="industry-badges"></div>
         </div>
       </div>
-      <div class="filters-card">
+      <!-- <div class="filters-card">
         <h2 class="section-title">Быстрый статус</h2>
         <p class="section-subtitle">Быстро показывает, сколько данных загружено и что выбрано.</p>
         <div class="toolbar-stats" id="global-stats"></div>
-      </div>
+      </div> -->
     </section>
 
     <div class="layout">
@@ -991,10 +960,10 @@
               <h2 class="section-title">3. Витрина офферов</h2>
               <p class="section-subtitle">Нажмите на карточку, чтобы добавить оффер в коммерческое предложение.</p>
             </div>
-            <div class="legend">
+            <!-- <div class="legend">
               <span class="badge">Клик по карточке — выбрать</span>
               <span class="badge">Подробнее — открыть модал</span>
-            </div>
+            </div> -->
           </div>
           <div id="bundles-grid" class="bundles-grid"></div>
         </section>
@@ -1004,7 +973,7 @@
         <div class="result-head">
           <div>
             <h2 class="section-title">4. Коммерческое предложение</h2>
-            <p class="section-subtitle">Собирается автоматически по выбранным офферам.</p>
+            <!-- <p class="section-subtitle">Собирается автоматически по выбранным офферам.</p> -->
           </div>
           <div class="result-counter" id="result-counter">0 офферов</div>
         </div>
@@ -1387,23 +1356,22 @@
       const selectedCount = state.selectedBundleIds.length;
       const activeIndustry = state.selectedIndustry || '—';
 
-      els.globalStats.innerHTML = `
-        <span class="toolbar-stat">Отрасль: ${escapeHtml(activeIndustry)}</span>
-        <span class="toolbar-stat">Продуктов: ${productsCount}</span>
-        <span class="toolbar-stat">Офферов: ${bundlesCount}</span>
-        <span class="toolbar-stat">В отрасли: ${stats.offers} / ${stats.products}</span>
-        <span class="toolbar-stat">Выбрано: ${selectedCount}</span>
-      `;
+      // els.globalStats.innerHTML = `
+      //   <span class="toolbar-stat">Отрасль: ${escapeHtml(activeIndustry)}</span>
+      //   <span class="toolbar-stat">Продуктов: ${productsCount}</span>
+      //   <span class="toolbar-stat">Офферов: ${bundlesCount}</span>
+      //   <span class="toolbar-stat">В отрасли: ${stats.offers} / ${stats.products}</span>
+      //   <span class="toolbar-stat">Выбрано: ${selectedCount}</span>
+      // `;
 
       els.heroMetrics.innerHTML = `
         <span class="metric">${productsCount} банковских продуктов</span>
         <span class="metric">${bundlesCount} офферов</span>
-        <span class="metric">${selectedCount} выбранных</span>
       `;
 
-      els.productHints.innerHTML = state.selectedIndustry
-        ? `<span class="toolbar-stat">Показаны продукты для отрасли</span><span class="toolbar-stat">Сначала фильтр — потом оффер</span>`
-        : `<span class="toolbar-stat">Сначала выберите отрасль</span>`;
+      // els.productHints.innerHTML = state.selectedIndustry
+      //   ? `<span class="toolbar-stat">Показаны продукты для отрасли</span><span class="toolbar-stat">Сначала фильтр — потом оффер</span>`
+      //   : `<span class="toolbar-stat">Сначала выберите отрасль</span>`;
     }
 
     function renderIndustryInfo() {
