@@ -173,6 +173,7 @@
 
     .industry-card {
       padding: 18px;
+      z-index: 10;
     }
 
     .industry-card__header {
@@ -320,6 +321,7 @@
 
     .filters-card {
       padding: 18px;
+      z-index: 1;
     }
 
     .filters-toolbar {
@@ -1999,7 +2001,7 @@
       updateMetrics();
       renderResult();
 
-      els.bundlesGrid.innerHTML = '<div class="loading-state" style="grid-column:1/-1;"><div class="spinner"></div><div>Загружаем витрину…</div></div>';
+      els.bundlesGrid.innerHTML = '<div class="loading-state" style="grid-column:1/-1;"><div class="spinner"></div><div>Загружаем предложения…</div></div>';
       els.productsList.innerHTML = '<div class="loading-state"><div class="spinner"></div><div>Подготовка списка продуктов…</div></div>';
 
       const ok = await loadData();
