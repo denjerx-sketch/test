@@ -6,7 +6,7 @@
   <meta name="color-scheme" content="light only" />
   <title>Матрица бандлов | Подбор офферов</title>
 
-  <!-- Yandex.Metrika counter -->
+  
   <script type="text/javascript">
     (function(m,e,t,r,i,k,a){
       m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
@@ -29,7 +29,7 @@
     });
   </script>
   <noscript><div><img src="https://mc.yandex.ru/watch/108748062" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-  <!-- /Yandex.Metrika counter -->
+  
 
   <style>
     :root {
@@ -100,7 +100,6 @@
       margin-bottom: 20px;
     }
 
-
     .eyebrow {
       display: inline-flex;
       align-items: center;
@@ -136,9 +135,8 @@
       margin: 0;
       font-size: 16px;
       color: var(--text-secondary);
-      /* max-width: 62ch; */
+      
     }
-
 
     .metric {
       display: inline-flex;
@@ -155,10 +153,9 @@
     }
 
     .status-strip {
-      /* display: grid;
-      grid-template-columns: 1fr auto; */
+      
       gap: 12px;
-      /* margin: 18px 0 20px; */
+      
       align-items: stretch;
     }
 
@@ -216,7 +213,7 @@
       -webkit-appearance:none;
       -moz-appearance:none;
 
-      padding-right:44px; /* чтобы текст не залезал под стрелку */
+      padding-right:44px; 
     }
 
     .select-custom{
@@ -250,7 +247,6 @@
       transition:transform .25s cubic-bezier(.2,.8,.2,1);
     }
 
-
     select:focus,
     input[type="search"]:focus,
     button:focus-visible,
@@ -268,7 +264,7 @@
       margin-top: 14px;
       padding: 16px;
       border-radius: 18px;
-      /* background: linear-gradient(180deg, rgba(241,238,232,0.85), rgba(228,215,193,0.72)); */
+      
       background: var(--bg-page);
       border: 1px solid rgba(181, 139, 96, 0.16);
       min-height: 92px;
@@ -291,12 +287,7 @@
       font-size: 14px;
     }
 
-    /* .industry-badges {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      gap: 8px;
-    } */
+    
 
     .badge {
       display: inline-flex;
@@ -373,12 +364,11 @@
 
     @media (max-width: 768px) {
       .product-list {
+        grid-template-columns: 1fr;
         max-height: none;
         overflow: visible;
       }
-    }
 
-    @media (max-width: 768px) {
       .product-item {
         grid-template-columns: auto 1fr;
         align-items: start;
@@ -391,7 +381,6 @@
       }
     }
 
-
     .product-item {
       display: grid;
       grid-template-columns: auto 1fr auto;
@@ -401,7 +390,7 @@
       border-radius: 16px;
       border: 1px solid rgba(181, 139, 96, 0.12);
       background: rgba(255,255,255,0.86);
-      /* background: var(--bg-page); */
+      
       transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition), background var(--transition), opacity var(--transition);
     }
 
@@ -413,6 +402,25 @@
 
     .product-item.is-disabled {
       opacity: 0.64;
+    }
+
+    @media (max-width: 768px) {
+      .product-list {
+        grid-template-columns: 1fr;
+        max-height: none;
+        overflow: visible;
+      }
+
+      .product-item {
+        grid-template-columns: auto 1fr;
+        align-items: start;
+        row-gap: 6px;
+      }
+
+      .count-pill {
+        grid-column: 2;
+        justify-self: start;
+      }
     }
 
     .product-item input {
@@ -505,9 +513,8 @@
       padding: 18px;
       border-radius: 20px;
       background: var(--bg-page);
-      /* border: 1px solid rgba(181, 139, 96, 0.14); */
-      /* background:
-        linear-gradient(180deg, rgba(255,255,255,0.95), rgba(248,243,234,0.96)); */
+      
+      
       box-shadow: var(--shadow-sm);
       cursor: pointer;
       transform: translateY(0);
@@ -518,7 +525,7 @@
       content: "";
       position: absolute;
       inset: 0;
-      /* background: linear-gradient(120deg, rgba(255,221,45,0.10), transparent 45%); */
+      
       opacity: 0;
       transition: opacity var(--transition);
       pointer-events: none;
@@ -534,8 +541,8 @@
 
     .bundle-card.selected {
       box-shadow: var(--shadow-selected);
-      /* border-color: rgba(255, 221, 45, 0.9); */
-      /* background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,248,214,0.95)); */
+      
+      
     }
 
     .bundle-head {
@@ -553,7 +560,6 @@
       font-weight: 800;
       line-height: 1.25;
     }
-
 
     .bundle-chip-row {
       display: flex;
@@ -660,13 +666,12 @@
       margin-bottom: 12px;
     }
 
-
     .warning-card {
       display: grid;
       gap: 8px;
       padding: 14px;
       border-radius: 18px;
-      /* background: linear-gradient(180deg, rgba(255,248,214,0.92), rgba(255,255,255,0.8)); */
+      
       background: var(--bg-page);
       border: 1px solid rgba(181,139,96,0.16);
       margin-bottom: 14px;
@@ -727,7 +732,7 @@
     .error-state {
       display: grid;
       place-items: center;
-      /* min-height: 180px; */
+      
       padding: 30px 16px;
       border-radius: 18px;
       background: rgba(255,255,255,0.82);
@@ -863,18 +868,18 @@
 
       transition: all var(--transition);
 
-      /* ключевое */
+      
       padding: 14px;
       overflow: hidden;
     }
 
-    /* иконка */
+    
     .feedback-icon {
       font-size: 18px;
       flex-shrink: 0;
     }
 
-    /* текст */
+    
     .feedback-text {
       white-space: nowrap;
 
@@ -952,7 +957,7 @@
       .result-actions { grid-template-columns: 1fr; }
       .feedback-btn { right: 14px; bottom: 14px; }
       .industry-info { grid-template-columns: 1fr; }
-      /* .industry-badges { justify-content: flex-start; } */
+      
       .modal { padding: 18px; }
     }
 
@@ -979,8 +984,6 @@
       </div>
     </header>
 
-
-
     <div class="layout">
       <main class="selection-shell">
       <section class="status-strip">
@@ -989,7 +992,7 @@
           <div>
             <h2 class="section-title">1. Отрасль клиента</h2>
           </div>
-          <!-- <span class="badge" id="data-state">Загрузка данных…</span> -->
+          
         </div>
         <div class="select-wrap select-custom">
           <label class="sr-only" for="industry-select">Выберите отрасль</label>
@@ -1001,28 +1004,19 @@
           <div>
             <p class="industry-info__desc" id="industry-desc"></p>
           </div>
-          <!-- <div class="industry-badges" id="industry-badges"></div> -->
+          
         </div>
       </div>
-      <!-- <div class="filters-card">
-        <h2 class="section-title">Быстрый статус</h2>
-        <p class="section-subtitle">Быстро показывает, сколько данных загружено и что выбрано.</p>
-        <div class="toolbar-stats" id="global-stats"></div>
-      </div> -->
+      
     </section>
-
-
 
         <section class="filters-card">
           <div class="filters-toolbar">
             <div>
               <h2 class="section-title">2. Продукты банка</h2>
-              <!-- <p class="section-subtitle">Это фильтр витрины: отмеченные продукты показывают только релевантные офферы.</p> -->
+              
             </div>
-            <!-- <div style="min-width:min(360px,100%);">
-              <label class="sr-only" for="product-search">Поиск по продуктам</label>
-              <input id="product-search" type="search" placeholder="Поиск по продуктам или подсказкам…" autocomplete="off" />
-            </div> -->
+            
           </div>
           <div class="toolbar-stats" id="product-hints"></div>
           <div class="product-list" id="products-list"></div>
@@ -1034,10 +1028,7 @@
               <h2 class="section-title">3. Витрина офферов</h2>
               <p class="section-subtitle">Нажмите на карточку, чтобы добавить оффер в коммерческое предложение.</p>
             </div>
-            <!-- <div class="legend">
-              <span class="badge">Клик по карточке — выбрать</span>
-              <span class="badge">Подробнее — открыть модал</span>
-            </div> -->
+            
           </div>
           <div id="bundles-grid" class="bundles-grid"></div>
         </section>
@@ -1047,7 +1038,7 @@
         <div class="result-head">
           <div>
             <h2 class="section-title">4. Коммерческое предложение</h2>
-            <!-- <p class="section-subtitle">Собирается автоматически по выбранным офферам.</p> -->
+            
           </div>
         </div>
 
@@ -1057,8 +1048,6 @@
         </div>
 
         <div class="result-text" id="result-text" aria-live="polite">Выберите предложения, чтобы получить готовую формулировку.</div>
-
-
 
         <div class="result-actions">
           <button class="btn btn-secondary" id="reset-btn" type="button" style="display:none;">Сбросить выбор</button>
@@ -1073,24 +1062,7 @@
       <span class="feedback-text">Оставить отзыв</span>
   </button>
 
-  <!-- <div class="modal-overlay" id="bundle-modal-overlay" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="bundle-modal-title">
-      <button class="modal-close" id="bundle-modal-close" type="button" aria-label="Закрыть">&times;</button>
-      <h3 id="bundle-modal-title">Детали оффера</h3>
-      <div class="modal-section">
-        <div class="modal-label">Оффер</div>
-        <div class="modal-text" id="bundle-modal-script"></div>
-      </div>
-      <div class="modal-section">
-        <div class="modal-label">Условия и детали</div>
-        <div class="modal-text" id="bundle-modal-details"></div>
-      </div>
-      <div class="modal-section">
-        <div class="modal-label">Перейти к офферу</div>
-        <a href="#" target="_blank" rel="noopener noreferrer" class="modal-link" id="bundle-modal-link">Открыть на витрине ↗</a>
-      </div>
-    </div>
-  </div> -->
+  
 
   <div class="modal-overlay" id="feedback-modal" aria-hidden="true">
     <div class="modal" style="height:min(82vh,900px); padding:0; overflow:hidden;">
@@ -1143,7 +1115,6 @@
       selectedIndustry: '',
       selectedProducts: [],
       selectedBundleIds: [],
-      // productSearch: '',
       allBundles: [],
       allProducts: []
     };
@@ -1164,7 +1135,6 @@
         .replace(/\u200B/g, '')
         .trim();
     }
-
 
     const select = document.getElementById('industry-select');
     const wrapper = select.closest('.select-custom');
@@ -1346,7 +1316,6 @@
     function getBundlesForIndustry(industry, products) {
       if (!industry) return [];
 
-      // ❗ если нет выбранных продуктов — не показываем бандлы
       if (!products.length) return [];
 
       const selected = new Set(products);
@@ -1365,26 +1334,8 @@
       return { offers: offers.length, products: products.size };
     }
 
-    // function getVisibleProducts(industry) {
-    //   const all = getProductsForIndustry(industry);
-    //   const query = state.productSearch.trim().toLowerCase();
-    //   if (!query) return all;
-    //   return all.filter((product) => {
-    //     const p = state.allProducts.find((item) => item.name === product);
-    //     const bundleMatch = state.allBundles.some((bundle) => bundle.industries.includes(industry) && bundle.product === product);
-    //     const haystack = [product, p?.desc, ...(p?.industries ?? [])].join(' ').toLowerCase();
-    //     return haystack.includes(query) || bundleMatch && product.toLowerCase().includes(query);
-    //   });
-    // }
-
     function getVisibleProducts(industry) {
       return getProductsForIndustry(industry);
-    }
-
-    function buildBundleScript(bundle) {
-      const action = actionForProduct(bundle.product);
-      const benefit = applyGrammar(bundle.benefit || '', false);
-      return `${action} ${bundle.product} и получи ${benefit} от ${bundle.vendor}`;
     }
 
     function generateResult(bundleIds) {
@@ -1402,7 +1353,6 @@
 
       if (bundles.length === 1) {
         const bundle = bundles[0];
-        const productUrl = safeUrl(bundle.linkProduct);
         const vendorUrl = safeUrl(bundle.linkVendor);
         const vendorHtml = vendorUrl ? `<a href="${escapeHtml(vendorUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(bundle.vendor)}</a>` : escapeHtml(bundle.vendor);
         const benefit = escapeHtml(applyGrammar(bundle.benefit || '', false));
@@ -1413,8 +1363,7 @@
         return {
           html,
           text,
-          items: [bundle],
-          productUrl
+          items: [bundle]
         };
       }
 
@@ -1453,32 +1402,22 @@
 
     function setLoading(loading) {
       state.loading = loading;
-      // els.dataState.textContent = loading ? 'Загрузка данных…' : 'Данные загружены';
     }
 
     function updateMetrics() {
       const stats = getIndustryStats(state.selectedIndustry);
       const bundlesCount = state.allBundles.length;
       const productsCount = state.allProducts.length;
-      const selectedCount = state.selectedBundleIds.length;
-      const activeIndustry = state.selectedIndustry || '—';
 
-      // els.globalStats.innerHTML = `
-      //   <span class="toolbar-stat">Отрасль: ${escapeHtml(activeIndustry)}</span>
-      //   <span class="toolbar-stat">Продуктов: ${productsCount}</span>
-      //   <span class="toolbar-stat">Офферов: ${bundlesCount}</span>
-      //   <span class="toolbar-stat">В отрасли: ${stats.offers} / ${stats.products}</span>
-      //   <span class="toolbar-stat">Выбрано: ${selectedCount}</span>
-      // `;
+      const hintsEl = els.productHints;
+      if (!hintsEl) return;
 
-      // els.heroMetrics.innerHTML = `
-      //   <span class="metric">${productsCount} банковских продуктов</span>
-      //   <span class="metric">${bundlesCount} офферов</span>
-      // `;
+      if (!state.selectedIndustry) {
+        hintsEl.innerHTML = `<span class="toolbar-stat">Сначала выберите отрасль</span><span class="toolbar-stat">${productsCount} продуктов</span>`;
+        return;
+      }
 
-      // els.productHints.innerHTML = state.selectedIndustry
-      //   ? `<span class="toolbar-stat">Показаны продукты для отрасли</span><span class="toolbar-stat">Сначала фильтр — потом оффер</span>`
-      //   : `<span class="toolbar-stat">Сначала выберите отрасль</span>`;
+      hintsEl.innerHTML = `<span class="toolbar-stat">${stats.products} продуктов в отрасли</span><span class="toolbar-stat">${stats.offers} офферов</span><span class="toolbar-stat">Всего ${bundlesCount}</span>`;
     }
 
     function renderIndustryInfo() {
@@ -1486,17 +1425,11 @@
       if (!industry) {
         els.industryInfo.classList.remove('active');
         els.industryDesc.textContent = '';
-        // els.industryBadges.innerHTML = '';
         return;
       }
 
       const desc = CONFIG.INDUSTRY_DESCS[industry] || 'Для этой отрасли доступен набор банковских продуктов и партнерских офферов из витрины.';
-      const stats = getIndustryStats(industry);
       els.industryDesc.textContent = desc;
-      // els.industryBadges.innerHTML = `
-      //   <span class="badge">${stats.offers} офферов</span>
-      //   <span class="badge">${stats.products} продуктов</span>
-      // `;
       els.industryInfo.classList.add('active');
     }
 
@@ -1529,7 +1462,6 @@
         bundlesByProduct.set(bundle.product, (bundlesByProduct.get(bundle.product) || 0) + 1);
       });
 
-      // const query = state.productSearch.trim().toLowerCase();
       const sorted = [...allProducts].sort((a, b) => {
         const aCount = bundlesByProduct.get(a) || 0;
         const bCount = bundlesByProduct.get(b) || 0;
@@ -1591,29 +1523,6 @@
         });
       });
     }
-
-    // function openBundleModal(bundle) {
-    //   els.bundleModalTitle.textContent = `${bundle.product} · ${bundle.vendor}`;
-    //   els.bundleModalScript.innerHTML = escapeHtml(buildBundleScript(bundle));
-    //   els.bundleModalDetails.textContent = normalizeText(bundle.details || 'Дополнительные условия будут отображаться здесь.');
-    //   const url = safeUrl(bundle.linkVendor);
-    //   if (url) {
-    //     els.bundleModalLink.href = url;
-    //     els.bundleModalLink.classList.remove('hidden');
-    //   } else {
-    //     els.bundleModalLink.href = '#';
-    //     els.bundleModalLink.classList.add('hidden');
-    //   }
-    //   els.bundleModalOverlay.classList.add('active');
-    //   els.bundleModalOverlay.setAttribute('aria-hidden', 'false');
-    //   document.body.style.overflow = 'hidden';
-    // }
-
-    // function closeBundleModal() {
-    //   els.bundleModalOverlay.classList.remove('active');
-    //   els.bundleModalOverlay.setAttribute('aria-hidden', 'true');
-    //   document.body.style.overflow = '';
-    // }
 
     function renderBundles() {
       const grid = els.bundlesGrid;
@@ -1687,15 +1596,9 @@
         if (!bundle) return;
 
         const handleToggle = () => toggleBundle(bundleId);
-        // const handleDetails = () => openBundleModal(bundle);
 
         card.addEventListener('click', (event) => {
           const action = event.target.closest('[data-action]')?.dataset.action;
-          // if (action === 'details') {
-          //   event.stopPropagation();
-          //   handleDetails();
-          //   return;
-          // }
           if (action === 'open') return;
           if (action === 'toggle') {
             event.stopPropagation();
@@ -1713,10 +1616,6 @@
           }
         });
 
-        // card.querySelectorAll('[data-action="details"]').forEach((btn) => btn.addEventListener('click', (event) => {
-        //   event.stopPropagation();
-        //   handleDetails();
-        // }));
       });
     }
 
@@ -1726,13 +1625,11 @@
       const copyBtn = els.copyBtn;
       const resetBtn = els.resetBtn;
 
-
       if (!state.selectedBundleIds.length) {
         textEl.textContent = 'Выберите предложения, чтобы получить готовую формулировку.';
         copyBtn.disabled = true;
         resetBtn.style.display = 'none';
 
-        // els.resultCounter.textContent = '0 офферов';
         return;
       }
 
@@ -1740,20 +1637,6 @@
       textEl.dataset.plain = result.text;
       copyBtn.disabled = false;
       resetBtn.style.display = 'block';
-      // els.resultCounter.textContent = `${state.selectedBundleIds.length} оффер${state.selectedBundleIds.length === 1 ? '' : state.selectedBundleIds.length < 5 ? 'а' : 'ов'}`;
-
-      const items = result.items.map((bundle) => {
-        return `
-          <div class="selected-item">
-            <div>
-              <strong>${escapeHtml(bundle.product)}</strong>
-              <div class="selected-item__meta">${escapeHtml(bundle.vendor)}</div>
-            </div>
-            <div class="selected-item__meta">${escapeHtml(bundle.benefit)}</div>
-          </div>
-        `;
-      }).join('');
-
 
       textEl.classList.remove('animate-pop');
       void textEl.offsetWidth;
@@ -1834,7 +1717,6 @@
           state.selectedIndustry = parsed.selectedIndustry || '';
           state.selectedProducts = Array.isArray(parsed.selectedProducts) ? parsed.selectedProducts : [];
           state.selectedBundleIds = Array.isArray(parsed.selectedBundleIds) ? parsed.selectedBundleIds : [];
-          // state.productSearch = parsed.productSearch || '';
         }
       } catch (_) {}
     }
@@ -1845,7 +1727,6 @@
           selectedIndustry: state.selectedIndustry,
           selectedProducts: state.selectedProducts,
           selectedBundleIds: state.selectedBundleIds,
-          // productSearch: state.productSearch
         }));
       } catch (_) {}
     }
@@ -1927,13 +1808,11 @@
         renderProducts();
         renderBundles();
         updateResult();
-        // els.dataState.textContent = 'Данные загружены';
         return true;
       } catch (error) {
         console.error('Ошибка загрузки данных:', error);
         state.error = error;
         setLoading(false);
-        // els.dataState.textContent = 'Ошибка загрузки';
         els.productsList.innerHTML = '<div class="error-state"><div>Не удалось загрузить данные</div><div>Проверьте подключение к интернету.</div></div>';
         els.bundlesGrid.innerHTML = '<div class="error-state" style="grid-column:1/-1;"><div>Витрина недоступна</div><div>Повторите попытку после обновления страницы.</div></div>';
         els.industrySelect.innerHTML = '<option value="">Ошибка загрузки</option>';
@@ -1969,19 +1848,8 @@
         updateMetrics();
       });
 
-      // els.productSearch.addEventListener('input', (event) => {
-      //   state.productSearch = event.target.value;
-      //   persistState();
-      //   renderProducts();
-      // });
-
       els.copyBtn.addEventListener('click', copyResult);
       els.resetBtn.addEventListener('click', resetSelection);
-
-      // els.bundleModalClose.addEventListener('click', closeBundleModal);
-      // els.bundleModalOverlay.addEventListener('click', (event) => {
-      //   if (event.target === els.bundleModalOverlay) closeBundleModal();
-      // });
 
       els.feedbackBtn.addEventListener('click', openFeedbackModal);
       els.feedbackClose.addEventListener('click', closeFeedbackModal);
@@ -1990,41 +1858,28 @@
       });
 
       document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') {
-          if (els.bundleModalOverlay.classList.contains('active')) closeBundleModal();
-          if (els.feedbackModal.classList.contains('active')) closeFeedbackModal();
+        if (event.key === 'Escape' && els.feedbackModal.classList.contains('active')) {
+          closeFeedbackModal();
         }
       });
     }
 
     function applySavedStateToUI() {
-      // els.productSearch.value = state.productSearch || '';
       if (state.selectedIndustry) {
         els.industrySelect.value = state.selectedIndustry;
       }
     }
 
     function cacheElements() {
-      // els.dataState = document.getElementById('data-state');
       els.industrySelect = document.getElementById('industry-select');
       els.industryInfo = document.getElementById('industry-info');
       els.industryDesc = document.getElementById('industry-desc');
-      // els.industryBadges = document.getElementById('industry-badges');
-      els.globalStats = document.getElementById('global-stats');
       els.productHints = document.getElementById('product-hints');
       els.productsList = document.getElementById('products-list');
-      // els.productSearch = document.getElementById('product-search');
       els.bundlesGrid = document.getElementById('bundles-grid');
       els.resultText = document.getElementById('result-text');
-      // els.resultCounter = document.getElementById('result-counter');
       els.copyBtn = document.getElementById('copy-btn');
       els.resetBtn = document.getElementById('reset-btn');
-      els.bundleModalOverlay = document.getElementById('bundle-modal-overlay');
-      els.bundleModalClose = document.getElementById('bundle-modal-close');
-      els.bundleModalTitle = document.getElementById('bundle-modal-title');
-      els.bundleModalScript = document.getElementById('bundle-modal-script');
-      els.bundleModalDetails = document.getElementById('bundle-modal-details');
-      els.bundleModalLink = document.getElementById('bundle-modal-link');
       els.feedbackBtn = document.getElementById('feedback-btn');
       els.feedbackModal = document.getElementById('feedback-modal');
       els.feedbackClose = document.getElementById('feedback-close');
