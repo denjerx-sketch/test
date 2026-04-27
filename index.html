@@ -1,2003 +1,1967 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="light">
-<title>Матрица бандлов | Подбор офферов</title>
-<style>
-:root{
-  --bg-page:#f1eee8;
-  --bg-page-2:#f8f4ec;
-  --bg-card:#e4d7c1;
-  --bg-white:#ffffff;
-  --text-primary:#333333;
-  --text-secondary:#8d6040;
-  --text-dark:#212121;
-  --accent:#ffdd2d;
-  --accent-hover:#ffe560;
-  --border:#ddc7a4;
-  --border-active:#b58b60;
-  --success-bg:#bedd9a;
-  --success-text:#4f8f4d;
-  --danger:#c45b5b;
-  --radius:16px;
-  --radius-lg:22px;
-  --shadow:0 8px 24px rgba(33,33,33,.08);
-  --shadow-hover:0 12px 30px rgba(33,33,33,.12);
-  --shadow-selected:0 0 0 2px var(--accent),0 12px 30px rgba(255,221,45,.24);
-  --shadow-soft:0 6px 18px rgba(33,33,33,.06);
-  --focus:0 0 0 4px rgba(181,139,96,.18);
-  --transition:cubic-bezier(.2,.8,.2,1);
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light only" />
+  <title>Матрица бандлов | Подбор офферов</title>
 
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Inter,system-ui,sans-serif;
-  background:
-    radial-gradient(circle at top left, rgba(255,221,45,.18), transparent 24%),
-    radial-gradient(circle at top right, rgba(181,139,96,.10), transparent 18%),
-    linear-gradient(180deg,var(--bg-page) 0%, #f6f1e7 100%);
-  color:var(--text-primary);
-  line-height:1.5;
-  padding:24px;
-  text-rendering:optimizeLegibility;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-}
-a{color:inherit}
-button,input,select{font:inherit}
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+      m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();
+      for (var j = 0; j < document.scripts.length; j++) {
+        if (document.scripts[j].src === r) { return; }
+      }
+      k=e.createElement(t), a=e.getElementsByTagName(t)[0], k.async=1, k.src=r, a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=108748062', 'ym');
 
-.container{max-width:1440px;margin:0 auto}
-.topbar{
-  display:grid;
-  grid-template-columns:1.53fr .9fr;
-  gap:16px;
-  align-items:stretch;
-  margin-bottom:18px;
-}
-.hero, .status-card, .panel, .result-area, .modal, .toast{
-  background:rgba(255,255,255,.86);
-  backdrop-filter:blur(14px);
-  -webkit-backdrop-filter:blur(14px);
-  border:1px solid rgba(221,199,164,.55);
-  box-shadow:var(--shadow);
-}
-.hero{
-  border-radius:var(--radius-lg);
-  padding:24px;
-  overflow:hidden;
-  position:relative;
-}
-.hero::after{
-  content:"";
-  position:absolute;
-  inset:auto -12% -28% auto;
-  width:220px;
-  height:220px;
-  border-radius:50%;
-  background:radial-gradient(circle, rgba(255,221,45,.18) 0%, rgba(255,221,45,.04) 55%, transparent 70%);
-  pointer-events:none;
-}
-.kicker{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:8px 12px;
-  border-radius:999px;
-  background:rgba(255,221,45,.28);
-  color:var(--text-dark);
-  font-size:13px;
-  font-weight:700;
-  letter-spacing:.2px;
-  margin-bottom:14px;
-}
-h1{
-  margin:0 0 10px 0;
-  font-size:clamp(28px,3vw,44px);
-  line-height:1.05;
-  color:var(--text-dark);
-}
-.subtitle{
-  margin:0;
-  font-size:15px;
-  color:var(--text-secondary);
-  max-width:68ch;
-}
-.progress{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:18px;
-}
-.step{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:10px 14px;
-  border-radius:999px;
-  border:1px solid rgba(181,139,96,.2);
-  background:rgba(255,255,255,.8);
-  font-size:13px;
-  color:var(--text-primary);
-}
-.step strong{
-  width:24px;height:24px;border-radius:50%;
-  display:grid;place-items:center;
-  background:var(--accent);
-  color:var(--text-dark);
-  font-size:12px;
-}
-.status-card{
-  border-radius:var(--radius-lg);
-  padding:20px;
-  display:grid;
-  gap:12px;
-  align-content:start;
-}
-.status-row{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-}
-.stat{
-  min-width:100px;
-  flex:1;
-  background:linear-gradient(180deg, rgba(241,238,232,.85), rgba(255,255,255,.95));
-  border:1px solid rgba(221,199,164,.55);
-  border-radius:16px;
-  padding:14px;
-}
-.stat .label{
-  font-size:12px;
-  color:var(--text-secondary);
-  margin-bottom:6px;
-}
-.stat .value{
-  font-size:22px;
-  font-weight:800;
-  color:var(--text-dark);
-  line-height:1;
-}
-.stat .sub{
-  margin-top:6px;
-  font-size:12px;
-  color:var(--text-secondary);
-}
-.toolbar{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-top:2px;
-}
-.chip{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:9px 12px;
-  border-radius:999px;
-  border:1px solid rgba(181,139,96,.18);
-  background:rgba(255,255,255,.8);
-  color:var(--text-primary);
-  font-size:13px;
-  box-shadow:var(--shadow-soft);
-}
-.chip strong{color:var(--text-dark)}
-.chip.is-accent{
-  background:rgba(255,221,45,.22);
-  border-color:rgba(181,139,96,.22);
-}
-.chip.is-muted{
-  color:var(--text-secondary);
-}
+    ym(108748062, 'init', {
+      ssr: true,
+      webvisor: true,
+      clickmap: true,
+      ecommerce: "dataLayer",
+      referrer: document.referrer,
+      url: location.href,
+      accurateTrackBounce: true,
+      trackLinks: true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/108748062" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
 
-.layout{
-  display:grid;
-  grid-template-columns:minmax(0,1.45fr) minmax(340px,.85fr);
-  gap:20px;
-  align-items:start;
-}
-.main-column{
-  display:grid;
-  gap:18px;
-}
-.panel{
-  border-radius:var(--radius-lg);
-  padding:20px;
-}
-.panel-head{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  align-items:flex-start;
-  margin-bottom:14px;
-}
-.panel h2{
-  margin:0 0 6px 0;
-  font-size:17px;
-  color:var(--text-dark);
-}
-.panel .hint{
-  margin:0;
-  font-size:13px;
-  color:var(--text-secondary);
-}
-.select-row{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:12px;
-}
-.select-wrap{
-  display:grid;
-  gap:8px;
-}
-.select-wrap label{
-  font-size:13px;
-  color:var(--text-secondary);
-  font-weight:600;
-}
-select{
-  width:100%;
-  appearance:none;
-  border:1px solid var(--border);
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.92));
-  color:var(--text-primary);
-  border-radius:14px;
-  padding:14px 44px 14px 14px;
-  font-size:15px;
-  cursor:pointer;
-  outline:none;
-  transition:border-color .2s var(--transition), box-shadow .2s var(--transition), transform .2s var(--transition);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.85);
-  background-image:
-    linear-gradient(45deg, transparent 50%, var(--border-active) 50%),
-    linear-gradient(135deg, var(--border-active) 50%, transparent 50%),
-    linear-gradient(to right, transparent, transparent);
-  background-position:
-    calc(100% - 22px) 50%,
-    calc(100% - 16px) 50%,
-    100% 0;
-  background-size:6px 6px, 6px 6px, 2.5em 2.5em;
-  background-repeat:no-repeat;
-}
-select:hover{border-color:var(--border-active)}
-select:focus{
-  border-color:var(--border-active);
-  box-shadow:var(--focus);
-}
-.industry-info{
-  display:none;
-  margin-top:14px;
-  padding:16px 18px;
-  border-radius:18px;
-  border-left:5px solid var(--accent);
-  background:linear-gradient(180deg, rgba(241,238,232,.88), rgba(255,255,255,.95));
-  box-shadow:var(--shadow-soft);
-  animation:fadeInUp .35s var(--transition);
-}
-.industry-info.active{display:block}
-.industry-info h3{
-  margin:0 0 8px 0;
-  font-size:15px;
-  color:var(--text-dark);
-}
-.industry-info p{
-  margin:0;
-  color:var(--text-secondary);
-  font-size:14px;
-}
-.loader{
-  display:grid;
-  gap:14px;
-  place-items:center;
-  padding:40px 18px;
-  color:var(--text-secondary);
-  text-align:center;
-}
-.spinner{
-  width:28px;height:28px;
-  border-radius:50%;
-  border:3px solid rgba(221,199,164,.8);
-  border-top-color:var(--accent);
-  animation:spin .9s linear infinite;
-}
-.skeleton-row{
-  display:grid;
-  gap:10px;
-}
-.skeleton{
-  height:18px;
-  border-radius:999px;
-  background:linear-gradient(90deg, rgba(228,215,193,.35) 0%, rgba(255,255,255,.9) 45%, rgba(228,215,193,.35) 100%);
-  background-size:200% 100%;
-  animation:shimmer 1.4s ease-in-out infinite;
-}
-.skeleton.w80{width:80%}
-.skeleton.w60{width:60%}
-.skeleton.w40{width:40%}
+  <style>
+    :root {
+      --bg-page: #f1eee8;
+      --bg-surface: rgba(255,255,255,0.72);
+      --bg-card: #ffffff;
+      --bg-card-soft: #f8f3ea;
+      --bg-accent: #e4d7c1;
+      --bg-accent-2: #fff8d6;
+      --bg-muted: #f7f4ee;
+      --text-primary: #2f2f2f;
+      --text-secondary: #7d5b40;
+      --text-muted: #897e73;
+      --text-dark: #1f1f1f;
+      --accent: #ffdd2d;
+      --accent-hover: #ffe560;
+      --accent-press: #f0cc00;
+      --border: #ddc7a4;
+      --border-strong: #b58b60;
+      --success-bg: #bedd9a;
+      --success-text: #4e8f43;
+      --danger-bg: #fbe7e5;
+      --danger-text: #b2483e;
+      --shadow-sm: 0 2px 10px rgba(33, 33, 33, 0.06);
+      --shadow-md: 0 12px 30px rgba(33, 33, 33, 0.10);
+      --shadow-lg: 0 18px 50px rgba(33, 33, 33, 0.14);
+      --shadow-selected: 0 0 0 2px rgba(255, 221, 45, 1), 0 16px 30px rgba(255, 221, 45, 0.22);
+      --radius-sm: 10px;
+      --radius-md: 14px;
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      --transition: 180ms cubic-bezier(.2,.8,.2,1);
+    }
 
-.section-title{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  margin-bottom:14px;
-}
-.section-title h2{margin:0;font-size:18px;color:var(--text-dark)}
-.section-title .meta{
-  font-size:13px;
-  color:var(--text-secondary);
-}
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Inter, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(255, 221, 45, 0.18), transparent 30%),
+        radial-gradient(circle at top right, rgba(181, 139, 96, 0.13), transparent 28%),
+        linear-gradient(180deg, #f6f2ea 0%, var(--bg-page) 100%);
+      color: var(--text-primary);
+      line-height: 1.45;
+      padding: 24px;
+      min-height: 100vh;
+    }
 
-.product-grid{
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap:10px;
-  max-height:520px;
-  overflow:auto;
-  padding-right:6px;
-}
-.product-grid::-webkit-scrollbar,
-.bundle-grid::-webkit-scrollbar,
-.result-scroll::-webkit-scrollbar{width:10px}
-.product-grid::-webkit-scrollbar-thumb,
-.bundle-grid::-webkit-scrollbar-thumb,
-.result-scroll::-webkit-scrollbar-thumb{
-  background:rgba(181,139,96,.28);
-  border-radius:999px;
-  border:2px solid transparent;
-  background-clip:padding-box;
-}
-.product-card{
-  display:grid;
-  grid-template-columns:auto 1fr auto;
-  gap:12px;
-  align-items:start;
-  padding:14px;
-  border-radius:18px;
-  border:1px solid rgba(221,199,164,.65);
-  background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(247,242,233,.92));
-  transition:transform .22s var(--transition), box-shadow .22s var(--transition), border-color .22s var(--transition), opacity .22s var(--transition);
-  position:relative;
-}
-.product-card:hover{
-  transform:translateY(-2px);
-  box-shadow:var(--shadow-hover);
-  border-color:rgba(181,139,96,.42);
-}
-.product-card.is-disabled{
-  opacity:.64;
-}
-.product-card.is-disabled:hover{
-  transform:none;
-  box-shadow:none;
-}
-.product-card.is-selected{
-  box-shadow:var(--shadow-selected);
-  border-color:rgba(255,221,45,.95);
-}
-.product-card input{
-  width:18px;
-  height:18px;
-  margin-top:2px;
-  accent-color:var(--success-text);
-  cursor:pointer;
-}
-.product-main{
-  min-width:0;
-}
-.product-name-row{
-  display:flex;
-  flex-wrap:wrap;
-  align-items:center;
-  gap:8px;
-  margin-bottom:6px;
-}
-.product-name{
-  font-size:15px;
-  font-weight:700;
-  color:var(--text-dark);
-}
-.product-link{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  color:var(--border-active);
-  text-decoration:none;
-  font-size:13px;
-  font-weight:700;
-}
-.product-link:hover{text-decoration:underline}
-.product-desc{
-  font-size:13px;
-  color:var(--text-secondary);
-  margin:0;
-  line-height:1.45;
-}
-.badges{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-top:10px;
-}
-.badge{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  padding:6px 10px;
-  border-radius:999px;
-  font-size:12px;
-  font-weight:700;
-  border:1px solid rgba(181,139,96,.16);
-  background:rgba(241,238,232,.85);
-  color:var(--text-primary);
-}
-.badge.is-success{
-  background:rgba(190,221,154,.25);
-  color:var(--success-text);
-}
-.badge.is-muted{
-  color:var(--text-secondary);
-}
-.product-cta{
-  display:flex;
-  gap:8px;
-}
-.icon-btn{
-  border:none;
-  background:rgba(255,221,45,.18);
-  color:var(--text-dark);
-  border-radius:12px;
-  padding:10px 12px;
-  cursor:pointer;
-  transition:transform .2s var(--transition), background .2s var(--transition);
-}
-.icon-btn:hover{transform:translateY(-1px);background:rgba(255,221,45,.28)}
-.icon-btn:focus-visible,
-.btn:focus-visible,
-select:focus-visible,
-.product-card:focus-within,
-.bundle-card:focus-within{
-  outline:none;
-  box-shadow:var(--focus);
-}
+    a { color: inherit; }
+    button, select, input, textarea { font: inherit; }
+    img { max-width: 100%; display: block; }
 
-.bundle-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
-  gap:14px;
-}
-.bundle-card{
-  border:none;
-  text-align:left;
-  width:100%;
-  background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(247,242,233,.92));
-  border-radius:20px;
-  padding:18px;
-  cursor:pointer;
-  position:relative;
-  border:1px solid rgba(221,199,164,.62);
-  box-shadow:var(--shadow-soft);
-  transition:transform .22s var(--transition), box-shadow .22s var(--transition), border-color .22s var(--transition), background .22s var(--transition);
-  overflow:hidden;
-}
-.bundle-card::before{
-  content:"";
-  position:absolute;
-  inset:-1px -1px auto auto;
-  width:120px;
-  height:120px;
-  background:radial-gradient(circle at top right, rgba(255,221,45,.2), transparent 72%);
-  pointer-events:none;
-  opacity:0;
-  transition:opacity .22s var(--transition);
-}
-.bundle-card:hover{
-  transform:translateY(-3px);
-  box-shadow:var(--shadow-hover);
-  border-color:rgba(181,139,96,.42);
-}
-.bundle-card:hover::before{opacity:1}
-.bundle-card.is-selected{
-  box-shadow:var(--shadow-selected);
-  border-color:rgba(255,221,45,.95);
-}
-.bundle-top{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  align-items:flex-start;
-  margin-bottom:12px;
-}
-.bundle-product{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:6px 10px;
-  border-radius:999px;
-  background:rgba(255,221,45,.18);
-  color:var(--text-dark);
-  font-size:12px;
-  font-weight:800;
-}
-.bundle-title{
-  margin:10px 0 6px 0;
-  font-size:17px;
-  line-height:1.2;
-  color:var(--text-dark);
-  font-weight:800;
-}
-.bundle-vendor{
-  margin:0;
-  font-size:14px;
-  color:var(--border-active);
-  font-weight:800;
-}
-.bundle-benefit{
-  margin:12px 0 0 0;
-  font-size:14px;
-  color:var(--text-primary);
-  line-height:1.45;
-}
-.bundle-details{
-  margin:10px 0 0 0;
-  font-size:13px;
-  color:var(--text-secondary);
-  line-height:1.45;
-}
-.bundle-actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-top:16px;
-}
-.btn{
-  border:none;
-  border-radius:14px;
-  padding:11px 14px;
-  font-size:13px;
-  font-weight:700;
-  cursor:pointer;
-  transition:transform .2s var(--transition), background .2s var(--transition), box-shadow .2s var(--transition), opacity .2s var(--transition);
-}
-.btn:hover{transform:translateY(-1px)}
-.btn-primary{
-  background:var(--accent);
-  color:var(--text-dark);
-  box-shadow:0 8px 18px rgba(255,221,45,.34);
-}
-.btn-primary:hover{background:var(--accent-hover)}
-.btn-secondary{
-  background:rgba(228,215,193,.9);
-  color:var(--text-secondary);
-}
-.btn-secondary:hover{background:#fff}
-.btn-link{
-  background:none;
-  color:var(--border-active);
-  padding:10px 2px;
-  text-decoration:none;
-}
-.btn-link:hover{text-decoration:underline}
-.bundle-select-mark{
-  position:absolute;
-  top:14px;
-  right:14px;
-  width:28px;
-  height:28px;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  background:rgba(255,255,255,.9);
-  border:1px solid rgba(181,139,96,.2);
-  color:transparent;
-  transform:scale(.92);
-  transition:transform .22s var(--transition), color .22s var(--transition), background .22s var(--transition), border-color .22s var(--transition);
-}
-.bundle-card.is-selected .bundle-select-mark{
-  color:var(--text-dark);
-  background:var(--accent);
-  border-color:transparent;
-  transform:scale(1);
-}
-.empty-state, .loading-state{
-  grid-column:1/-1;
-  display:grid;
-  place-items:center;
-  min-height:220px;
-  padding:24px;
-  text-align:center;
-  border-radius:20px;
-  border:1px dashed rgba(181,139,96,.25);
-  background:rgba(255,255,255,.55);
-  color:var(--text-secondary);
-}
-.empty-state h3, .loading-state h3{
-  margin:12px 0 6px;
-  color:var(--text-dark);
-  font-size:16px;
-}
-.empty-state p, .loading-state p{margin:0;font-size:14px}
+    .app {
+      width: min(1320px, 100%);
+      margin: 0 auto;
+    }
 
-.side{
-  position:sticky;
-  top:20px;
-}
-.result-area{
-  border-radius:var(--radius-lg);
-  padding:18px;
-}
-.info-card{
-  background:linear-gradient(180deg, rgba(241,238,232,.94), rgba(255,255,255,.98));
-  border-radius:18px;
-  padding:16px;
-  margin-bottom:16px;
-  border-left:4px solid var(--accent);
-}
-.info-card h4{
-  margin:0 0 6px 0;
-  font-size:14px;
-  color:var(--text-dark);
-}
-.info-card p{
-  margin:0;
-  font-size:13px;
-  color:var(--text-secondary);
-}
-.result-header{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  align-items:flex-start;
-  margin-bottom:12px;
-}
-.result-header h2{
-  margin:0;
-  font-size:18px;
-  color:var(--text-dark);
-}
-.result-header .mini{
-  margin-top:4px;
-  font-size:13px;
-  color:var(--text-secondary);
-}
-.result-scroll{
-  max-height:520px;
-  overflow:auto;
-  padding-right:6px;
-}
-.result-text{
-  min-height:120px;
-  font-size:15px;
-  color:var(--text-primary);
-  white-space:normal;
-}
-.result-text p{margin:0 0 12px 0}
-.result-text ul{
-  margin:12px 0 0 18px;
-  padding:0;
-}
-.result-text li{
-  margin:0 0 8px 0;
-  line-height:1.45;
-}
-.result-text a{
-  color:var(--border-active);
-  font-weight:800;
-  text-decoration:none;
-}
-.result-text a:hover{text-decoration:underline}
-.selected-list{
-  display:grid;
-  gap:8px;
-  margin-top:16px;
-}
-.selected-list .selected-item{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  padding:10px 12px;
-  border-radius:14px;
-  background:rgba(241,238,232,.88);
-  border:1px solid rgba(221,199,164,.56);
-}
-.selected-item .label{
-  font-size:13px;
-  color:var(--text-primary);
-  font-weight:700;
-}
-.selected-item .sub{
-  font-size:12px;
-  color:var(--text-secondary);
-}
-.result-actions{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:16px;
-}
-.result-actions .btn{flex:1}
-.btn-copy:disabled{
-  opacity:.5;
-  cursor:not-allowed;
-  transform:none;
-}
-.feedback-btn{
-  position:fixed;
-  right:24px;
-  bottom:24px;
-  z-index:100;
-  border:none;
-  border-radius:999px;
-  padding:14px 20px;
-  font-size:14px;
-  font-weight:800;
-  color:var(--text-dark);
-  background:var(--accent);
-  box-shadow:0 12px 26px rgba(255,221,45,.32);
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  transition:transform .2s var(--transition), background .2s var(--transition), box-shadow .2s var(--transition);
-}
-.feedback-btn:hover{
-  transform:translateY(-2px);
-  background:var(--accent-hover);
-  box-shadow:0 14px 28px rgba(255,221,45,.38);
-}
-.feedback-btn::before{
-  content:"💬";
-  font-size:17px;
-}
-.modal-overlay{
-  position:fixed;
-  inset:0;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  background:rgba(33,33,33,.58);
-  backdrop-filter:blur(6px);
-  -webkit-backdrop-filter:blur(6px);
-  z-index:1000;
-  padding:20px;
-}
-.modal-overlay.active{display:flex}
-.modal{
-  width:min(720px,100%);
-  max-height:min(86vh,860px);
-  overflow:hidden;
-  border-radius:24px;
-  position:relative;
-  padding:22px;
-}
-.modal .modal-scroll{
-  max-height:calc(86vh - 44px);
-  overflow:auto;
-  padding-right:6px;
-}
-.modal h3{
-  margin:0 0 12px 0;
-  color:var(--text-dark);
-  font-size:22px;
-}
-.modal-grid{
-  display:grid;
-  gap:12px;
-}
-.modal-section{
-  padding:14px;
-  border-radius:16px;
-  background:rgba(241,238,232,.72);
-  border:1px solid rgba(221,199,164,.5);
-}
-.modal-label{
-  font-size:12px;
-  font-weight:800;
-  color:var(--text-secondary);
-  margin-bottom:6px;
-  text-transform:uppercase;
-  letter-spacing:.06em;
-}
-.modal-text{
-  font-size:14px;
-  color:var(--text-primary);
-  line-height:1.5;
-}
-.modal-text a{
-  color:var(--border-active);
-  font-weight:800;
-  text-decoration:none;
-}
-.modal-text a:hover{text-decoration:underline}
-.modal-link{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  color:var(--border-active);
-  font-weight:800;
-  text-decoration:none;
-}
-.modal-link:hover{text-decoration:underline}
-.modal-close{
-  position:absolute;
-  top:12px;
-  right:14px;
-  width:40px;height:40px;
-  display:grid;
-  place-items:center;
-  border:none;
-  border-radius:50%;
-  background:rgba(255,255,255,.95);
-  color:var(--text-secondary);
-  cursor:pointer;
-  font-size:24px;
-  line-height:1;
-  transition:transform .2s var(--transition), background .2s var(--transition);
-  z-index:1;
-}
-.modal-close:hover{transform:scale(1.05);background:#fff}
-.toast{
-  position:fixed;
-  left:50%;
-  bottom:20px;
-  transform:translateX(-50%) translateY(24px);
-  opacity:0;
-  pointer-events:none;
-  padding:12px 16px;
-  border-radius:999px;
-  font-size:14px;
-  color:var(--text-dark);
-  background:rgba(255,255,255,.96);
-  border:1px solid rgba(221,199,164,.6);
-  box-shadow:var(--shadow);
-  transition:opacity .22s var(--transition), transform .22s var(--transition);
-  z-index:1200;
-}
-.toast.show{
-  opacity:1;
-  transform:translateX(-50%) translateY(0);
-}
-.loading-banner{
-  display:flex;
-  gap:12px;
-  align-items:center;
-  justify-content:center;
-  min-height:260px;
-}
-.small-muted{
-  color:var(--text-secondary);
-  font-size:12px;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes fadeInUp{
-  from{opacity:0; transform:translateY(8px)}
-  to{opacity:1; transform:translateY(0)}
-}
-@keyframes shimmer{
-  0%{background-position:200% 0}
-  100%{background-position:-200% 0}
-}
-@media (max-width: 1180px){
-  .topbar{grid-template-columns:1fr}
-  .layout{grid-template-columns:1fr}
-  .side{position:static}
-  .result-scroll{max-height:none}
-}
-@media (max-width: 820px){
-  body{padding:14px}
-  .hero,.status-card,.panel,.result-area{border-radius:20px}
-  .bundle-grid{grid-template-columns:1fr}
-  .product-grid{max-height:none}
-  .feedback-btn{right:14px; bottom:14px}
-  .result-actions{flex-direction:column}
-  .btn{width:100%}
-}
-@media (prefers-reduced-motion: reduce){
-  html{scroll-behavior:auto}
-  *,*::before,*::after{
-    animation-duration:.01ms !important;
-    animation-iteration-count:1 !important;
-    transition-duration:.01ms !important;
-    scroll-behavior:auto !important;
-  }
-}
-</style>
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(181, 139, 96, 0.15);
+      border-radius: 28px;
+      padding: 28px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.82), rgba(255,255,255,0.58));
+      box-shadow: var(--shadow-md);
+      backdrop-filter: blur(14px);
+      margin-bottom: 20px;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -18% -48% auto;
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,221,45,0.20), rgba(255,221,45,0));
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 221, 45, 0.32);
+      color: var(--text-dark);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .01em;
+      margin-bottom: 16px;
+    }
+
+    .hero-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.65fr 0.95fr;
+      gap: 20px;
+      align-items: start;
+      z-index: 1;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      color: var(--text-dark);
+      font-size: clamp(28px, 3vw, 46px);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      margin: 0;
+      font-size: 16px;
+      color: var(--text-secondary);
+      max-width: 62ch;
+    }
+
+    .hero-metrics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .metric {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(181, 139, 96, 0.16);
+      box-shadow: var(--shadow-sm);
+      font-size: 13px;
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+
+    .hero-panel {
+      background: rgba(255,255,255,0.68);
+      border: 1px solid rgba(181, 139, 96, 0.16);
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hero-panel__title {
+      margin: 0 0 10px;
+      color: var(--text-dark);
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .hero-panel ol {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--text-primary);
+    }
+
+    .hero-panel li + li { margin-top: 8px; }
+
+    .status-strip {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      margin: 18px 0 20px;
+      align-items: stretch;
+    }
+
+    .industry-card,
+    .filters-card,
+    .result-card,
+    .section-card {
+      background: rgba(255,255,255,0.82);
+      border: 1px solid rgba(181, 139, 96, 0.14);
+      border-radius: 22px;
+      box-shadow: var(--shadow-sm);
+      backdrop-filter: blur(10px);
+    }
+
+    .industry-card {
+      padding: 18px;
+    }
+
+    .industry-card__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      margin: 0;
+      color: var(--text-dark);
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .section-subtitle {
+      margin: 4px 0 0;
+      color: var(--text-secondary);
+      font-size: 13px;
+    }
+
+    .select-wrap {
+      position: relative;
+    }
+
+    select,
+    input[type="search"] {
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.95);
+      color: var(--text-primary);
+      transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+      outline: none;
+    }
+
+    select:focus,
+    input[type="search"]:focus,
+    button:focus-visible,
+    a:focus-visible {
+      border-color: var(--border-strong);
+      box-shadow: 0 0 0 4px rgba(181, 139, 96, 0.18);
+      outline: none;
+    }
+
+    .industry-info {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: start;
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(241,238,232,0.85), rgba(228,215,193,0.72));
+      border: 1px solid rgba(181, 139, 96, 0.16);
+      min-height: 92px;
+      opacity: 0;
+      transform: translateY(6px);
+      pointer-events: none;
+      transition: opacity var(--transition), transform var(--transition);
+    }
+
+    .industry-info.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .industry-info__desc {
+      margin: 0;
+      color: var(--text-primary);
+      font-size: 14px;
+    }
+
+    .industry-badges {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.78);
+      border: 1px solid rgba(181, 139, 96, 0.14);
+      color: var(--text-primary);
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .selection-shell {
+      display: grid;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    .filters-card {
+      padding: 18px;
+    }
+
+    .filters-toolbar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .toolbar-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .toolbar-stat {
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: var(--bg-muted);
+      border: 1px solid rgba(181, 139, 96, 0.12);
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .product-list {
+      display: grid;
+      gap: 10px;
+      max-height: 320px;
+      overflow: auto;
+      padding-right: 4px;
+      scrollbar-width: thin;
+    }
+
+    .product-item {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(181, 139, 96, 0.12);
+      background: rgba(255,255,255,0.86);
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition), background var(--transition), opacity var(--transition);
+    }
+
+    .product-item:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+      border-color: rgba(181, 139, 96, 0.28);
+    }
+
+    .product-item.is-disabled {
+      opacity: 0.64;
+    }
+
+    .product-item input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--success-text);
+      margin: 0;
+      cursor: pointer;
+    }
+
+    .product-item label {
+      cursor: pointer;
+      min-width: 0;
+    }
+
+    .product-name {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.25;
+    }
+
+    .product-desc {
+      display: block;
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .product-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--border-strong);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .product-link:hover { text-decoration: underline; }
+
+    .count-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 34px;
+      height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text-dark);
+      background: var(--bg-accent-2);
+      border: 1px solid rgba(181, 139, 96, 0.18);
+    }
+
+    .section-card {
+      padding: 18px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .legend .badge { background: rgba(255,255,255,0.94); }
+
+    .bundles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 14px;
+    }
+
+    .bundle-card {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 206px;
+      padding: 18px;
+      border-radius: 20px;
+      border: 1px solid rgba(181, 139, 96, 0.14);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.95), rgba(248,243,234,0.96));
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      transform: translateY(0);
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition), background var(--transition);
+    }
+
+    .bundle-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(255,221,45,0.10), transparent 45%);
+      opacity: 0;
+      transition: opacity var(--transition);
+      pointer-events: none;
+    }
+
+    .bundle-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(181, 139, 96, 0.26);
+      box-shadow: var(--shadow-md);
+    }
+
+    .bundle-card:hover::before { opacity: 1; }
+
+    .bundle-card.selected {
+      box-shadow: var(--shadow-selected);
+      border-color: rgba(255, 221, 45, 0.9);
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,248,214,0.95));
+    }
+
+    .bundle-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .bundle-title {
+      margin: 0;
+      color: var(--text-dark);
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.25;
+    }
+
+    .bundle-vendor {
+      margin-top: 6px;
+      color: var(--border-strong);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .bundle-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .bundle-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.8);
+      border: 1px solid rgba(181, 139, 96, 0.14);
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .bundle-benefit {
+      margin: 0;
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 54px;
+      flex: 1;
+    }
+
+    .bundle-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      appearance: none;
+      border: none;
+      border-radius: 14px;
+      padding: 11px 14px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition), background var(--transition), opacity var(--transition);
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--text-dark);
+      box-shadow: 0 8px 20px rgba(255,221,45,0.34);
+    }
+
+    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-primary:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-secondary {
+      background: var(--bg-accent);
+      color: var(--text-secondary);
+    }
+
+    .btn-ghost {
+      background: rgba(255,255,255,0.88);
+      color: var(--text-primary);
+      border: 1px solid rgba(181,139,96,0.16);
+    }
+
+    .btn-link {
+      background: transparent;
+      color: var(--border-strong);
+      padding: 0;
+      border-radius: 0;
+      text-decoration: none;
+      align-self: center;
+    }
+
+    .btn-link:hover { text-decoration: underline; }
+
+    .result-card {
+      position: sticky;
+      top: 18px;
+      padding: 18px;
+    }
+
+    .result-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .result-counter {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--bg-accent-2);
+      border: 1px solid rgba(181,139,96,0.16);
+      color: var(--text-dark);
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .warning-card {
+      display: grid;
+      gap: 8px;
+      padding: 14px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,248,214,0.92), rgba(255,255,255,0.8));
+      border: 1px solid rgba(181,139,96,0.16);
+      margin-bottom: 14px;
+    }
+
+    .warning-card strong {
+      color: var(--text-dark);
+    }
+
+    .result-text {
+      min-height: 88px;
+      padding: 14px;
+      border-radius: 18px;
+      background: var(--bg-muted);
+      border: 1px solid rgba(181,139,96,0.12);
+      color: var(--text-primary);
+      white-space: pre-line;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .result-text a {
+      color: var(--border-strong);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .result-text a:hover { text-decoration: underline; }
+
+    .selected-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .selected-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.88);
+      border: 1px solid rgba(181,139,96,0.12);
+      font-size: 13px;
+    }
+
+    .selected-item__meta {
+      color: var(--text-muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .result-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .empty-state,
+    .loading-state,
+    .error-state {
+      display: grid;
+      place-items: center;
+      min-height: 180px;
+      padding: 30px 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.82);
+      border: 1px dashed rgba(181,139,96,0.22);
+      color: var(--text-secondary);
+      text-align: center;
+      gap: 10px;
+    }
+
+    .spinner {
+      width: 26px;
+      height: 26px;
+      border: 3px solid rgba(181,139,96,0.2);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes pop {
+      from { transform: translateY(6px) scale(.985); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    .animate-pop {
+      animation: pop 220ms cubic-bezier(.2,.8,.2,1);
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(31,31,31,0.62);
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+      padding: 18px;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal {
+      position: relative;
+      width: min(720px, 100%);
+      max-height: min(84vh, 900px);
+      overflow: auto;
+      border-radius: 24px;
+      padding: 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,243,234,0.98));
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(181,139,96,0.16);
+    }
+
+    .modal h3 {
+      margin: 0 0 10px;
+      color: var(--text-dark);
+      font-size: 22px;
+      line-height: 1.15;
+    }
+
+    .modal-section { margin-top: 14px; }
+
+    .modal-label {
+      margin-bottom: 6px;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    .modal-text {
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.55;
+      white-space: pre-line;
+    }
+
+    .modal-text ul {
+      margin: 8px 0 0 18px;
+      padding: 0;
+    }
+
+    .modal-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--border-strong);
+      text-decoration: none;
+      font-weight: 800;
+    }
+
+    .modal-link:hover { text-decoration: underline; }
+
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      border: none;
+      background: rgba(255,255,255,0.92);
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 26px;
+      line-height: 1;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .feedback-btn {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 200;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 18px;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      background: var(--accent);
+      color: var(--text-dark);
+      font-weight: 900;
+      box-shadow: 0 14px 30px rgba(255,221,45,0.34);
+      transition: transform var(--transition), background var(--transition), box-shadow var(--transition);
+    }
+
+    .feedback-btn:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 16px 34px rgba(255,221,45,0.42);
+    }
+
+    .feedback-btn::before {
+      content: "💬";
+      font-size: 18px;
+    }
+
+    .skeleton {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(90deg, rgba(255,255,255,0.3), rgba(255,255,255,0.7), rgba(255,255,255,0.3));
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite linear;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+      white-space: nowrap;
+    }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 1180px) {
+      .layout { grid-template-columns: 1fr; }
+      .result-card { position: static; }
+      .hero-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 820px) {
+      body { padding: 14px; }
+      .hero, .industry-card, .filters-card, .section-card, .result-card { border-radius: 18px; }
+      .status-strip { grid-template-columns: 1fr; }
+      .filters-toolbar { grid-template-columns: 1fr; }
+      .toolbar-stats { justify-content: flex-start; }
+      .section-head { flex-direction: column; }
+      .legend { justify-content: flex-start; }
+      .bundles-grid { grid-template-columns: 1fr; }
+      .result-actions { grid-template-columns: 1fr; }
+      .feedback-btn { right: 14px; bottom: 14px; }
+      .industry-info { grid-template-columns: 1fr; }
+      .industry-badges { justify-content: flex-start; }
+      .modal { padding: 18px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
 </head>
 <body>
-<div class="container">
-  <section class="topbar">
-    <div class="hero">
-      <h1>Подбор продуктов Т‑Банка и партнёрских офферов по отрасли</h1>
-      <p class="subtitle">
-        Выберите отрасль клиента, затем отметьте релевантные продукты банка и нужные офферы.
-        Система соберёт коммерческое предложение с витриной партнёров и ссылками на офферы.
-      </p>
-    </div>
-    <div class="status-card">
-      <div class="status-row">
-        <div class="stat">
-          <div class="label">Отраслей</div>
-          <div class="value" id="stat-industries">—</div>
-          <div class="sub">в источниках</div>
+  <div class="app">
+    <header class="hero">
+      <div class="eyebrow">Матрица бандлов · Т-Бизнес</div>
+      <div class="hero-grid">
+        <div>
+          <h1>Подбор банковских продуктов и партнёрских офферов</h1>
+          <p class="subtitle">Выберите отрасль клиента, уточните релевантные продукты банка, отметьте нужные предложения и сразу соберите готовое коммерческое предложение.</p>
+          <div class="hero-metrics" id="hero-metrics" aria-live="polite"></div>
         </div>
-        <div class="stat">
-          <div class="label">Продуктов</div>
-          <div class="value" id="stat-products">—</div>
-          <div class="sub">банковских</div>
+        <div class="hero-panel">
+          <p class="hero-panel__title">Сценарий работы</p>
+          <ol>
+            <li>Выбор отрасли и подсказка по её специфике.</li>
+            <li>Подсветка банковских продуктов, которые сопутствуют этой отрасли.</li>
+            <li>Подбор офферов витрины и сбор коммерческого предложения.</li>
+          </ol>
         </div>
       </div>
-      <div class="status-row">
-        <div class="stat">
-          <div class="label">Бандлов</div>
-          <div class="value" id="stat-bundles">—</div>
-          <div class="sub">партнёрских</div>
-        </div>
-        <div class="stat">
-          <div class="label">Выбрано</div>
-          <div class="value" id="stat-selected">0</div>
-          <div class="sub">офферов</div>
-        </div>
-      </div>
-      <div class="toolbar" id="chips"></div>
-    </div>
-  </section>
+    </header>
 
-  <div class="layout">
-    <main class="main-column">
-      <section class="panel">
-        <div class="panel-head">
+    <section class="status-strip">
+      <div class="industry-card">
+        <div class="industry-card__header">
           <div>
-            <h2>1. Отрасль клиента</h2>
-            <p class="hint">Выберите отрасль, чтобы подсветить релевантные продукты банка и офферы витрины.</p>
+            <h2 class="section-title">1. Отрасль клиента</h2>
+            <p class="section-subtitle">Список отраслей подтягивается из CSV-источников.</p>
           </div>
+          <span class="badge" id="data-state">Загрузка данных…</span>
         </div>
-
-        <div class="select-row">
-          <div class="select-wrap">
-            <label for="industry-select">Отрасль</label>
-            <select id="industry-select" disabled>
-              <option value="">Загрузка...</option>
-            </select>
-          </div>
+        <div class="select-wrap">
+          <label class="sr-only" for="industry-select">Выберите отрасль</label>
+          <select id="industry-select" disabled>
+            <option value="">Загрузка…</option>
+          </select>
         </div>
-
         <div class="industry-info" id="industry-info" aria-live="polite">
-          <h3>Об отрасли</h3>
-          <p id="industry-desc"></p>
-        </div>
-      </section>
-
-      <section class="panel">
-        <div class="section-title">
           <div>
-            <h2>2. Продукты банка</h2>
-            <div class="meta" id="products-meta">Сначала выберите отрасль</div>
+            <p class="industry-info__desc" id="industry-desc"></p>
           </div>
+          <div class="industry-badges" id="industry-badges"></div>
         </div>
-        <div class="product-grid" id="products-list"></div>
-      </section>
+      </div>
+      <div class="filters-card">
+        <h2 class="section-title">Быстрый статус</h2>
+        <p class="section-subtitle">Быстро показывает, сколько данных загружено и что выбрано.</p>
+        <div class="toolbar-stats" id="global-stats"></div>
+      </div>
+    </section>
 
-      <section class="panel">
-        <div class="section-title">
+    <div class="layout">
+      <main class="selection-shell">
+        <section class="filters-card">
+          <div class="filters-toolbar">
+            <div>
+              <h2 class="section-title">2. Продукты банка</h2>
+              <p class="section-subtitle">Это фильтр витрины: отмеченные продукты показывают только релевантные офферы.</p>
+            </div>
+            <div style="min-width:min(360px,100%);">
+              <label class="sr-only" for="product-search">Поиск по продуктам</label>
+              <input id="product-search" type="search" placeholder="Поиск по продуктам или подсказкам…" autocomplete="off" />
+            </div>
+          </div>
+          <div class="toolbar-stats" id="product-hints"></div>
+          <div class="product-list" id="products-list"></div>
+        </section>
+
+        <section class="section-card">
+          <div class="section-head">
+            <div>
+              <h2 class="section-title">3. Витрина офферов</h2>
+              <p class="section-subtitle">Нажмите на карточку, чтобы добавить оффер в коммерческое предложение.</p>
+            </div>
+            <div class="legend">
+              <span class="badge">Клик по карточке — выбрать</span>
+              <span class="badge">Подробнее — открыть модал</span>
+            </div>
+          </div>
+          <div id="bundles-grid" class="bundles-grid"></div>
+        </section>
+      </main>
+
+      <aside class="result-card" aria-label="Готовое предложение">
+        <div class="result-head">
           <div>
-            <h2>3. Офферы витрины</h2>
-            <div class="meta" id="bundles-meta">Выберите отрасль и продукты, чтобы увидеть доступные бандлы</div>
+            <h2 class="section-title">4. Коммерческое предложение</h2>
+            <p class="section-subtitle">Собирается автоматически по выбранным офферам.</p>
           </div>
-        </div>
-        <div class="bundle-grid" id="bundles-grid"></div>
-      </section>
-    </main>
-
-    <aside class="side">
-      <section class="result-area">
-        <div class="info-card">
-          <h4>⚠️ Важное условие</h4>
-          <p>Все офферы с витрины партнёров активируются только при наличии <strong>Расчётного счёта</strong> в Т‑Банке.</p>
+          <div class="result-counter" id="result-counter">0 офферов</div>
         </div>
 
-        <div class="result-header">
-          <div>
-            <h2>Готовое коммерческое предложение</h2>
-            <div class="mini" id="result-mini">Выберите офферы, чтобы собрать формулировку</div>
-          </div>
+        <div class="warning-card">
+          <strong>Важно</strong>
+          <div>Все офферы с витрины партнёров активируются только при наличии <strong>Расчётного счёта</strong> в Т-Банке.</div>
         </div>
 
-        <div class="result-scroll">
-          <div class="result-text" id="result-text">Выберите бандлы, чтобы получить готовую формулировку</div>
-          <div class="selected-list" id="selected-list" aria-live="polite"></div>
-        </div>
+        <div class="result-text" id="result-text" aria-live="polite">Выберите бандлы, чтобы получить готовую формулировку.</div>
+
+        <div class="selected-list" id="selected-list"></div>
 
         <div class="result-actions">
-          <button class="btn btn-secondary" id="reset-btn" style="display:none;">↺ Сбросить выбор</button>
-          <button class="btn btn-primary" id="copy-btn" disabled>📋 Скопировать КП</button>
+          <button class="btn btn-secondary" id="reset-btn" type="button" style="display:none;">Сбросить выбор</button>
+          <button class="btn btn-primary" id="copy-btn" type="button" disabled>Скопировать</button>
         </div>
-      </section>
-    </aside>
+      </aside>
+    </div>
   </div>
-</div>
 
-<div class="modal-overlay" id="offer-modal" aria-hidden="true">
-  <div class="modal">
-    <button class="modal-close" id="offer-close" aria-label="Закрыть">×</button>
-    <div class="modal-scroll">
-      <h3 id="offer-title">Детали оффера</h3>
-      <div class="modal-grid">
-        <div class="modal-section">
-          <div class="modal-label">Сценарий</div>
-          <div class="modal-text" id="offer-script"></div>
-        </div>
-        <div class="modal-section">
-          <div class="modal-label">Условия и детали</div>
-          <div class="modal-text" id="offer-details"></div>
-        </div>
-        <div class="modal-section">
-          <div class="modal-label">Ссылка на оффер</div>
-          <a href="#" target="_blank" rel="noopener noreferrer" class="modal-link" id="offer-link">Открыть на витрине ↗</a>
-        </div>
+  <button class="feedback-btn" id="feedback-btn" type="button">Оставить отзыв</button>
+
+  <div class="modal-overlay" id="bundle-modal-overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="bundle-modal-title">
+      <button class="modal-close" id="bundle-modal-close" type="button" aria-label="Закрыть">&times;</button>
+      <h3 id="bundle-modal-title">Детали оффера</h3>
+      <div class="modal-section">
+        <div class="modal-label">Оффер</div>
+        <div class="modal-text" id="bundle-modal-script"></div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-label">Условия и детали</div>
+        <div class="modal-text" id="bundle-modal-details"></div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-label">Перейти к офферу</div>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="modal-link" id="bundle-modal-link">Открыть на витрине ↗</a>
       </div>
     </div>
   </div>
-</div>
 
-<div class="modal-overlay" id="feedback-modal" aria-hidden="true">
-  <div class="modal" style="height:80vh;">
-    <button class="modal-close" id="feedback-close" aria-label="Закрыть">×</button>
-    <iframe
-      id="feedback-iframe"
-      src=""
-      style="width:100%;height:100%;border:none;border-radius:16px;"
-      loading="lazy"
-      title="Форма обратной связи"
-    ></iframe>
+  <div class="modal-overlay" id="feedback-modal" aria-hidden="true">
+    <div class="modal" style="width:min(920px,100%); height:min(82vh,900px); padding:0; overflow:hidden;">
+      <button class="modal-close" id="feedback-close" type="button" aria-label="Закрыть">&times;</button>
+      <iframe
+        id="feedback-iframe"
+        src=""
+        style="width:100%; height:100%; border:none;"
+        loading="lazy"
+        referrerpolicy="no-referrer"
+      ></iframe>
+    </div>
   </div>
-</div>
 
-<button class="feedback-btn" id="feedback-btn">Оставить отзыв</button>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script>
+    const CSV_URLS = {
+      BUNDLES: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ6efI49YZlwvdIPdFpkwTVisWD9P63E3UJ9XkeWnmxtfXwJPBhjNGWerDmmixbV5aMadBQTjkw1UMq/pub?output=csv',
+      PRODUCTS: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT3BvjUqCxgtunnRNbJlX0D9T7nGowBNWf9C5ybNes6MFdYYvTs6M4i7HT0nlXDFsa3PvNN5qJcOvuz/pub?output=csv'
+    };
 
-<script>
-(() => {
-  'use strict';
+    const FEEDBACK_URL = 'https://p.tbank.ru/polls/prod/poll-cmobly74g002q0dra49i7ba4n/index.html';
+    const STORAGE_KEY = 'matrix_bundles_state_v2';
 
-  const CSV_URLS = {
-    BUNDLES: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ6efI49YZlwvdIPdFpkwTVisWD9P63E3UJ9XkeWnmxtfXwJPBhjNGWerDmmixbV5aMadBQTjkw1UMq/pub?output=csv',
-    PRODUCTS: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT3BvjUqCxgtunnRNbJlX0D9T7nGowBNWf9C5ybNes6MFdYYvTs6M4i7HT0nlXDFsa3PvNN5qJcOvuz/pub?output=csv'
-  };
+    const CONFIG = {
+      INDUSTRY_DESCS: {
+        'Независимый Еком': 'Онлайн-продажи через собственный сайт или приложение. Клиент не зависит от маркетплейсов.',
+        'Зависимый Еком': 'Продажи через маркетплейсы (Ozon, Wildberries, Яндекс.Маркет) как основной канал.',
+        'Розница': 'Офлайн-точки продаж: магазины, салоны, кафе, сервисные центры.',
+        'IT': 'Разработка ПО, веб-студии, аутсорсинг, IT-консалтинг.',
+        'Стройка': 'Строительство, ремонт, производство стройматериалов.'
+      }
+    };
 
-  const CONFIG = {
-    INDUSTRY_DESCS: {
-      "Независимый Еком": "Онлайн-продажи через собственный сайт или приложение. Клиент не зависит от маркетплейсов.",
-      "Зависимый Еком": "Продажи через маркетплейсы (Ozon, Wildberries, Яндекс.Маркет) как основной канал.",
-      "Розница": "Офлайн-точки продаж: магазины, салоны, кафе, сервисные центры.",
-      "IT": "Разработка ПО, веб-студии, аутсорсинг, IT-консалтинг.",
-      "Стройка": "Строительство, ремонт, производство стройматериалов."
-    },
-    FEEDBACK_URL: 'https://p.tbank.ru/polls/prod/poll-cmobly74g002q0dra49i7ba4n/index.html',
-    RKO_PRODUCT: 'Расчетный счет'
-  };
+    const CSV_ALIASES = {
+      industry: ['industry', 'отрасль', 'сегмент'],
+      product: ['product', 'продукт', 'name', 'название', 'bank_product'],
+      desc: ['product_desc', 'desc', 'description', 'benefit', 'details', 'описание'],
+      link_product: ['url_product', 'link_product', 'product_url', 'url', 'ссылка'],
+      id: ['id', 'ИД', 'identifier'],
+      vendor: ['vendor', 'partner', 'партнер', 'партнёр'],
+      benefit: ['benefit', 'offer', 'offer_title', 'оффер', 'выгода'],
+      details: ['desc', 'details', 'detail', 'benefit_desc', 'условия'],
+      link_vendor: ['url_offer', 'link_vendor', 'offer_url', 'url_offer_page', 'ссылка_оффера']
+    };
 
-  const state = {
-    loaded: false,
-    loading: true,
-    error: null,
-    industry: '',
-    selectedProducts: new Set(),
-    selectedBundleIds: new Set(),
-    products: [],
-    bundles: [],
-    industries: [],
-    productIndex: new Map(),
-    bundleIndex: new Map()
-  };
+    const state = {
+      dataLoaded: false,
+      loading: false,
+      error: null,
+      selectedIndustry: '',
+      selectedProducts: [],
+      selectedBundleIds: [],
+      productSearch: '',
+      allBundles: [],
+      allProducts: []
+    };
 
-  const els = {
-    industrySelect: document.getElementById('industry-select'),
-    industryInfo: document.getElementById('industry-info'),
-    industryDesc: document.getElementById('industry-desc'),
-    productsList: document.getElementById('products-list'),
-    bundlesGrid: document.getElementById('bundles-grid'),
-    productsMeta: document.getElementById('products-meta'),
-    bundlesMeta: document.getElementById('bundles-meta'),
-    resultText: document.getElementById('result-text'),
-    resultMini: document.getElementById('result-mini'),
-    selectedList: document.getElementById('selected-list'),
-    copyBtn: document.getElementById('copy-btn'),
-    resetBtn: document.getElementById('reset-btn'),
-    toast: document.getElementById('toast'),
-    statIndustries: document.getElementById('stat-industries'),
-    statProducts: document.getElementById('stat-products'),
-    statBundles: document.getElementById('stat-bundles'),
-    statSelected: document.getElementById('stat-selected'),
-    chips: document.getElementById('chips'),
-    offerModal: document.getElementById('offer-modal'),
-    offerClose: document.getElementById('offer-close'),
-    offerTitle: document.getElementById('offer-title'),
-    offerScript: document.getElementById('offer-script'),
-    offerDetails: document.getElementById('offer-details'),
-    offerLink: document.getElementById('offer-link'),
-    feedbackBtn: document.getElementById('feedback-btn'),
-    feedbackModal: document.getElementById('feedback-modal'),
-    feedbackClose: document.getElementById('feedback-close'),
-    feedbackIframe: document.getElementById('feedback-iframe')
-  };
+    const els = {};
 
-  const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, (m) => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
-  })[m]);
+    const escapeHtml = (value) => String(value ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
 
-  const splitList = (value) =>
-    String(value ?? '')
-      .split(',')
-      .map((s) => s.trim())
-      .filter(Boolean);
-
-  const normalizeHeader = (value) =>
-    String(value ?? '')
-      .replace(/^\uFEFF/, '')
-      .trim()
-      .toLowerCase()
-      .replace(/\s+/g, '_');
-
-  const normalizeText = (value) =>
-    String(value ?? '').toLowerCase().trim();
-
-  const safeUrl = (value) => {
-    try {
-      const url = new URL(String(value ?? ''));
-      return ['http:', 'https:'].includes(url.protocol) ? url.href : '#';
-    } catch {
-      return '#';
+    function normalizeText(value) {
+      return String(value ?? '')
+        .replace(/\uFEFF/g, '')
+        .replace(/\u00A0/g, ' ')
+        .replace(/\u200B/g, '')
+        .trim();
     }
-  };
 
-  const joinRu = (items) => {
-    const arr = (items || []).filter(Boolean);
-    if (arr.length <= 1) return arr[0] || '';
-    if (typeof Intl !== 'undefined' && Intl.ListFormat) {
-      return new Intl.ListFormat('ru', { style: 'long', type: 'conjunction' }).format(arr);
+    function safeUrl(url) {
+      const value = normalizeText(url);
+      if (!value) return '';
+      try {
+        const parsed = new URL(value, window.location.href);
+        if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+          return parsed.href;
+        }
+      } catch (_) {}
+      return '';
     }
-    return arr.slice(0, -1).join(', ') + ' и ' + arr[arr.length - 1];
-  };
 
-  const toastTimer = { id: null };
-  function showToast(message) {
-    els.toast.textContent = message;
-    els.toast.classList.add('show');
-    clearTimeout(toastTimer.id);
-    toastTimer.id = setTimeout(() => els.toast.classList.remove('show'), 2200);
-  }
-
-  async function fetchTextWithTimeout(url, timeoutMs = 12000) {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), timeoutMs);
-    try {
-      const response = await fetch(url, { signal: controller.signal, cache: 'no-store' });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      return await response.text();
-    } finally {
-      clearTimeout(timer);
+    function splitList(value) {
+      return normalizeText(value)
+        .split(',')
+        .map((item) => item.trim())
+        .filter(Boolean);
     }
-  }
 
-  function parseCSV(text) {
-    const input = String(text ?? '').replace(/^\uFEFF/, '');
-    const rows = [];
-    let row = [];
-    let cell = '';
-    let inQuotes = false;
+    function normalizeHeader(header) {
+      return normalizeText(header)
+        .toLowerCase()
+        .replace(/ё/g, 'е')
+        .replace(/\s+/g, '_')
+        .replace(/[^a-z0-9а-я_]/gi, '');
+    }
 
-    for (let i = 0; i < input.length; i++) {
-      const char = input[i];
-      const next = input[i + 1];
+    function parseCSV(text) {
+      const input = String(text ?? '').replace(/^\uFEFF/, '');
+      const rows = [];
+      let row = [];
+      let cell = '';
+      let inQuotes = false;
 
-      if (char === '"') {
-        if (inQuotes && next === '"') {
+      for (let i = 0; i < input.length; i++) {
+        const char = input[i];
+        const next = input[i + 1];
+
+        if (char === '"' && next === '"') {
           cell += '"';
-          i++;
-        } else {
+          i += 1;
+          continue;
+        }
+
+        if (char === '"') {
           inQuotes = !inQuotes;
+          continue;
         }
-        continue;
+
+        if (char === ',' && !inQuotes) {
+          row.push(cell);
+          cell = '';
+          continue;
+        }
+
+        if ((char === '\n' || char === '\r') && !inQuotes) {
+          if (char === '\r' && next === '\n') {
+            i += 1;
+          }
+          row.push(cell);
+          if (row.some((value) => String(value).trim() !== '')) {
+            rows.push(row);
+          }
+          row = [];
+          cell = '';
+          continue;
+        }
+
+        cell += char;
       }
 
-      if (char === ',' && !inQuotes) {
-        row.push(cell.trim());
-        cell = '';
-        continue;
+      if (cell.length || row.length) {
+        row.push(cell);
+        if (row.some((value) => String(value).trim() !== '')) {
+          rows.push(row);
+        }
       }
 
-      if ((char === '\n' || char === '\r') && !inQuotes) {
-        if (char === '\r' && next === '\n') i++;
-        row.push(cell.trim());
-        if (row.length > 1 || row[0] !== '') rows.push(row);
-        row = [];
-        cell = '';
-        continue;
-      }
+      if (!rows.length) return [];
 
-      cell += char;
-    }
-
-    if (cell.length || row.length) {
-      row.push(cell.trim());
-      if (row.length > 1 || row[0] !== '') rows.push(row);
-    }
-
-    if (!rows.length) return [];
-
-    const headers = rows.shift().map(normalizeHeader);
-    return rows
-      .filter((r) => r.some((cellValue) => String(cellValue ?? '').trim() !== ''))
-      .map((r) => {
-        const obj = {};
+      const headers = rows[0].map((header) => normalizeHeader(header));
+      return rows.slice(1).map((values) => {
+        const record = {};
         headers.forEach((header, index) => {
-          obj[header] = String(r[index] ?? '').trim();
+          record[header] = normalizeText(values[index] ?? '');
         });
-        return obj;
+        return record;
       });
-  }
-
-  function transformData(rawProducts, rawBundles) {
-    state.products = rawProducts.map((row, index) => {
-      const name = row.product || '';
-      return {
-        id: row.id || `p${index + 1}`,
-        name,
-        desc: row.product_desc || '',
-        url: safeUrl(row.url_product),
-        industries: splitList(row.industry)
-      };
-    }).filter((item) => item.name && item.industries.length);
-
-    state.bundles = rawBundles.map((row, index) => {
-      const product = row.product || '';
-      const vendor = row.vendor || '';
-      const benefit = row.benefit || '';
-      const action = normalizeText(product).includes('счет') ? 'Открой' : 'Подключи';
-      return {
-        id: row.id || row.ID || `b${index + 1}`,
-        product,
-        vendor,
-        benefit,
-        details: row.desc || row.details || benefit || '',
-        url: safeUrl(row.url_offer || row.link_vendor),
-        industries: splitList(row.industry),
-        action,
-        script: `${action} ${product} и получи ${benefit} от ${vendor}`
-      };
-    }).filter((item) => item.product && item.vendor && item.industries.length);
-
-    state.productIndex = new Map(state.products.map((item) => [item.name, item]));
-    state.bundleIndex = new Map(state.bundles.map((item) => [item.id, item]));
-    state.industries = Array.from(
-      new Set([
-        ...state.products.flatMap((item) => item.industries),
-        ...state.bundles.flatMap((item) => item.industries)
-      ])
-    ).sort((a, b) => a.localeCompare(b, 'ru'));
-  }
-
-  async function loadData() {
-    setLoadingState(true);
-    try {
-      const [bundlesText, productsText] = await Promise.all([
-        fetchTextWithTimeout(CSV_URLS.BUNDLES),
-        fetchTextWithTimeout(CSV_URLS.PRODUCTS)
-      ]);
-
-      const rawBundles = parseCSV(bundlesText);
-      const rawProducts = parseCSV(productsText);
-
-      transformData(rawProducts, rawBundles);
-      state.loaded = true;
-      state.error = null;
-      setLoadingState(false);
-      syncUIAfterLoad();
-      showToast('Данные загружены');
-    } catch (error) {
-      console.error('[Matrix] loadData error:', error);
-      state.error = error;
-      state.loaded = false;
-      state.loading = false;
-      setLoadingState(false, true);
-      renderError();
-    }
-  }
-
-  function setLoadingState(isLoading, isError = false) {
-    state.loading = isLoading;
-    els.industrySelect.disabled = true;
-    els.industrySelect.innerHTML = `<option value="">${isError ? 'Ошибка загрузки' : 'Загрузка...'}</option>`;
-    els.productsList.innerHTML = `
-      <div class="loading-state" style="grid-column:1/-1;">
-        <div class="spinner" aria-hidden="true"></div>
-        <div>
-          <h3>${isError ? 'Не удалось загрузить данные' : 'Загрузка источников...'}</h3>
-          <p>${isError ? 'Проверьте подключение к интернету или доступ к таблицам.' : 'Собираем отрасли, продукты и офферы.'}</p>
-        </div>
-      </div>`;
-    els.bundlesGrid.innerHTML = `
-      <div class="loading-state" style="grid-column:1/-1;">
-        <div class="spinner" aria-hidden="true"></div>
-        <div>
-          <h3>${isError ? 'Ошибка данных' : 'Подготовка витрины'}</h3>
-          <p>${isError ? 'Данные не удалось прочитать.' : 'Загружаем релевантные офферы и продукты.'}</p>
-        </div>
-      </div>`;
-  }
-
-  function renderError() {
-    els.productsList.innerHTML = `
-      <div class="empty-state" style="grid-column:1/-1;">
-        <div>
-          <h3>Не удалось загрузить данные</h3>
-          <p>Проверь доступ к CSV-источникам и повтори загрузку страницы.</p>
-        </div>
-      </div>`;
-    els.bundlesGrid.innerHTML = `
-      <div class="empty-state" style="grid-column:1/-1;">
-        <div>
-          <h3>Нет данных для отображения</h3>
-          <p>Источники не прочитались, поэтому матрица не может быть построена.</p>
-        </div>
-      </div>`;
-    els.copyBtn.disabled = true;
-    els.resetBtn.style.display = 'none';
-    updateStats();
-  }
-
-  function syncUIAfterLoad() {
-    renderIndustryOptions();
-    updateStats();
-    renderChips();
-    renderIndustryInfo();
-    renderProducts();
-    renderBundles();
-    updateResult();
-  }
-
-  function renderIndustryOptions() {
-    const options = ['<option value="">Выберите отрасль</option>']
-      .concat(state.industries.map((industry) => `<option value="${escapeHTML(industry)}">${escapeHTML(industry)}</option>`));
-    els.industrySelect.innerHTML = options.join('');
-    els.industrySelect.disabled = false;
-  }
-
-  function getProductsForIndustry(industry) {
-    return state.products.filter((item) => item.industries.includes(industry));
-  }
-
-  function getBundlesForIndustry(industry) {
-    return state.bundles.filter((item) => item.industries.includes(industry));
-  }
-
-  function getVisibleBundles() {
-    if (!state.industry) return [];
-    const selectedProducts = Array.from(state.selectedProducts);
-    return state.bundles.filter((item) => {
-      const inIndustry = item.industries.includes(state.industry);
-      const matchesProduct = selectedProducts.length === 0 || selectedProducts.includes(item.product);
-      return inIndustry && matchesProduct;
-    });
-  }
-
-  function getProductBundleCount(productName) {
-    return state.bundles.filter((bundle) => bundle.industries.includes(state.industry) && bundle.product === productName).length;
-  }
-
-  function getProductSelectionCount(productName) {
-    return state.bundles.filter((bundle) => state.selectedBundleIds.has(bundle.id) && bundle.product === productName).length;
-  }
-
-  function renderIndustryInfo() {
-    const industry = state.industry;
-    if (!industry) {
-      els.industryInfo.classList.remove('active');
-      els.industryDesc.textContent = '';
-      return;
-    }
-    const desc = CONFIG.INDUSTRY_DESCS[industry] || 'Подобранная отрасль активирует банковские продукты и релевантные офферы.';
-    els.industryDesc.textContent = desc;
-    els.industryInfo.classList.add('active');
-  }
-
-  function renderChips() {
-    const chips = [];
-    if (state.industry) chips.push(`<span class="chip is-accent">Отрасль: <strong>${escapeHTML(state.industry)}</strong></span>`);
-    if (state.selectedProducts.size) chips.push(`<span class="chip">Продуктов: <strong>${state.selectedProducts.size}</strong></span>`);
-    if (state.selectedBundleIds.size) chips.push(`<span class="chip is-accent">Офферов: <strong>${state.selectedBundleIds.size}</strong></span>`);
-    // if (!chips.length) chips.push('<span class="chip is-muted">Сначала выбери отрасль</span>');
-    els.chips.innerHTML = chips.join('');
-  }
-
-  function updateStats() {
-    els.statIndustries.textContent = String(state.industries.length || 0);
-    els.statProducts.textContent = String(state.products.length || 0);
-    els.statBundles.textContent = String(state.bundles.length || 0);
-    els.statSelected.textContent = String(state.selectedBundleIds.size || 0);
-  }
-
-  function renderProducts() {
-    const industry = state.industry;
-    els.productsList.innerHTML = '';
-
-    if (!industry) {
-      els.productsMeta.textContent = 'Сначала выберите отрасль';
-      els.productsList.innerHTML = `
-        <div class="empty-state" style="grid-column:1/-1;">
-          <div>
-            <h3>Выберите отрасль</h3>
-            <p>После выбора отрасли покажутся только те продукты банка, которые действительно уместны для клиента.</p>
-          </div>
-        </div>`;
-      return;
     }
 
-    const products = getProductsForIndustry(industry);
-    const bundlesInIndustry = getBundlesForIndustry(industry);
-    const productsWithBundles = new Set(bundlesInIndustry.map((item) => item.product));
-
-    els.productsMeta.textContent = `${products.length} продуктов в отрасли · ${productsWithBundles.size} с офферами`;
-
-    if (!products.length) {
-      els.productsList.innerHTML = `
-        <div class="empty-state" style="grid-column:1/-1;">
-          <div>
-            <h3>Нет продуктов для этой отрасли</h3>
-            <p>Проверь CSV с продуктами — возможно, для выбранной отрасли нет связей.</p>
-          </div>
-        </div>`;
-      return;
+    function pickField(row, aliases) {
+      for (const alias of aliases) {
+        const normalized = normalizeHeader(alias);
+        if (normalized in row && row[normalized]) return row[normalized];
+      }
+      return '';
     }
 
-    const sorted = [...products].sort((a, b) => {
-      const aHas = productsWithBundles.has(a.name) ? 1 : 0;
-      const bHas = productsWithBundles.has(b.name) ? 1 : 0;
-      if (bHas !== aHas) return bHas - aHas;
-      return a.name.localeCompare(b.name, 'ru');
-    });
+    function firstByAliases(row, aliases, fallback = '') {
+      const value = pickField(row, aliases);
+      return value || fallback;
+    }
 
-    sorted.forEach((product) => {
-      const offerCount = getProductBundleCount(product.name);
-      const selectedCount = getProductSelectionCount(product.name);
-      const hasBundles = offerCount > 0;
-      const isSelected = state.selectedProducts.has(product.name);
+    function actionForProduct(productName) {
+      return /счет|счёт|рко/i.test(productName) ? 'Открой' : 'Подключи';
+    }
 
-      const card = document.createElement('div');
-      card.className = `product-card${hasBundles ? '' : ' is-disabled'}${isSelected ? ' is-selected' : ''}`;
-      card.tabIndex = hasBundles ? 0 : -1;
-      card.setAttribute('role', hasBundles ? 'button' : 'group');
-      card.setAttribute('aria-pressed', hasBundles ? String(isSelected) : 'false');
+    function applyGrammar(text, isListMode) {
+      let value = normalizeText(text);
+      if (!value) return '';
 
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.checked = isSelected;
-      checkbox.disabled = !hasBundles;
-      checkbox.setAttribute('aria-label', product.name);
-
-      const main = document.createElement('div');
-      main.className = 'product-main';
-
-      const nameRow = document.createElement('div');
-      nameRow.className = 'product-name-row';
-
-      const nameEl = document.createElement('div');
-      nameEl.className = 'product-name';
-      nameEl.textContent = product.name;
-
-      nameRow.appendChild(nameEl);
-
-      if (product.url && product.url !== '#') {
-        const productLink = document.createElement('a');
-        productLink.className = 'product-link';
-        productLink.href = product.url;
-        productLink.target = '_blank';
-        productLink.rel = 'noopener noreferrer';
-        productLink.textContent = 'Открыть продукт ↗';
-        productLink.addEventListener('click', (event) => event.stopPropagation());
-        nameRow.appendChild(productLink);
+      if (/^Скидка\s+/i.test(value)) {
+        value = value.replace(/^Скидка\s+/i, 'скидку ');
+      } else if (/^Бонус\s+/i.test(value)) {
+        value = value.replace(/^Бонус\s+/i, 'бонусы ');
+      } else if (/^Кэшбэк\s+/i.test(value)) {
+        value = value.replace(/^Кэшбэк\s+/i, 'кэшбэк ');
       }
 
-      const desc = document.createElement('p');
-      desc.className = 'product-desc';
-      desc.textContent = product.desc || 'Описание продукта не заполнено в источнике';
+      if (isListMode) {
+        return value.charAt(0).toUpperCase() + value.slice(1);
+      }
+      return value.charAt(0).toLowerCase() + value.slice(1);
+    }
 
-      const badges = document.createElement('div');
-      badges.className = 'badges';
+    function joinWithAnd(items) {
+      const list = items.filter(Boolean);
+      if (!list.length) return '';
+      if (list.length === 1) return list[0];
+      if (list.length === 2) return `${list[0]} и ${list[1]}`;
+      return `${list.slice(0, -1).join(', ')} и ${list[list.length - 1]}`;
+    }
 
-      const offerBadge = document.createElement('span');
-      offerBadge.className = `badge ${hasBundles ? 'is-success' : 'is-muted'}`;
-      offerBadge.textContent = hasBundles ? `${offerCount} оффер${offerCount === 1 ? '' : offerCount < 5 ? 'а' : 'ов'}` : 'Пока нет офферов';
+    function makeDomId(prefix, value) {
+      const base = normalizeText(value)
+        .toLowerCase()
+        .replace(/ё/g, 'е')
+        .replace(/[^a-z0-9а-я]+/gi, '_')
+        .replace(/^_+|_+$/g, '');
+      return `${prefix}-${base || 'item'}`;
+    }
 
-      badges.appendChild(offerBadge);
+    function getUniqueIndustries() {
+      const set = new Set();
+      state.allBundles.forEach((bundle) => bundle.industries.forEach((industry) => set.add(industry)));
+      state.allProducts.forEach((product) => product.industries.forEach((industry) => set.add(industry)));
+      return Array.from(set).filter(Boolean).sort((a, b) => a.localeCompare(b, 'ru'));
+    }
 
-      if (selectedCount > 0) {
-        const selectedBadge = document.createElement('span');
-        selectedBadge.className = 'badge is-success';
-        selectedBadge.textContent = `Выбрано офферов: ${selectedCount}`;
-        badges.appendChild(selectedBadge);
+    function getProductsForIndustry(industry) {
+      return state.allProducts
+        .filter((product) => product.industries.includes(industry))
+        .map((product) => product.name)
+        .filter(Boolean);
+    }
+
+    function getBundlesForIndustry(industry, products) {
+      if (!industry) return [];
+      const selected = new Set(products);
+      return state.allBundles.filter((bundle) => {
+        const industryMatch = bundle.industries.includes(industry);
+        const productMatch = !selected.size || selected.has(bundle.product);
+        return industryMatch && productMatch;
+      });
+    }
+
+    function getIndustryStats(industry) {
+      const products = new Set();
+      const offers = state.allBundles.filter((bundle) => bundle.industries.includes(industry));
+      offers.forEach((bundle) => products.add(bundle.product));
+      return { offers: offers.length, products: products.size };
+    }
+
+    function getVisibleProducts(industry) {
+      const all = getProductsForIndustry(industry);
+      const query = state.productSearch.trim().toLowerCase();
+      if (!query) return all;
+      return all.filter((product) => {
+        const p = state.allProducts.find((item) => item.name === product);
+        const bundleMatch = state.allBundles.some((bundle) => bundle.industries.includes(industry) && bundle.product === product);
+        const haystack = [product, p?.desc, ...(p?.industries ?? [])].join(' ').toLowerCase();
+        return haystack.includes(query) || bundleMatch && product.toLowerCase().includes(query);
+      });
+    }
+
+    function buildBundleScript(bundle) {
+      const action = actionForProduct(bundle.product);
+      const benefit = applyGrammar(bundle.benefit || '', false);
+      return `${action} ${bundle.product} и получи ${benefit} от ${bundle.vendor}`;
+    }
+
+    function generateResult(bundleIds) {
+      const bundles = bundleIds
+        .map((id) => state.allBundles.find((bundle) => bundle.id === id))
+        .filter(Boolean);
+
+      if (!bundles.length) {
+        return {
+          html: 'Выберите бандлы, чтобы получить готовую формулировку.',
+          text: '',
+          items: []
+        };
       }
 
-      // const industryBadge = document.createElement('span');
-      // industryBadge.className = 'badge is-muted';
-      // industryBadge.textContent = industry;
-      // badges.appendChild(industryBadge);
-
-      main.appendChild(nameRow);
-      main.appendChild(desc);
-      main.appendChild(badges);
-
-      const actions = document.createElement('div');
-      actions.className = 'product-cta';
-
-      if (hasBundles) {
-        const jumpBtn = document.createElement('button');
-        jumpBtn.className = 'icon-btn';
-        jumpBtn.type = 'button';
-        jumpBtn.title = 'Показать офферы';
-        jumpBtn.textContent = '→';
-        jumpBtn.addEventListener('click', (event) => {
-          event.stopPropagation();
-          document.getElementById('bundles-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        });
-        actions.appendChild(jumpBtn);
+      if (bundles.length === 1) {
+        const bundle = bundles[0];
+        const productUrl = safeUrl(bundle.linkProduct);
+        const vendorUrl = safeUrl(bundle.linkVendor);
+        const vendorHtml = vendorUrl ? `<a href="${escapeHtml(vendorUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(bundle.vendor)}</a>` : escapeHtml(bundle.vendor);
+        const benefit = escapeHtml(applyGrammar(bundle.benefit || '', false));
+        const product = escapeHtml(bundle.product);
+        const intro = escapeHtml(actionForProduct(bundle.product));
+        const html = `${intro} ${product} и получи ${benefit} от ${vendorHtml}`;
+        const text = `${actionForProduct(bundle.product)} ${bundle.product} и получи ${applyGrammar(bundle.benefit || '', false)} от ${bundle.vendor}`;
+        return {
+          html,
+          text,
+          items: [bundle],
+          productUrl
+        };
       }
 
-      card.appendChild(checkbox);
-      card.appendChild(main);
-      card.appendChild(actions);
+      const byProduct = new Map();
+      bundles.forEach((bundle) => {
+        if (!byProduct.has(bundle.product)) byProduct.set(bundle.product, []);
+        byProduct.get(bundle.product).push(bundle);
+      });
 
-      const toggle = () => {
-        if (!hasBundles) return;
-        toggleProduct(product.name);
-      };
+      const productEntries = Array.from(byProduct.entries());
+      const hasRko = productEntries.some(([product]) => /расчетн|счет|рко/i.test(product));
+      const products = productEntries.map(([product]) => product);
+      const benefits = bundles.map((bundle) => `${applyGrammar(bundle.benefit || '', true)} от ${bundle.vendor}`);
 
-      checkbox.addEventListener('change', (event) => {
-        event.stopPropagation();
-        if (event.target.checked) {
-          state.selectedProducts.add(product.name);
-        } else {
-          state.selectedProducts.delete(product.name);
-          removeBundlesForProduct(product.name);
+      let intro = '';
+      if (hasRko) {
+        intro = 'Открой Расчётный счёт';
+        const otherProducts = products.filter((product) => !/расчетн|счет|рко/i.test(product));
+        if (otherProducts.length) {
+          intro += ` и подключи ${joinWithAnd(otherProducts)}`;
         }
-        syncSelectedBundlesToVisible();
-        renderProducts();
-        renderBundles();
-        updateResult();
-      });
-
-      card.addEventListener('click', (event) => {
-        if (event.target.closest('a,button,input')) return;
-        toggle();
-      });
-
-      card.addEventListener('keydown', (event) => {
-        if ((event.key === 'Enter' || event.key === ' ') && hasBundles) {
-          event.preventDefault();
-          toggle();
-        }
-      });
-
-      els.productsList.appendChild(card);
-    });
-  }
-
-  function toggleProduct(productName) {
-    if (state.selectedProducts.has(productName)) {
-      state.selectedProducts.delete(productName);
-      removeBundlesForProduct(productName);
-    } else {
-      state.selectedProducts.add(productName);
-    }
-    syncSelectedBundlesToVisible();
-    renderProducts();
-    renderBundles();
-    updateResult();
-  }
-
-  function removeBundlesForProduct(productName) {
-    for (const bundleId of Array.from(state.selectedBundleIds)) {
-      const bundle = state.bundleIndex.get(bundleId);
-      if (bundle && bundle.product === productName) {
-        state.selectedBundleIds.delete(bundleId);
+      } else {
+        const firstAction = actionForProduct(productEntries[0][0]);
+        intro = `${firstAction} ${joinWithAnd(products)}`;
       }
-    }
-  }
 
-  function syncSelectedBundlesToVisible() {
-    const visible = new Set(getVisibleBundles().map((item) => item.id));
-    for (const bundleId of Array.from(state.selectedBundleIds)) {
-      if (!visible.has(bundleId)) {
-        state.selectedBundleIds.delete(bundleId);
+      const html = `${escapeHtml(intro)} и получи:<ul>${bundles.map((bundle) => {
+        const vendorUrl = safeUrl(bundle.linkVendor);
+        const vendorHtml = vendorUrl ? `<a href="${escapeHtml(vendorUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(bundle.vendor)}</a>` : escapeHtml(bundle.vendor);
+        return `<li>${escapeHtml(applyGrammar(bundle.benefit || '', true))} от ${vendorHtml}</li>`;
+      }).join('')}</ul>`;
+
+      const text = `${intro} и получи ${joinWithAnd(benefits)}`;
+      return { html, text, items: bundles };
+    }
+
+    function setLoading(loading) {
+      state.loading = loading;
+      els.dataState.textContent = loading ? 'Загрузка данных…' : 'Данные загружены';
+    }
+
+    function updateMetrics() {
+      const stats = getIndustryStats(state.selectedIndustry);
+      const bundlesCount = state.allBundles.length;
+      const productsCount = state.allProducts.length;
+      const selectedCount = state.selectedBundleIds.length;
+      const activeIndustry = state.selectedIndustry || '—';
+
+      els.globalStats.innerHTML = `
+        <span class="toolbar-stat">Отрасль: ${escapeHtml(activeIndustry)}</span>
+        <span class="toolbar-stat">Продуктов: ${productsCount}</span>
+        <span class="toolbar-stat">Офферов: ${bundlesCount}</span>
+        <span class="toolbar-stat">В отрасли: ${stats.offers} / ${stats.products}</span>
+        <span class="toolbar-stat">Выбрано: ${selectedCount}</span>
+      `;
+
+      els.heroMetrics.innerHTML = `
+        <span class="metric">${productsCount} банковских продуктов</span>
+        <span class="metric">${bundlesCount} офферов</span>
+        <span class="metric">${selectedCount} выбранных</span>
+      `;
+
+      els.productHints.innerHTML = state.selectedIndustry
+        ? `<span class="toolbar-stat">Показаны продукты для отрасли</span><span class="toolbar-stat">Сначала фильтр — потом оффер</span>`
+        : `<span class="toolbar-stat">Сначала выберите отрасль</span>`;
+    }
+
+    function renderIndustryInfo() {
+      const industry = state.selectedIndustry;
+      if (!industry) {
+        els.industryInfo.classList.remove('active');
+        els.industryDesc.textContent = '';
+        els.industryBadges.innerHTML = '';
+        return;
       }
+
+      const desc = CONFIG.INDUSTRY_DESCS[industry] || 'Для этой отрасли доступен набор банковских продуктов и партнёрских офферов из витрины.';
+      const stats = getIndustryStats(industry);
+      els.industryDesc.textContent = desc;
+      els.industryBadges.innerHTML = `
+        <span class="badge">${stats.offers} офферов</span>
+        <span class="badge">${stats.products} продуктов</span>
+        <span class="badge">${state.selectedProducts.length} фильтров</span>
+      `;
+      els.industryInfo.classList.add('active');
     }
-  }
 
-  function renderBundles() {
-    const industry = state.industry;
-    els.bundlesGrid.innerHTML = '';
+    function renderIndustries() {
+      const options = getUniqueIndustries();
+      els.industrySelect.innerHTML = '<option value="">Выберите отрасль…</option>' + options.map((industry) => {
+        return `<option value="${escapeHtml(industry)}" ${industry === state.selectedIndustry ? 'selected' : ''}>${escapeHtml(industry)}</option>`;
+      }).join('');
+      els.industrySelect.disabled = false;
+    }
 
-    if (!industry) {
-      els.bundlesMeta.textContent = 'Выберите отрасль, чтобы увидеть доступные бандлы';
-      els.bundlesGrid.innerHTML = `
-        <div class="empty-state" style="grid-column:1/-1;">
-          <div>
-            <h3>Сначала выберите отрасль</h3>
-            <p>После выбора отрасли здесь появятся только релевантные офферы партнёров.</p>
+    function renderProducts() {
+      const industry = state.selectedIndustry;
+      const container = els.productsList;
+      const allProducts = industry ? getVisibleProducts(industry) : [];
+
+      if (!industry) {
+        container.innerHTML = '<div class="empty-state"><div>Сначала выберите отрасль</div><div>После выбора отрасли появятся релевантные продукты банка.</div></div>';
+        return;
+      }
+
+      if (!allProducts.length) {
+        container.innerHTML = '<div class="empty-state"><div>Для этой отрасли ничего не найдено</div><div>Попробуйте другой фильтр или проверьте исходный CSV.</div></div>';
+        return;
+      }
+
+      const bundlesInIndustry = state.allBundles.filter((bundle) => bundle.industries.includes(industry));
+      const bundlesByProduct = new Map();
+      bundlesInIndustry.forEach((bundle) => {
+        bundlesByProduct.set(bundle.product, (bundlesByProduct.get(bundle.product) || 0) + 1);
+      });
+
+      const query = state.productSearch.trim().toLowerCase();
+      const sorted = [...allProducts].sort((a, b) => {
+        const aCount = bundlesByProduct.get(a) || 0;
+        const bCount = bundlesByProduct.get(b) || 0;
+        if (aCount !== bCount) return bCount - aCount;
+        return a.localeCompare(b, 'ru');
+      });
+
+      container.innerHTML = sorted.map((product) => {
+        const hasOffers = (bundlesByProduct.get(product) || 0) > 0;
+        const productRow = state.allProducts.find((item) => item.name === product);
+        const checked = state.selectedProducts.includes(product) ? 'checked' : '';
+        const link = safeUrl(productRow?.link);
+        const desc = productRow?.desc ? escapeHtml(productRow.desc) : '';
+        const labelContent = link
+          ? `<a class="product-link" href="${escapeHtml(link)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${escapeHtml(product)} ↗</a>`
+          : `<span class="product-name">${escapeHtml(product)}</span>`;
+
+        const domId = makeDomId('product', product);
+        return `
+          <div class="product-item ${hasOffers ? '' : 'is-disabled'}" data-product="${escapeHtml(product)}">
+            <input type="checkbox" id="${domId}" ${hasOffers ? '' : 'disabled'} ${checked} aria-label="${escapeHtml(product)}" />
+            <label for="${domId}">
+              ${labelContent}
+              ${desc ? `<span class="product-desc">${desc}</span>` : ''}
+            </label>
+            <span class="count-pill">${hasOffers ? bundlesByProduct.get(product) : '—'}</span>
           </div>
-        </div>`;
-      return;
-    }
+        `;
+      }).join('');
 
-    const visibleBundles = getVisibleBundles();
-    const selectedProductNames = Array.from(state.selectedProducts);
-    const industryBundles = getBundlesForIndustry(industry);
+      container.querySelectorAll('.product-item').forEach((item) => {
+        const product = item.dataset.product;
+        const checkbox = item.querySelector('input[type="checkbox"]');
+        if (!checkbox) return;
 
-    els.bundlesMeta.textContent = `${visibleBundles.length} оффер${visibleBundles.length === 1 ? '' : visibleBundles.length < 5 ? 'а' : 'ов'} на экране из ${industryBundles.length} в отрасли`;
-
-    if (!visibleBundles.length) {
-      els.bundlesGrid.innerHTML = `
-        <div class="empty-state" style="grid-column:1/-1;">
-          <div>
-            <h3>${selectedProductNames.length ? 'Нет бандлов для выбранной комбинации' : 'Для этой отрасли пока нет партнёрских офферов'}</h3>
-            <p>${selectedProductNames.length ? 'Сними лишние фильтры по продуктам или выбери другие продукты банка.' : 'Попробуй другую отрасль или проверь CSV с офферами.'}</p>
-          </div>
-        </div>`;
-      return;
-    }
-
-    visibleBundles
-      .sort((a, b) => {
-        const aSelected = state.selectedBundleIds.has(a.id) ? 1 : 0;
-        const bSelected = state.selectedBundleIds.has(b.id) ? 1 : 0;
-        if (bSelected !== aSelected) return bSelected - aSelected;
-        if (a.product !== b.product) return a.product.localeCompare(b.product, 'ru');
-        return a.vendor.localeCompare(b.vendor, 'ru');
-      })
-      .forEach((bundle) => {
-        const isSelected = state.selectedBundleIds.has(bundle.id);
-        const card = document.createElement('button');
-        card.type = 'button';
-        card.className = `bundle-card${isSelected ? ' is-selected' : ''}`;
-        card.setAttribute('aria-pressed', String(isSelected));
-        card.setAttribute('aria-label', `${bundle.product}. ${bundle.vendor}. ${bundle.benefit}`);
-
-        const mark = document.createElement('div');
-        mark.className = 'bundle-select-mark';
-        mark.textContent = '✓';
-
-        const top = document.createElement('div');
-        top.className = 'bundle-top';
-
-        const left = document.createElement('div');
-        const productPill = document.createElement('div');
-        productPill.className = 'bundle-product';
-        productPill.textContent = bundle.product;
-
-        const title = document.createElement('div');
-        title.className = 'bundle-title';
-        title.textContent = bundle.vendor;
-
-        const vendor = document.createElement('p');
-        vendor.className = 'bundle-vendor';
-        vendor.textContent = 'Партнёрский оффер';
-
-        left.appendChild(productPill);
-        left.appendChild(title);
-        left.appendChild(vendor);
-
-        const right = document.createElement('div');
-        right.className = 'badge is-muted';
-        right.textContent = isSelected ? 'Выбрано' : 'Кликни для выбора';
-
-        top.appendChild(left);
-        top.appendChild(right);
-
-        const benefit = document.createElement('p');
-        benefit.className = 'bundle-benefit';
-        benefit.textContent = bundle.benefit;
-
-        // const details = document.createElement('p');
-        // details.className = 'bundle-details';
-        // details.textContent = bundle.details || 'Подробнее в окне оффера';
-
-        const actions = document.createElement('div');
-        actions.className = 'bundle-actions';
-
-        const openBtn = document.createElement('a');
-        openBtn.className = 'btn btn-link';
-        openBtn.href = bundle.url;
-        openBtn.target = '_blank';
-        openBtn.rel = 'noopener noreferrer';
-        openBtn.textContent = 'Открыть оффер ↗';
-        openBtn.addEventListener('click', (event) => event.stopPropagation());
-
-        const detailBtn = document.createElement('button');
-        detailBtn.className = 'btn btn-secondary';
-        detailBtn.type = 'button';
-        detailBtn.textContent = 'Подробнее';
-        detailBtn.addEventListener('click', (event) => {
-          event.stopPropagation();
-          openOfferModal(bundle.id);
+        item.addEventListener('click', (event) => {
+          if (event.target.closest('a, input, label, button')) return;
+          if (checkbox.disabled) return;
+          checkbox.checked = !checkbox.checked;
+          checkbox.dispatchEvent(new Event('change', { bubbles: true }));
         });
 
-        actions.appendChild(openBtn);
-        actions.appendChild(detailBtn);
+        checkbox.addEventListener('change', () => {
+          if (checkbox.checked) {
+            if (!state.selectedProducts.includes(product)) state.selectedProducts.push(product);
+          } else {
+            state.selectedProducts = state.selectedProducts.filter((itemProduct) => itemProduct !== product);
+            state.selectedBundleIds = state.selectedBundleIds.filter((id) => {
+              const bundle = state.allBundles.find((itemBundle) => itemBundle.id === id);
+              return bundle?.product !== product;
+            });
+          }
+          persistState();
+          renderBundles();
+          updateResult();
+          updateMetrics();
+          renderIndustryInfo();
+          renderProducts();
+        });
+      });
+    }
 
-        card.appendChild(mark);
-        card.appendChild(top);
-        card.appendChild(benefit);
-        card.appendChild(details);
-        card.appendChild(actions);
+    function openBundleModal(bundle) {
+      els.bundleModalTitle.textContent = `${bundle.product} · ${bundle.vendor}`;
+      els.bundleModalScript.innerHTML = escapeHtml(buildBundleScript(bundle));
+      els.bundleModalDetails.textContent = normalizeText(bundle.details || 'Дополнительные условия будут отображаться здесь.');
+      const url = safeUrl(bundle.linkVendor);
+      if (url) {
+        els.bundleModalLink.href = url;
+        els.bundleModalLink.classList.remove('hidden');
+      } else {
+        els.bundleModalLink.href = '#';
+        els.bundleModalLink.classList.add('hidden');
+      }
+      els.bundleModalOverlay.classList.add('active');
+      els.bundleModalOverlay.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeBundleModal() {
+      els.bundleModalOverlay.classList.remove('active');
+      els.bundleModalOverlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    function renderBundles() {
+      const grid = els.bundlesGrid;
+      const industry = state.selectedIndustry;
+
+      if (!industry) {
+        grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><div>Выберите отрасль, чтобы увидеть доступные бандлы</div><div>Здесь появятся только предложения из актуальной витрины.</div></div>';
+        return;
+      }
+
+      const bundles = getBundlesForIndustry(industry, state.selectedProducts);
+      if (!bundles.length) {
+        grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><div>${state.selectedProducts.length ? 'Нет бандлов для выбранной комбинации' : 'Для этой отрасли пока нет партнёрских офферов'}</div><div>Попробуйте снять фильтр с продуктов или выбрать другую отрасль.</div></div>`;
+        return;
+      }
+
+      grid.innerHTML = bundles.map((bundle) => {
+        const selected = state.selectedBundleIds.includes(bundle.id);
+        const url = safeUrl(bundle.linkVendor);
+        const details = bundle.details ? escapeHtml(bundle.details) : 'Подробности по этому офферу доступны внутри карточки.';
+        return `
+          <article class="bundle-card ${selected ? 'selected' : ''}" data-bundle-id="${escapeHtml(bundle.id)}" tabindex="0" role="button" aria-pressed="${selected ? 'true' : 'false'}">
+            <div class="bundle-head">
+              <div>
+                <h3 class="bundle-title">${escapeHtml(bundle.product)}</h3>
+                <div class="bundle-vendor">${escapeHtml(bundle.vendor)}</div>
+              </div>
+              <span class="count-pill">${selected ? 'Выбран' : 'Оффер'}</span>
+            </div>
+            <div class="bundle-chip-row">
+              <span class="bundle-chip">${escapeHtml(actionForProduct(bundle.product))}</span>
+              <span class="bundle-chip">${escapeHtml(bundle.industries[0] || state.selectedIndustry)}</span>
+            </div>
+            <p class="bundle-benefit">${escapeHtml(bundle.benefit)}</p>
+            <div class="bundle-actions">
+              <button class="btn btn-primary" type="button" data-action="toggle">${selected ? 'Убрать' : 'Выбрать'}</button>
+              <button class="btn btn-ghost" type="button" data-action="details">Подробнее</button>
+              ${url ? `<a class="btn btn-link" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" data-action="open">Открыть оффер ↗</a>` : ''}
+            </div>
+            <div class="sr-only">${details}</div>
+          </article>
+        `;
+      }).join('');
+
+      grid.querySelectorAll('.bundle-card').forEach((card) => {
+        const bundleId = card.dataset.bundleId;
+        const bundle = state.allBundles.find((item) => item.id === bundleId);
+        if (!bundle) return;
+
+        const handleToggle = () => toggleBundle(bundleId);
+        const handleDetails = () => openBundleModal(bundle);
 
         card.addEventListener('click', (event) => {
-          if (event.target.closest('a,button')) return;
-          toggleBundle(bundle.id);
+          const action = event.target.closest('[data-action]')?.dataset.action;
+          if (action === 'details') {
+            event.stopPropagation();
+            handleDetails();
+            return;
+          }
+          if (action === 'open') return;
+          if (action === 'toggle') {
+            event.stopPropagation();
+            handleToggle();
+            return;
+          }
+          if (event.target.closest('a')) return;
+          handleToggle();
         });
 
         card.addEventListener('keydown', (event) => {
           if (event.key === 'Enter' || event.key === ' ') {
             event.preventDefault();
-            toggleBundle(bundle.id);
+            handleToggle();
           }
         });
 
-        els.bundlesGrid.appendChild(card);
+        card.querySelectorAll('[data-action="details"]').forEach((btn) => btn.addEventListener('click', (event) => {
+          event.stopPropagation();
+          handleDetails();
+        }));
       });
-  }
-
-  function toggleBundle(bundleId) {
-    if (!state.bundleIndex.has(bundleId)) return;
-    if (state.selectedBundleIds.has(bundleId)) {
-      state.selectedBundleIds.delete(bundleId);
-    } else {
-      state.selectedBundleIds.add(bundleId);
-      const bundle = state.bundleIndex.get(bundleId);
-      if (bundle?.product) state.selectedProducts.add(bundle.product);
-    }
-    renderProducts();
-    renderBundles();
-    updateResult();
-  }
-
-  function getSelectedBundles() {
-    return Array.from(state.selectedBundleIds)
-      .map((id) => state.bundleIndex.get(id))
-      .filter(Boolean);
-  }
-
-  function generateCommercialText(bundles) {
-    if (!bundles.length) return '';
-
-    if (bundles.length === 1) {
-      const b = bundles[0];
-      return `${b.action} ${b.product} и получи ${b.benefit} от ${b.vendor}`;
     }
 
-    const byProduct = new Map();
-    for (const bundle of bundles) {
-      if (!byProduct.has(bundle.product)) byProduct.set(bundle.product, []);
-      byProduct.get(bundle.product).push(bundle);
-    }
+    function renderResult() {
+      const result = generateResult(state.selectedBundleIds);
+      const textEl = els.resultText;
+      const copyBtn = els.copyBtn;
+      const resetBtn = els.resetBtn;
+      const selectedList = els.selectedList;
 
-    const products = Array.from(byProduct.keys());
-    const hasRko = products.includes(CONFIG.RKO_PRODUCT);
-    const selectedBenefits = bundles.map((bundle) => bundle.benefit).filter(Boolean);
-
-    let intro = '';
-    if (hasRko) {
-      const otherProducts = products.filter((product) => product !== CONFIG.RKO_PRODUCT);
-      intro = `Открой ${CONFIG.RKO_PRODUCT}`;
-      if (otherProducts.length) intro += ` и подключи ${joinRu(otherProducts)}`;
-    } else {
-      const firstAction = bundles[0]?.action || 'Подключи';
-      intro = `${firstAction} ${joinRu(products)}`;
-    }
-
-    let tail = '';
-    if (selectedBenefits.length) tail = ` и получи ${joinRu(selectedBenefits)}`;
-
-    return `${intro}${tail}`;
-  }
-
-  function generateCommercialHTML(bundles) {
-    if (!bundles.length) return '';
-
-    if (bundles.length === 1) {
-      const b = bundles[0];
-      return `<p>${escapeHTML(b.action)} ${escapeHTML(b.product)} и получи ${escapeHTML(b.benefit)} от <a href="${escapeHTML(b.url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(b.vendor)}</a>.</p>`;
-    }
-
-    const grouped = new Map();
-    for (const bundle of bundles) {
-      if (!grouped.has(bundle.product)) grouped.set(bundle.product, []);
-      grouped.get(bundle.product).push(bundle);
-    }
-
-    const products = Array.from(grouped.keys());
-    const hasRko = products.includes(CONFIG.RKO_PRODUCT);
-    const otherProducts = products.filter((product) => product !== CONFIG.RKO_PRODUCT);
-    let intro = hasRko
-      ? `Открой ${escapeHTML(CONFIG.RKO_PRODUCT)}${otherProducts.length ? ` и подключи ${escapeHTML(joinRu(otherProducts))}` : ''}`
-      : `${escapeHTML(bundles[0]?.action || 'Подключи')} ${escapeHTML(joinRu(products))}`;
-
-    let html = `<p>${intro} и получи:</p><ul>`;
-    for (const bundle of bundles) {
-      html += `<li><a href="${escapeHTML(bundle.url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(bundle.vendor)}</a>: ${escapeHTML(bundle.benefit)}</li>`;
-    }
-    html += '</ul>';
-    return html;
-  }
-
-  function updateResult() {
-    const bundles = getSelectedBundles();
-    const html = generateCommercialHTML(bundles);
-    const text = generateCommercialText(bundles);
-
-    if (!bundles.length) {
-      els.resultText.innerHTML = 'Выберите бандлы, чтобы получить готовую формулировку';
-      els.resultMini.textContent = 'Пока ничего не выбрано';
-      els.selectedList.innerHTML = '';
-      els.copyBtn.disabled = true;
-      els.resetBtn.style.display = 'none';
-      renderChips();
-      updateStats();
-      return;
-    }
-
-    els.resultText.innerHTML = html;
-    els.resultText.dataset.plainText = text;
-    els.resultMini.textContent = `${bundles.length} выбранных оффера${bundles.length === 1 ? '' : bundles.length < 5 ? 'а' : 'ов'} · КП готово к отправке`;
-    els.copyBtn.disabled = false;
-    els.resetBtn.style.display = 'inline-flex';
-
-    els.selectedList.innerHTML = bundles.map((bundle) => `
-      <div class="selected-item">
-        <div>
-          <div class="label">${escapeHTML(bundle.product)} · ${escapeHTML(bundle.vendor)}</div>
-          <div class="sub">${escapeHTML(bundle.benefit)}</div>
-        </div>
-        <div class="sub">#${escapeHTML(bundle.id)}</div>
-      </div>
-    `).join('');
-
-    renderChips();
-    updateStats();
-  }
-
-  function openOfferModal(bundleId) {
-    const bundle = state.bundleIndex.get(bundleId);
-    if (!bundle) return;
-
-    els.offerTitle.textContent = `${bundle.product} · ${bundle.vendor}`;
-    els.offerScript.innerHTML = `<strong>${escapeHTML(bundle.action)} ${escapeHTML(bundle.product)}</strong> — ${escapeHTML(bundle.benefit)}`;
-    els.offerDetails.textContent = bundle.details || 'Деталей по офферу в источнике нет.';
-    els.offerLink.href = bundle.url;
-    els.offerLink.textContent = 'Открыть на витрине ↗';
-    els.offerModal.classList.add('active');
-    els.offerModal.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeOfferModal() {
-    els.offerModal.classList.remove('active');
-    els.offerModal.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-  }
-
-  function openFeedbackModal() {
-    els.feedbackIframe.src = CONFIG.FEEDBACK_URL;
-    els.feedbackModal.classList.add('active');
-    els.feedbackModal.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeFeedbackModal() {
-    els.feedbackModal.classList.remove('active');
-    els.feedbackModal.setAttribute('aria-hidden', 'true');
-    els.feedbackIframe.src = '';
-    document.body.style.overflow = '';
-  }
-
-  function resetSelection() {
-    state.selectedProducts.clear();
-    state.selectedBundleIds.clear();
-    updateAfterFiltersChanged();
-    showToast('Выбор сброшен');
-  }
-
-  function updateAfterFiltersChanged() {
-    renderIndustryInfo();
-    renderProducts();
-    renderBundles();
-    updateResult();
-  }
-
-  async function copyResult() {
-    const bundles = getSelectedBundles();
-    if (!bundles.length) return;
-
-    const text = els.resultText.dataset.plainText || bundles.map((bundle) => bundle.script).join('\n');
-    try {
-      await navigator.clipboard.writeText(text);
-      const original = els.copyBtn.textContent;
-      els.copyBtn.textContent = '✅ Скопировано';
-      els.copyBtn.style.background = 'var(--success-bg)';
-      showToast('КП скопировано в буфер обмена');
-      setTimeout(() => {
-        els.copyBtn.textContent = original;
-        els.copyBtn.style.background = '';
-      }, 1800);
-    } catch (error) {
-      console.error('[Matrix] clipboard error:', error);
-      showToast('Не удалось скопировать автоматически');
-    }
-  }
-
-  function bindEvents() {
-    els.industrySelect.addEventListener('change', (event) => {
-      state.industry = event.target.value;
-      state.selectedProducts.clear();
-      state.selectedBundleIds.clear();
-      updateAfterFiltersChanged();
-      updateStats();
-    });
-
-    els.copyBtn.addEventListener('click', copyResult);
-    els.resetBtn.addEventListener('click', resetSelection);
-
-    els.offerClose.addEventListener('click', closeOfferModal);
-    els.offerModal.addEventListener('click', (event) => {
-      if (event.target === els.offerModal) closeOfferModal();
-    });
-
-    els.feedbackBtn.addEventListener('click', openFeedbackModal);
-    els.feedbackClose.addEventListener('click', closeFeedbackModal);
-    els.feedbackModal.addEventListener('click', (event) => {
-      if (event.target === els.feedbackModal) closeFeedbackModal();
-    });
-
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') {
-        if (els.offerModal.classList.contains('active')) closeOfferModal();
-        if (els.feedbackModal.classList.contains('active')) closeFeedbackModal();
+      if (!state.selectedBundleIds.length) {
+        textEl.textContent = 'Выберите бандлы, чтобы получить готовую формулировку.';
+        copyBtn.disabled = true;
+        resetBtn.style.display = 'none';
+        selectedList.innerHTML = '';
+        els.resultCounter.textContent = '0 офферов';
+        return;
       }
-    });
-  }
 
-  function syncUIInitial() {
-    els.productsList.innerHTML = `
-      <div class="empty-state" style="grid-column:1/-1;">
-        <div>
-          <h3>Сначала выберите отрасль</h3>
-          <p>Это откроет список продуктов банка и подстроит витрину офферов под сценарий клиента.</p>
-        </div>
-      </div>`;
-    els.bundlesGrid.innerHTML = `
-      <div class="empty-state" style="grid-column:1/-1;">
-        <div>
-          <h3>Выберите отрасль</h3>
-          <p>После этого здесь появятся офферы и карточки выбора.</p>
-        </div>
-      </div>`;
-    els.resultText.textContent = 'Выберите бандлы, чтобы получить готовую формулировку';
-    els.resultMini.textContent = 'Пока ничего не выбрано';
-    updateStats();
-    renderChips();
-  }
+      textEl.innerHTML = result.html;
+      textEl.dataset.plain = result.text;
+      copyBtn.disabled = false;
+      resetBtn.style.display = 'block';
+      els.resultCounter.textContent = `${state.selectedBundleIds.length} оффер${state.selectedBundleIds.length === 1 ? '' : state.selectedBundleIds.length < 5 ? 'а' : 'ов'}`;
 
-  async function init() {
-    bindEvents();
-    syncUIInitial();
-    await loadData();
-  }
+      const items = result.items.map((bundle) => {
+        return `
+          <div class="selected-item">
+            <div>
+              <strong>${escapeHtml(bundle.product)}</strong>
+              <div class="selected-item__meta">${escapeHtml(bundle.vendor)}</div>
+            </div>
+            <div class="selected-item__meta">${escapeHtml(bundle.benefit)}</div>
+          </div>
+        `;
+      }).join('');
 
-  init();
-})();
-</script>
+      selectedList.innerHTML = items;
+      textEl.classList.remove('animate-pop');
+      void textEl.offsetWidth;
+      textEl.classList.add('animate-pop');
+    }
+
+    function updateResult() {
+      renderResult();
+      persistState();
+    }
+
+    function toggleBundle(bundleId) {
+      if (state.selectedBundleIds.includes(bundleId)) {
+        state.selectedBundleIds = state.selectedBundleIds.filter((id) => id !== bundleId);
+      } else {
+        state.selectedBundleIds.push(bundleId);
+      }
+      renderBundles();
+      updateResult();
+      updateMetrics();
+      renderIndustryInfo();
+    }
+
+    function copyResult() {
+      const html = els.resultText.innerHTML;
+      const plain = els.resultText.dataset.plain || els.resultText.textContent || '';
+      const successFlash = (label) => {
+        const original = els.copyBtn.textContent;
+        els.copyBtn.textContent = label;
+        els.copyBtn.style.background = 'var(--success-bg)';
+        els.copyBtn.style.color = 'var(--text-dark)';
+        setTimeout(() => {
+          els.copyBtn.textContent = original;
+          els.copyBtn.style.background = '';
+          els.copyBtn.style.color = '';
+        }, 1800);
+      };
+
+      if (navigator.clipboard && window.isSecureContext && typeof ClipboardItem !== 'undefined') {
+        navigator.clipboard.write([
+          new ClipboardItem({
+            'text/html': new Blob([html], { type: 'text/html' }),
+            'text/plain': new Blob([plain], { type: 'text/plain' })
+          })
+        ]).then(() => successFlash('Скопировано')).catch(async () => {
+          try {
+            await navigator.clipboard.writeText(plain);
+            successFlash('Скопировано');
+          } catch (_) {
+            window.alert('Не удалось скопировать автоматически. Скопируйте текст вручную.');
+          }
+        });
+        return;
+      }
+
+      navigator.clipboard.writeText(plain).then(() => successFlash('Скопировано')).catch(() => {
+        window.alert('Не удалось скопировать автоматически. Скопируйте текст вручную.');
+      });
+    }
+
+    function resetSelection() {
+      state.selectedProducts = [];
+      state.selectedBundleIds = [];
+      renderProducts();
+      renderBundles();
+      updateResult();
+      updateMetrics();
+      renderIndustryInfo();
+      persistState();
+    }
+
+    function restoreState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === 'object') {
+          state.selectedIndustry = parsed.selectedIndustry || '';
+          state.selectedProducts = Array.isArray(parsed.selectedProducts) ? parsed.selectedProducts : [];
+          state.selectedBundleIds = Array.isArray(parsed.selectedBundleIds) ? parsed.selectedBundleIds : [];
+          state.productSearch = parsed.productSearch || '';
+        }
+      } catch (_) {}
+    }
+
+    function persistState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          selectedIndustry: state.selectedIndustry,
+          selectedProducts: state.selectedProducts,
+          selectedBundleIds: state.selectedBundleIds,
+          productSearch: state.productSearch
+        }));
+      } catch (_) {}
+    }
+
+    function sanitizeSelectionsAfterLoad() {
+      const productSet = new Set(state.allProducts.map((product) => product.name));
+      const bundleSet = new Set(state.allBundles.map((bundle) => bundle.id));
+
+      state.selectedProducts = state.selectedProducts.filter((product) => productSet.has(product));
+      state.selectedBundleIds = state.selectedBundleIds.filter((id) => bundleSet.has(id));
+
+      if (state.selectedIndustry) {
+        const availableIndustries = new Set(getUniqueIndustries());
+        if (!availableIndustries.has(state.selectedIndustry)) {
+          state.selectedIndustry = '';
+          state.selectedProducts = [];
+          state.selectedBundleIds = [];
+        }
+      }
+    }
+
+    async function loadData() {
+      try {
+        setLoading(true);
+        const [bundlesResponse, productsResponse] = await Promise.all([
+          fetch(CSV_URLS.BUNDLES, { cache: 'no-store' }),
+          fetch(CSV_URLS.PRODUCTS, { cache: 'no-store' })
+        ]);
+
+        if (!bundlesResponse.ok || !productsResponse.ok) {
+          throw new Error('Ошибка загрузки CSV');
+        }
+
+        const [bundlesText, productsText] = await Promise.all([
+          bundlesResponse.text(),
+          productsResponse.text()
+        ]);
+
+        const rawBundles = parseCSV(bundlesText);
+        const rawProducts = parseCSV(productsText);
+
+        state.allProducts = rawProducts.map((row, index) => {
+          const product = firstByAliases(row, CSV_ALIASES.product);
+          return {
+            id: firstByAliases(row, CSV_ALIASES.id, `product-${index + 1}`),
+            industries: splitList(firstByAliases(row, CSV_ALIASES.industry)),
+            name: product,
+            desc: firstByAliases(row, CSV_ALIASES.desc),
+            link: safeUrl(firstByAliases(row, CSV_ALIASES.link_product))
+          };
+        }).filter((item) => item.name);
+
+        state.allBundles = rawBundles.map((row, index) => {
+          const product = firstByAliases(row, CSV_ALIASES.product);
+          const vendor = firstByAliases(row, CSV_ALIASES.vendor);
+          const benefit = firstByAliases(row, CSV_ALIASES.benefit) || firstByAliases(row, CSV_ALIASES.desc);
+          const industries = splitList(firstByAliases(row, CSV_ALIASES.industry));
+
+          return {
+            id: firstByAliases(row, CSV_ALIASES.id, `bundle-${index + 1}`),
+            industries,
+            product,
+            vendor,
+            benefit,
+            details: firstByAliases(row, CSV_ALIASES.details),
+            linkVendor: safeUrl(firstByAliases(row, CSV_ALIASES.link_vendor)),
+            linkProduct: safeUrl(firstByAliases(row, CSV_ALIASES.link_product)),
+            fullScript: `${actionForProduct(product)} ${product} и получи ${benefit} от ${vendor}`
+          };
+        }).filter((bundle) => bundle.product && bundle.vendor);
+
+        state.dataLoaded = true;
+        state.error = null;
+        sanitizeSelectionsAfterLoad();
+        setLoading(false);
+        renderIndustries();
+        updateMetrics();
+        renderIndustryInfo();
+        renderProducts();
+        renderBundles();
+        updateResult();
+        els.dataState.textContent = 'Данные загружены';
+        return true;
+      } catch (error) {
+        console.error('Ошибка загрузки данных:', error);
+        state.error = error;
+        setLoading(false);
+        els.dataState.textContent = 'Ошибка загрузки';
+        els.productsList.innerHTML = '<div class="error-state"><div>Не удалось загрузить данные</div><div>Проверьте подключение к интернету и доступность CSV-источников.</div></div>';
+        els.bundlesGrid.innerHTML = '<div class="error-state" style="grid-column:1/-1;"><div>Витрина недоступна</div><div>Повторите попытку после обновления страницы.</div></div>';
+        els.industrySelect.innerHTML = '<option value="">Ошибка загрузки</option>';
+        els.industrySelect.disabled = true;
+        return false;
+      }
+    }
+
+    function openFeedbackModal() {
+      els.feedbackIframe.src = FEEDBACK_URL;
+      els.feedbackModal.classList.add('active');
+      els.feedbackModal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeFeedbackModal() {
+      els.feedbackModal.classList.remove('active');
+      els.feedbackModal.setAttribute('aria-hidden', 'true');
+      els.feedbackIframe.src = '';
+      document.body.style.overflow = '';
+    }
+
+    function bindEvents() {
+      els.industrySelect.addEventListener('change', (event) => {
+        state.selectedIndustry = event.target.value;
+        state.selectedProducts = [];
+        state.selectedBundleIds = [];
+        persistState();
+        renderIndustryInfo();
+        renderProducts();
+        renderBundles();
+        updateResult();
+        updateMetrics();
+      });
+
+      els.productSearch.addEventListener('input', (event) => {
+        state.productSearch = event.target.value;
+        persistState();
+        renderProducts();
+      });
+
+      els.copyBtn.addEventListener('click', copyResult);
+      els.resetBtn.addEventListener('click', resetSelection);
+
+      els.bundleModalClose.addEventListener('click', closeBundleModal);
+      els.bundleModalOverlay.addEventListener('click', (event) => {
+        if (event.target === els.bundleModalOverlay) closeBundleModal();
+      });
+
+      els.feedbackBtn.addEventListener('click', openFeedbackModal);
+      els.feedbackClose.addEventListener('click', closeFeedbackModal);
+      els.feedbackModal.addEventListener('click', (event) => {
+        if (event.target === els.feedbackModal) closeFeedbackModal();
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          if (els.bundleModalOverlay.classList.contains('active')) closeBundleModal();
+          if (els.feedbackModal.classList.contains('active')) closeFeedbackModal();
+        }
+      });
+    }
+
+    function applySavedStateToUI() {
+      els.productSearch.value = state.productSearch || '';
+      if (state.selectedIndustry) {
+        els.industrySelect.value = state.selectedIndustry;
+      }
+    }
+
+    function cacheElements() {
+      els.heroMetrics = document.getElementById('hero-metrics');
+      els.dataState = document.getElementById('data-state');
+      els.industrySelect = document.getElementById('industry-select');
+      els.industryInfo = document.getElementById('industry-info');
+      els.industryDesc = document.getElementById('industry-desc');
+      els.industryBadges = document.getElementById('industry-badges');
+      els.globalStats = document.getElementById('global-stats');
+      els.productHints = document.getElementById('product-hints');
+      els.productsList = document.getElementById('products-list');
+      els.productSearch = document.getElementById('product-search');
+      els.bundlesGrid = document.getElementById('bundles-grid');
+      els.resultText = document.getElementById('result-text');
+      els.resultCounter = document.getElementById('result-counter');
+      els.selectedList = document.getElementById('selected-list');
+      els.copyBtn = document.getElementById('copy-btn');
+      els.resetBtn = document.getElementById('reset-btn');
+      els.bundleModalOverlay = document.getElementById('bundle-modal-overlay');
+      els.bundleModalClose = document.getElementById('bundle-modal-close');
+      els.bundleModalTitle = document.getElementById('bundle-modal-title');
+      els.bundleModalScript = document.getElementById('bundle-modal-script');
+      els.bundleModalDetails = document.getElementById('bundle-modal-details');
+      els.bundleModalLink = document.getElementById('bundle-modal-link');
+      els.feedbackBtn = document.getElementById('feedback-btn');
+      els.feedbackModal = document.getElementById('feedback-modal');
+      els.feedbackClose = document.getElementById('feedback-close');
+      els.feedbackIframe = document.getElementById('feedback-iframe');
+    }
+
+    async function init() {
+      cacheElements();
+      restoreState();
+      applySavedStateToUI();
+      bindEvents();
+      updateMetrics();
+      renderResult();
+
+      els.bundlesGrid.innerHTML = '<div class="loading-state" style="grid-column:1/-1;"><div class="spinner"></div><div>Загружаем витрину…</div></div>';
+      els.productsList.innerHTML = '<div class="loading-state"><div class="spinner"></div><div>Подготовка списка продуктов…</div></div>';
+
+      const ok = await loadData();
+      if (!ok) return;
+
+      renderIndustries();
+      if (state.selectedIndustry) {
+        els.industrySelect.value = state.selectedIndustry;
+      }
+      renderIndustryInfo();
+      renderProducts();
+      renderBundles();
+      renderResult();
+      updateMetrics();
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
 </body>
 </html>
