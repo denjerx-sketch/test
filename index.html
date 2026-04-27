@@ -379,8 +379,8 @@
       padding: 12px 12px;
       border-radius: 16px;
       border: 1px solid rgba(181, 139, 96, 0.12);
-      /* background: rgba(255,255,255,0.86); */
-      background: var(--bg-page);
+      background: rgba(255,255,255,0.86);
+      /* background: var(--bg-page); */
       transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition), background var(--transition), opacity var(--transition);
     }
 
@@ -820,59 +820,60 @@
       box-shadow: var(--shadow-sm);
     }
 
-  .feedback-btn {
-    position: fixed;
-    right: 24px;
-    bottom: 24px;
-    z-index: 200;
+    .feedback-btn {
+      border: none;
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 200;
 
-    display: inline-flex;
-    align-items: center;
+      display: inline-flex;
+      align-items: center;
 
-    border-radius: 999px;
-    cursor: pointer;
+      border-radius: 999px;
+      cursor: pointer;
 
-    background: var(--accent);
-    color: var(--text-dark);
-    font-weight: 900;
+      background: var(--accent);
+      color: var(--text-dark);
+      font-weight: 700;
 
-    box-shadow: 0 14px 30px rgba(255,221,45,0.34);
+      box-shadow: 0 14px 30px rgba(255,221,45,0.34);
 
-    transition: all var(--transition);
+      transition: all var(--transition);
 
-    /* ключевое */
-    padding: 14px;
-    overflow: hidden;
-  }
+      /* ключевое */
+      padding: 14px;
+      overflow: hidden;
+    }
 
-  /* иконка */
-  .feedback-icon {
-    font-size: 18px;
-    flex-shrink: 0;
-  }
+    /* иконка */
+    .feedback-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
 
-  /* текст */
-  .feedback-text {
-    white-space: nowrap;
+    /* текст */
+    .feedback-text {
+      white-space: nowrap;
 
-    opacity: 0;
-    max-width: 0;
-    margin-left: 0;
+      opacity: 0;
+      max-width: 0;
+      margin-left: 0;
 
-    transition: all 0.25s cubic-bezier(.2,.8,.2,1);
-  }
+      transition: all 0.25s cubic-bezier(.2,.8,.2,1);
+    }
 
-  /* 🔥 hover раскрытие */
-  .feedback-btn:hover .feedback-text {
-    opacity: 1;
-    max-width: 200px;
-    margin-left: 8px;
-  }
+    /* 🔥 hover раскрытие */
+    .feedback-btn:hover .feedback-text {
+      opacity: 1;
+      max-width: 200px;
+      margin-left: 8px;
+    }
 
-  /* увеличиваем padding при раскрытии */
-  .feedback-btn:hover {
-    padding: 14px 18px;
-  }
+    /* увеличиваем padding при раскрытии */
+    .feedback-btn:hover {
+      padding: 14px 18px;
+    }
 
     .skeleton {
       position: relative;
