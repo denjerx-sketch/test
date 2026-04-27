@@ -1135,6 +1135,12 @@
       wrapper.classList.remove('open');
     });
 
+    document.addEventListener('click', (e) => {
+      if (!wrapper.contains(e.target)) {
+        wrapper.classList.remove('open');
+      }
+    });
+
     function safeUrl(url) {
       const value = normalizeText(url);
       if (!value) return '';
