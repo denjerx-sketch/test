@@ -208,17 +208,33 @@
       position: relative;
     }
 
-    select,
-    input[type="search"] {
-      width: 100%;
-      padding: 13px 14px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.95);
-      color: var(--text-primary);
-      transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
-      outline: none;
-    }
+
+  select{
+    width:100%;
+    appearance:none;
+    border:1px solid var(--border);
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.92));
+    color:var(--text-primary);
+    border-radius:14px;
+    padding:14px 44px 14px 14px;
+    font-size:15px;
+    cursor:pointer;
+    outline:none;
+    transition:border-color .2s var(--transition), box-shadow .2s var(--transition), transform .2s var(--transition);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.85);
+    background-image:
+      linear-gradient(45deg, transparent 50%, var(--border-active) 50%),
+      linear-gradient(135deg, var(--border-active) 50%, transparent 50%),
+      linear-gradient(to right, transparent, transparent);
+    background-position:
+      calc(100% - 22px) 50%,
+      calc(100% - 16px) 50%,
+      100% 0;
+    background-size:6px 6px, 6px 6px, 2.5em 2.5em;
+    background-repeat:no-repeat;
+  }
+
 
     select:focus,
     input[type="search"]:focus,
