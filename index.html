@@ -498,12 +498,6 @@
       line-height: 1.25;
     }
 
-    .bundle-vendor {
-      margin-top: 6px;
-      color: var(--border-strong);
-      font-size: 14px;
-      font-weight: 800;
-    }
 
     .bundle-chip-row {
       display: flex;
@@ -1551,13 +1545,14 @@
           <article class="bundle-card ${selected ? 'selected' : ''}" data-bundle-id="${escapeHtml(bundle.id)}" tabindex="0" role="button" aria-pressed="${selected ? 'true' : 'false'}">
             <div class="bundle-head">
               <div>
-                <h3 class="bundle-title">${escapeHtml(bundle.product)}</h3>
-                <div class="bundle-vendor">${escapeHtml(bundle.vendor)}</div>
+                <h3 class="bundle-title">${escapeHtml(bundle.vendor)}</h3>
               </div>
               <span class="count-pill">${selected ? 'Выбран' : 'Оффер'}</span>
             </div>
             <div class="bundle-chip-row">
-              <span class="bundle-chip">${escapeHtml(actionForProduct(bundle.product))}</span>
+              <span class="bundle-chip">
+                ${escapeHtml(actionForProduct(bundle.product))} ${escapeHtml(bundle.product)}
+              </span>
               <span class="bundle-chip">${escapeHtml(bundle.industries[0] || state.selectedIndustry)}</span>
             </div>
             <p class="bundle-benefit">${escapeHtml(bundle.benefit)}</p>
