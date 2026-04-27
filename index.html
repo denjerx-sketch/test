@@ -1426,7 +1426,7 @@
         bundlesByProduct.set(bundle.product, (bundlesByProduct.get(bundle.product) || 0) + 1);
       });
 
-      const query = state.productSearch.trim().toLowerCase();
+      // const query = state.productSearch.trim().toLowerCase();
       const sorted = [...allProducts].sort((a, b) => {
         const aCount = bundlesByProduct.get(a) || 0;
         const bCount = bundlesByProduct.get(b) || 0;
