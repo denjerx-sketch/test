@@ -70,8 +70,8 @@
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Inter, Arial, sans-serif;
       background:
-        radial-gradient(circle at top left, rgba(255, 221, 45, 0.18), transparent 30%),
-        radial-gradient(circle at top right, rgba(181, 139, 96, 0.13), transparent 28%),
+        radial-gradient(circle at top left, rgba(181, 139, 96, 0.13), transparent 30%),
+        radial-gradient(circle at top right, rgba(181, 139, 96, 0.13), transparent 30%),
         linear-gradient(180deg, #f6f2ea 0%, var(--bg-page) 100%);
       color: var(--text-primary);
       line-height: 1.45;
@@ -100,16 +100,6 @@
       margin-bottom: 20px;
     }
 
-    .hero::after {
-      content: "";
-      position: absolute;
-      inset: auto -18% -48% auto;
-      width: 380px;
-      height: 380px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,221,45,0.20), rgba(255,221,45,0));
-      pointer-events: none;
-    }
 
     .eyebrow {
       display: inline-flex;
@@ -950,10 +940,10 @@
               <h2 class="section-title">2. Продукты банка</h2>
               <p class="section-subtitle">Это фильтр витрины: отмеченные продукты показывают только релевантные офферы.</p>
             </div>
-            <!-- <div style="min-width:min(360px,100%);">
+            <div style="min-width:min(360px,100%);">
               <label class="sr-only" for="product-search">Поиск по продуктам</label>
               <input id="product-search" type="search" placeholder="Поиск по продуктам или подсказкам…" autocomplete="off" />
-            </div> -->
+            </div>
           </div>
           <div class="toolbar-stats" id="product-hints"></div>
           <div class="product-list" id="products-list"></div>
@@ -1072,7 +1062,7 @@
       selectedIndustry: '',
       selectedProducts: [],
       selectedBundleIds: [],
-      // productSearch: '',
+      productSearch: '',
       allBundles: [],
       allProducts: []
     };
@@ -1274,7 +1264,7 @@
 
     function getVisibleProducts(industry) {
       const all = getProductsForIndustry(industry);
-      // const query = state.productSearch.trim().toLowerCase();
+      const query = state.productSearch.trim().toLowerCase();
       if (!query) return all;
       return all.filter((product) => {
         const p = state.allProducts.find((item) => item.name === product);
@@ -1432,7 +1422,7 @@
         bundlesByProduct.set(bundle.product, (bundlesByProduct.get(bundle.product) || 0) + 1);
       });
 
-      // const query = state.productSearch.trim().toLowerCase();
+      const query = state.productSearch.trim().toLowerCase();
       const sorted = [...allProducts].sort((a, b) => {
         const aCount = bundlesByProduct.get(a) || 0;
         const bCount = bundlesByProduct.get(b) || 0;
@@ -1729,7 +1719,7 @@
           state.selectedIndustry = parsed.selectedIndustry || '';
           state.selectedProducts = Array.isArray(parsed.selectedProducts) ? parsed.selectedProducts : [];
           state.selectedBundleIds = Array.isArray(parsed.selectedBundleIds) ? parsed.selectedBundleIds : [];
-          // state.productSearch = parsed.productSearch || '';
+          state.productSearch = parsed.productSearch || '';
         }
       } catch (_) {}
     }
@@ -1740,7 +1730,7 @@
           selectedIndustry: state.selectedIndustry,
           selectedProducts: state.selectedProducts,
           selectedBundleIds: state.selectedBundleIds,
-          // productSearch: state.productSearch
+          productSearch: state.productSearch
         }));
       } catch (_) {}
     }
@@ -1864,11 +1854,11 @@
         updateMetrics();
       });
 
-      // els.productSearch.addEventListener('input', (event) => {
-      //   state.productSearch = event.target.value;
-      //   persistState();
-      //   renderProducts();
-      // });
+      els.productSearch.addEventListener('input', (event) => {
+        state.productSearch = event.target.value;
+        persistState();
+        renderProducts();
+      });
 
       els.copyBtn.addEventListener('click', copyResult);
       els.resetBtn.addEventListener('click', resetSelection);
@@ -1892,12 +1882,12 @@
       });
     }
 
-    // function applySavedStateToUI() {
-    //   // els.productSearch.value = state.productSearch || '';
-    //   // if (state.selectedIndustry) {
-    //   //   els.industrySelect.value = state.selectedIndustry;
-    //   // }
-    // }
+    function applySavedStateToUI() {
+      els.productSearch.value = state.productSearch || '';
+      if (state.selectedIndustry) {
+        els.industrySelect.value = state.selectedIndustry;
+      }
+    }
 
     function cacheElements() {
       els.heroMetrics = document.getElementById('hero-metrics');
@@ -1909,7 +1899,7 @@
       els.globalStats = document.getElementById('global-stats');
       els.productHints = document.getElementById('product-hints');
       els.productsList = document.getElementById('products-list');
-      // els.productSearch = document.getElementById('product-search');
+      els.productSearch = document.getElementById('product-search');
       els.bundlesGrid = document.getElementById('bundles-grid');
       els.resultText = document.getElementById('result-text');
       els.resultCounter = document.getElementById('result-counter');
@@ -1930,7 +1920,7 @@
     async function init() {
       cacheElements();
       restoreState();
-      // applySavedStateToUI();
+      applySavedStateToUI();
       bindEvents();
       updateMetrics();
       renderResult();
