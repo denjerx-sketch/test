@@ -940,10 +940,10 @@
               <h2 class="section-title">2. Продукты банка</h2>
               <p class="section-subtitle">Это фильтр витрины: отмеченные продукты показывают только релевантные офферы.</p>
             </div>
-            <div style="min-width:min(360px,100%);">
+            <!-- <div style="min-width:min(360px,100%);">
               <label class="sr-only" for="product-search">Поиск по продуктам</label>
               <input id="product-search" type="search" placeholder="Поиск по продуктам или подсказкам…" autocomplete="off" />
-            </div>
+            </div> -->
           </div>
           <div class="toolbar-stats" id="product-hints"></div>
           <div class="product-list" id="products-list"></div>
@@ -1062,7 +1062,7 @@
       selectedIndustry: '',
       selectedProducts: [],
       selectedBundleIds: [],
-      productSearch: '',
+      // productSearch: '',
       allBundles: [],
       allProducts: []
     };
@@ -1262,16 +1262,20 @@
       return { offers: offers.length, products: products.size };
     }
 
+    // function getVisibleProducts(industry) {
+    //   const all = getProductsForIndustry(industry);
+    //   const query = state.productSearch.trim().toLowerCase();
+    //   if (!query) return all;
+    //   return all.filter((product) => {
+    //     const p = state.allProducts.find((item) => item.name === product);
+    //     const bundleMatch = state.allBundles.some((bundle) => bundle.industries.includes(industry) && bundle.product === product);
+    //     const haystack = [product, p?.desc, ...(p?.industries ?? [])].join(' ').toLowerCase();
+    //     return haystack.includes(query) || bundleMatch && product.toLowerCase().includes(query);
+    //   });
+    // }
+
     function getVisibleProducts(industry) {
-      const all = getProductsForIndustry(industry);
-      const query = state.productSearch.trim().toLowerCase();
-      if (!query) return all;
-      return all.filter((product) => {
-        const p = state.allProducts.find((item) => item.name === product);
-        const bundleMatch = state.allBundles.some((bundle) => bundle.industries.includes(industry) && bundle.product === product);
-        const haystack = [product, p?.desc, ...(p?.industries ?? [])].join(' ').toLowerCase();
-        return haystack.includes(query) || bundleMatch && product.toLowerCase().includes(query);
-      });
+      return getProductsForIndustry(industry);
     }
 
     function buildBundleScript(bundle) {
@@ -1719,7 +1723,7 @@
           state.selectedIndustry = parsed.selectedIndustry || '';
           state.selectedProducts = Array.isArray(parsed.selectedProducts) ? parsed.selectedProducts : [];
           state.selectedBundleIds = Array.isArray(parsed.selectedBundleIds) ? parsed.selectedBundleIds : [];
-          state.productSearch = parsed.productSearch || '';
+          // state.productSearch = parsed.productSearch || '';
         }
       } catch (_) {}
     }
@@ -1730,7 +1734,7 @@
           selectedIndustry: state.selectedIndustry,
           selectedProducts: state.selectedProducts,
           selectedBundleIds: state.selectedBundleIds,
-          productSearch: state.productSearch
+          // productSearch: state.productSearch
         }));
       } catch (_) {}
     }
@@ -1819,7 +1823,7 @@
         state.error = error;
         setLoading(false);
         els.dataState.textContent = 'Ошибка загрузки';
-        els.productsList.innerHTML = '<div class="error-state"><div>Не удалось загрузить данные</div><div>Проверьте подключение к интернету и доступность CSV-источников.</div></div>';
+        els.productsList.innerHTML = '<div class="error-state"><div>Не удалось загрузить данные</div><div>Проверьте подключение к интернету.</div></div>';
         els.bundlesGrid.innerHTML = '<div class="error-state" style="grid-column:1/-1;"><div>Витрина недоступна</div><div>Повторите попытку после обновления страницы.</div></div>';
         els.industrySelect.innerHTML = '<option value="">Ошибка загрузки</option>';
         els.industrySelect.disabled = true;
@@ -1854,11 +1858,11 @@
         updateMetrics();
       });
 
-      els.productSearch.addEventListener('input', (event) => {
-        state.productSearch = event.target.value;
-        persistState();
-        renderProducts();
-      });
+      // els.productSearch.addEventListener('input', (event) => {
+      //   state.productSearch = event.target.value;
+      //   persistState();
+      //   renderProducts();
+      // });
 
       els.copyBtn.addEventListener('click', copyResult);
       els.resetBtn.addEventListener('click', resetSelection);
@@ -1883,7 +1887,7 @@
     }
 
     function applySavedStateToUI() {
-      els.productSearch.value = state.productSearch || '';
+      // els.productSearch.value = state.productSearch || '';
       if (state.selectedIndustry) {
         els.industrySelect.value = state.selectedIndustry;
       }
@@ -1899,7 +1903,7 @@
       els.globalStats = document.getElementById('global-stats');
       els.productHints = document.getElementById('product-hints');
       els.productsList = document.getElementById('products-list');
-      els.productSearch = document.getElementById('product-search');
+      // els.productSearch = document.getElementById('product-search');
       els.bundlesGrid = document.getElementById('bundles-grid');
       els.resultText = document.getElementById('result-text');
       els.resultCounter = document.getElementById('result-counter');
