@@ -341,7 +341,11 @@
       scrollbar-width: thin;
       padding-top: 4px;
     }
-
+    .product-list > .empty-state,
+    .product-list > .loading-state,
+    .product-list > .error-state {
+      grid-column: 1 / -1;
+    }
     .product-item {
       display: grid;
       grid-template-columns: auto 1fr auto;
