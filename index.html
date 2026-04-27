@@ -656,11 +656,7 @@
 
     .result-text a:hover { text-decoration: underline; }
 
-    .selected-list {
-      display: grid;
-      gap: 8px;
-      margin-top: 14px;
-    }
+
 
     .selected-item {
       display: flex;
@@ -991,7 +987,7 @@
 
         <div class="result-text" id="result-text" aria-live="polite">Выберите бандлы, чтобы получить готовую формулировку.</div>
 
-        <div class="selected-list" id="selected-list"></div>
+
 
         <div class="result-actions">
           <button class="btn btn-secondary" id="reset-btn" type="button" style="display:none;">Сбросить выбор</button>
@@ -1601,13 +1597,12 @@
       const textEl = els.resultText;
       const copyBtn = els.copyBtn;
       const resetBtn = els.resetBtn;
-      const selectedList = els.selectedList;
+
 
       if (!state.selectedBundleIds.length) {
         textEl.textContent = 'Выберите бандлы, чтобы получить готовую формулировку.';
         copyBtn.disabled = true;
         resetBtn.style.display = 'none';
-        selectedList.innerHTML = '';
         els.resultCounter.textContent = '0 офферов';
         return;
       }
@@ -1630,7 +1625,6 @@
         `;
       }).join('');
 
-      selectedList.innerHTML = items;
       textEl.classList.remove('animate-pop');
       void textEl.offsetWidth;
       textEl.classList.add('animate-pop');
@@ -1894,7 +1888,6 @@
       els.bundlesGrid = document.getElementById('bundles-grid');
       els.resultText = document.getElementById('result-text');
       els.resultCounter = document.getElementById('result-counter');
-      els.selectedList = document.getElementById('selected-list');
       els.copyBtn = document.getElementById('copy-btn');
       els.resetBtn = document.getElementById('reset-btn');
       els.bundleModalOverlay = document.getElementById('bundle-modal-overlay');
