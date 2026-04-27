@@ -88,6 +88,18 @@
       margin: 0 auto;
     }
 
+    .alert {
+      width: min(1320px, 100%);
+      margin: 0 auto;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.58));
+      border: 1px solid rgba(181, 139, 96, 0.14);
+      border-radius: 22px;
+      box-shadow: var(--shadow-sm);
+      backdrop-filter: blur(10px);
+      border-left: 3px solid var(--accent);
+      margin-bottom: 20px;
+    }
+
     .hero {
       position: relative;
       overflow: hidden;
@@ -1038,6 +1050,10 @@
   </style>
 </head>
 <body>
+  <div class="alert">
+    <p style="margin-left: 10px; font-size: 16px; color: var(--text-dark);font-weight: 500;"> ⚠️ Не работает с VPN и VDI</p>
+  </div>
+
   <div class="app">
     <header class="hero">
       <div class="eyebrow">Матрица бандлов · Т-Бизнес</div>
@@ -1891,8 +1907,8 @@
         console.error('Ошибка загрузки данных:', error);
         state.error = error;
         setLoading(false);
-        els.productsList.innerHTML = '<div class="error-state"><div>Не удалось загрузить данные</div><div>Проверьте подключение к интернету.</div></div>';
-        els.bundlesGrid.innerHTML = '<div class="error-state" style="grid-column:1/-1;"><div>Витрина недоступна</div><div>Повторите попытку после обновления страницы.</div></div>';
+        els.productsList.innerHTML = '<div class="error-state"><div>Не удалось загрузить данные.</div><div>Проверьте подключение к интернету.</div></div>';
+        els.bundlesGrid.innerHTML = '<div class="error-state" style="grid-column:1/-1;"><div>Предложения недоступны.</div><div>Повторите попытку после обновления страницы.</div></div>';
         // els.industrySelect.innerHTML = '<option value="">Ошибка загрузки</option>';
         // els.industrySelect.disabled = true;
         return false;
