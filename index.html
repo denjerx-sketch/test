@@ -208,34 +208,55 @@
       position: relative;
     }
 
+    select,
+    input[type="search"] {
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.95);
+      color: var(--text-primary);
+      transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+      outline: none;
+      appearance:none;
+      -webkit-appearance:none;
+      -moz-appearance:none;
 
-  select{
-    width:100%;
-    appearance:none;
-    border:1px solid var(--border);
-    background:
-      linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.92));
-    color:var(--text-primary);
-    border-radius:14px;
-    padding:14px 44px 14px 14px;
-    font-size:15px;
-    cursor:pointer;
-    outline:none;
-    transition:border-color .2s var(--transition), box-shadow .2s var(--transition), transform .2s var(--transition);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.85);
-    background-image:
-      linear-gradient(45deg, transparent 50%, var(--border-active) 50%),
-      linear-gradient(135deg, var(--border-active) 50%, transparent 50%),
-      linear-gradient(to right, transparent, transparent);
-    background-position:
-      calc(100% - 22px) 50%,
-      calc(100% - 16px) 50%,
-      100% 0;
-    background-size:6px 6px, 6px 6px, 2.5em 2.5em;
-    background-repeat:no-repeat;
-  }
+      padding-right:44px; /* чтобы текст не залезал под стрелку */
+    }
 
+    .select-custom{
+      position:relative;
+    }
 
+    .select-custom::after{
+      content:"";
+      position:absolute;
+      right:16px;
+      top:50%;
+      transform:translateY(-50%);
+      width:18px;
+      height:18px;
+
+      background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'> <path d='M5 7l5 5 5-5' stroke='%238d6040' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+
+      background-repeat:no-repeat;
+      background-size:contain;
+
+      pointer-events:none;
+    }
+    .select-custom:hover::after{
+      transform:translateY(-50%) scale(1.1);
+    }
+
+    .select-custom:focus-within::after{
+      transform:translateY(-50%) rotate(180deg);
+    }
+    .select-custom::after{
+      transition:transform .25s cubic-bezier(.2,.8,.2,1);
+    }
+
+    
     select:focus,
     input[type="search"]:focus,
     button:focus-visible,
@@ -926,7 +947,7 @@
           </div>
           <span class="badge" id="data-state">Загрузка данных…</span>
         </div>
-        <div class="select-wrap">
+        <div class="select-wrap select-custom">
           <label class="sr-only" for="industry-select">Выберите отрасль</label>
           <select id="industry-select" disabled>
             <option value="">Загрузка…</option>
