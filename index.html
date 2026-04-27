@@ -290,12 +290,12 @@
       font-size: 14px;
     }
 
-    .industry-badges {
+    /* .industry-badges {
       display: flex;
       flex-wrap: wrap;
       justify-content: flex-end;
       gap: 8px;
-    }
+    } */
 
     .badge {
       display: inline-flex;
@@ -887,7 +887,7 @@
       .result-actions { grid-template-columns: 1fr; }
       .feedback-btn { right: 14px; bottom: 14px; }
       .industry-info { grid-template-columns: 1fr; }
-      .industry-badges { justify-content: flex-start; }
+      /* .industry-badges { justify-content: flex-start; } */
       .modal { padding: 18px; }
     }
 
@@ -936,7 +936,7 @@
           <div>
             <p class="industry-info__desc" id="industry-desc"></p>
           </div>
-          <div class="industry-badges" id="industry-badges"></div>
+          <!-- <div class="industry-badges" id="industry-badges"></div> -->
         </div>
       </div>
       <!-- <div class="filters-card">
@@ -1418,17 +1418,17 @@
       if (!industry) {
         els.industryInfo.classList.remove('active');
         els.industryDesc.textContent = '';
-        els.industryBadges.innerHTML = '';
+        // els.industryBadges.innerHTML = '';
         return;
       }
 
       const desc = CONFIG.INDUSTRY_DESCS[industry] || 'Для этой отрасли доступен набор банковских продуктов и партнерских офферов из витрины.';
       const stats = getIndustryStats(industry);
       els.industryDesc.textContent = desc;
-      els.industryBadges.innerHTML = `
-        <span class="badge">${stats.offers} офферов</span>
-        <span class="badge">${stats.products} продуктов</span>
-      `;
+      // els.industryBadges.innerHTML = `
+      //   <span class="badge">${stats.offers} офферов</span>
+      //   <span class="badge">${stats.products} продуктов</span>
+      // `;
       els.industryInfo.classList.add('active');
     }
 
@@ -1934,7 +1934,7 @@
       els.industrySelect = document.getElementById('industry-select');
       els.industryInfo = document.getElementById('industry-info');
       els.industryDesc = document.getElementById('industry-desc');
-      els.industryBadges = document.getElementById('industry-badges');
+      // els.industryBadges = document.getElementById('industry-badges');
       els.globalStats = document.getElementById('global-stats');
       els.productHints = document.getElementById('product-hints');
       els.productsList = document.getElementById('products-list');
