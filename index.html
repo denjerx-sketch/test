@@ -219,6 +219,7 @@
 
     .select-custom{
       position:relative;
+      z-index: 200;
     }
 
     .select-custom::after{
@@ -951,9 +952,12 @@
       transform: translateY(6px);
       pointer-events: none;
       transition: all 0.2s ease;
+      z-index: 1000;
     }
 
     .select-custom.open .select-dropdown {
+      z-index: 999;
+      border: 1px solid var(--border);
       opacity: 1;
       transform: translateY(0);
       pointer-events: auto;
