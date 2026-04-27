@@ -136,15 +136,9 @@
       margin: 0;
       font-size: 16px;
       color: var(--text-secondary);
-      max-width: 62ch;
+      /* max-width: 62ch; */
     }
 
-    .hero-metrics {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 20px;
-    }
 
     .metric {
       display: inline-flex;
@@ -637,19 +631,6 @@
       margin-bottom: 12px;
     }
 
-    .result-counter {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: var(--bg-accent-2);
-      border: 1px solid rgba(181,139,96,0.16);
-      color: var(--text-dark);
-      font-size: 12px;
-      font-weight: 800;
-      white-space: nowrap;
-    }
 
     .warning-card {
       display: grid;
@@ -716,7 +697,7 @@
     .error-state {
       display: grid;
       place-items: center;
-      min-height: 180px;
+      /* min-height: 180px; */
       padding: 30px 16px;
       border-radius: 18px;
       background: rgba(255,255,255,0.82);
@@ -927,9 +908,8 @@
       <div class="eyebrow">Матрица бандлов · Т-Бизнес</div>
       <div class="hero-grid">
         <div>
-          <h1>Подбор банковских продуктов и партнёрских офферов</h1>
+          <h1>Подбор банковских продуктов и партнерских офферов</h1>
           <p class="subtitle">Выберите отрасль клиента, уточните релевантные продукты банка, отметьте нужные предложения и сразу соберите готовое коммерческое предложение.</p>
-          <div class="hero-metrics" id="hero-metrics" aria-live="polite"></div>
         </div>
       </div>
     </header>
@@ -943,9 +923,8 @@
         <div class="industry-card__header">
           <div>
             <h2 class="section-title">1. Отрасль клиента</h2>
-            <p class="section-subtitle">Список отраслей подтягивается из CSV-источников.</p>
           </div>
-          <span class="badge" id="data-state">Загрузка данных…</span>
+          <!-- <span class="badge" id="data-state">Загрузка данных…</span> -->
         </div>
         <div class="select-wrap select-custom">
           <label class="sr-only" for="industry-select">Выберите отрасль</label>
@@ -973,7 +952,7 @@
           <div class="filters-toolbar">
             <div>
               <h2 class="section-title">2. Продукты банка</h2>
-              <p class="section-subtitle">Это фильтр витрины: отмеченные продукты показывают только релевантные офферы.</p>
+              <!-- <p class="section-subtitle">Это фильтр витрины: отмеченные продукты показывают только релевантные офферы.</p> -->
             </div>
             <!-- <div style="min-width:min(360px,100%);">
               <label class="sr-only" for="product-search">Поиск по продуктам</label>
@@ -1005,15 +984,14 @@
             <h2 class="section-title">4. Коммерческое предложение</h2>
             <!-- <p class="section-subtitle">Собирается автоматически по выбранным офферам.</p> -->
           </div>
-          <div class="result-counter" id="result-counter">0 офферов</div>
         </div>
 
         <div class="warning-card">
           <strong>Важно</strong>
-          <div>Все офферы с витрины партнёров активируются только при наличии <strong>Расчётного счёта</strong> в Т-Банке.</div>
+          <div>Все офферы с витрины партнёров активируются только при наличии <strong>Расчётного счета</strong> в Т-Банке.</div>
         </div>
 
-        <div class="result-text" id="result-text" aria-live="polite">Выберите бандлы, чтобы получить готовую формулировку.</div>
+        <div class="result-text" id="result-text" aria-live="polite">Выберите предложения, чтобы получить готовую формулировку.</div>
 
 
 
@@ -1348,7 +1326,7 @@
 
       if (!bundles.length) {
         return {
-          html: 'Выберите бандлы, чтобы получить готовую формулировку.',
+          html: 'Выберите предложения, чтобы получить готовую формулировку.',
           text: '',
           items: []
         };
@@ -1407,7 +1385,7 @@
 
     function setLoading(loading) {
       state.loading = loading;
-      els.dataState.textContent = loading ? 'Загрузка данных…' : 'Данные загружены';
+      // els.dataState.textContent = loading ? 'Загрузка данных…' : 'Данные загружены';
     }
 
     function updateMetrics() {
@@ -1425,10 +1403,10 @@
       //   <span class="toolbar-stat">Выбрано: ${selectedCount}</span>
       // `;
 
-      els.heroMetrics.innerHTML = `
-        <span class="metric">${productsCount} банковских продуктов</span>
-        <span class="metric">${bundlesCount} офферов</span>
-      `;
+      // els.heroMetrics.innerHTML = `
+      //   <span class="metric">${productsCount} банковских продуктов</span>
+      //   <span class="metric">${bundlesCount} офферов</span>
+      // `;
 
       // els.productHints.innerHTML = state.selectedIndustry
       //   ? `<span class="toolbar-stat">Показаны продукты для отрасли</span><span class="toolbar-stat">Сначала фильтр — потом оффер</span>`
@@ -1468,12 +1446,12 @@
       const allProducts = industry ? getVisibleProducts(industry) : [];
 
       if (!industry) {
-        container.innerHTML = '<div class="empty-state"><div>Сначала выберите отрасль</div><div>После выбора отрасли появятся релевантные продукты банка.</div></div>';
+        container.innerHTML = '<div class="empty-state"><div>Сначала выберите отрасль.</div><div>После выбора отрасли появятся релевантные продукты банка.</div></div>';
         return;
       }
 
       if (!allProducts.length) {
-        container.innerHTML = '<div class="empty-state"><div>Для этой отрасли ничего не найдено</div><div>Попробуйте другой фильтр или проверьте исходный CSV.</div></div>';
+        container.innerHTML = '<div class="empty-state"><div>Для этой отрасли ничего не найдено</div><div>Попробуйте другой фильтр.</div></div>';
         return;
       }
 
@@ -1574,7 +1552,7 @@
       const industry = state.selectedIndustry;
 
       if (!industry) {
-        grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><div>Выберите отрасль, чтобы увидеть доступные бандлы</div><div>Здесь появятся только предложения из актуальной витрины.</div></div>';
+        grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><div>Выберите отрасль, чтобы увидеть доступные предложения.</div><div>Здесь появятся актуальные предложения с Витрины.</div></div>';
         return;
       }
 
@@ -1675,11 +1653,11 @@
 
 
       if (!state.selectedBundleIds.length) {
-        textEl.textContent = 'Выберите бандлы, чтобы получить готовую формулировку.';
+        textEl.textContent = 'Выберите предложения, чтобы получить готовую формулировку.';
         copyBtn.disabled = true;
         resetBtn.style.display = 'none';
 
-        els.resultCounter.textContent = '0 офферов';
+        // els.resultCounter.textContent = '0 офферов';
         return;
       }
 
@@ -1687,7 +1665,7 @@
       textEl.dataset.plain = result.text;
       copyBtn.disabled = false;
       resetBtn.style.display = 'block';
-      els.resultCounter.textContent = `${state.selectedBundleIds.length} оффер${state.selectedBundleIds.length === 1 ? '' : state.selectedBundleIds.length < 5 ? 'а' : 'ов'}`;
+      // els.resultCounter.textContent = `${state.selectedBundleIds.length} оффер${state.selectedBundleIds.length === 1 ? '' : state.selectedBundleIds.length < 5 ? 'а' : 'ов'}`;
 
       const items = result.items.map((bundle) => {
         return `
@@ -1874,13 +1852,13 @@
         renderProducts();
         renderBundles();
         updateResult();
-        els.dataState.textContent = 'Данные загружены';
+        // els.dataState.textContent = 'Данные загружены';
         return true;
       } catch (error) {
         console.error('Ошибка загрузки данных:', error);
         state.error = error;
         setLoading(false);
-        els.dataState.textContent = 'Ошибка загрузки';
+        // els.dataState.textContent = 'Ошибка загрузки';
         els.productsList.innerHTML = '<div class="error-state"><div>Не удалось загрузить данные</div><div>Проверьте подключение к интернету.</div></div>';
         els.bundlesGrid.innerHTML = '<div class="error-state" style="grid-column:1/-1;"><div>Витрина недоступна</div><div>Повторите попытку после обновления страницы.</div></div>';
         els.industrySelect.innerHTML = '<option value="">Ошибка загрузки</option>';
@@ -1952,8 +1930,7 @@
     }
 
     function cacheElements() {
-      els.heroMetrics = document.getElementById('hero-metrics');
-      els.dataState = document.getElementById('data-state');
+      // els.dataState = document.getElementById('data-state');
       els.industrySelect = document.getElementById('industry-select');
       els.industryInfo = document.getElementById('industry-info');
       els.industryDesc = document.getElementById('industry-desc');
@@ -1964,7 +1941,7 @@
       // els.productSearch = document.getElementById('product-search');
       els.bundlesGrid = document.getElementById('bundles-grid');
       els.resultText = document.getElementById('result-text');
-      els.resultCounter = document.getElementById('result-counter');
+      // els.resultCounter = document.getElementById('result-counter');
       els.copyBtn = document.getElementById('copy-btn');
       els.resetBtn = document.getElementById('reset-btn');
       els.bundleModalOverlay = document.getElementById('bundle-modal-overlay');
