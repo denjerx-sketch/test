@@ -1249,10 +1249,15 @@
 
     function getBundlesForIndustry(industry, products) {
       if (!industry) return [];
+
+      // ❗ если нет выбранных продуктов — не показываем бандлы
+      if (!products.length) return [];
+
       const selected = new Set(products);
+
       return state.allBundles.filter((bundle) => {
         const industryMatch = bundle.industries.includes(industry);
-        const productMatch = !selected.size || selected.has(bundle.product);
+        const productMatch = selected.has(bundle.product);
         return industryMatch && productMatch;
       });
     }
@@ -1520,8 +1525,23 @@
       }
 
       const bundles = getBundlesForIndustry(industry, state.selectedProducts);
+      if (!state.selectedProducts.length) {
+        grid.innerHTML = `
+          <div class="empty-state" style="grid-column:1/-1;">
+            <div>Выберите продукт банка</div>
+            <div>Сначала отметьте хотя бы один продукт — и мы покажем релевантные офферы.</div>
+          </div>
+        `;
+        return;
+      }
+
       if (!bundles.length) {
-        grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><div>${state.selectedProducts.length ? 'Нет бандлов для выбранной комбинации' : 'Для этой отрасли пока нет партнёрских офферов'}</div><div>Попробуйте снять фильтр с продуктов или выбрать другую отрасль.</div></div>`;
+        grid.innerHTML = `
+          <div class="empty-state" style="grid-column:1/-1;">
+            <div>Нет офферов для выбранной комбинации</div>
+            <div>Попробуйте изменить набор продуктов.</div>
+          </div>
+        `;
         return;
       }
 
