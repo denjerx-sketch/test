@@ -863,16 +863,26 @@
       transition: all 0.25s cubic-bezier(.2,.8,.2,1);
     }
 
-    /* 🔥 hover раскрытие */
-    .feedback-btn:hover .feedback-text {
-      opacity: 1;
-      max-width: 200px;
-      margin-left: 8px;
+    @media (hover: hover) and (pointer: fine) {
+      .feedback-btn:hover .feedback-text {
+        opacity: 1;
+        max-width: 200px;
+        margin-left: 8px;
+      }
+
+      .feedback-btn:hover {
+        padding: 14px 18px;
+      }
     }
 
-    /* увеличиваем padding при раскрытии */
-    .feedback-btn:hover {
-      padding: 14px 18px;
+    @media (hover: none) {
+      .feedback-text {
+        display: none;
+      }
+
+      .feedback-btn {
+        padding: 14px;
+      }
     }
 
     .skeleton {
