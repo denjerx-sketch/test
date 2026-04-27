@@ -367,6 +367,7 @@
 
     .product-list {  -webkit-overflow-scrolling: touch;}
     .product-item {
+      min-height: 120px;
       display: grid;
       grid-template-columns: auto 1fr auto;
       gap: 10px;
@@ -963,6 +964,7 @@
     }
 
     .select-custom.open .select-dropdown {
+      overflow-y: hidden;
       z-index: 999;
       border: 1px solid var(--border);
       opacity: 1;
