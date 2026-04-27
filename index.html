@@ -915,6 +915,7 @@
     /* ===== CUSTOM SELECT ===== */
 
     .select-trigger {
+      color: var(--text-primary) !important;
       width: 100%;
       padding: 13px 14px;
       border-radius: 14px;
@@ -923,8 +924,12 @@
       text-align: left;
       cursor: pointer;
       position: relative;
+      -webkit-tap-highlight-color: transparent;
     }
-
+    .select-trigger:focus,
+    .select-trigger:active {
+      color: var(--text-primary) !important;
+    }
     /* dropdown */
     .select-dropdown {
       position: absolute;
@@ -964,6 +969,7 @@
     .select-option.active {
       background: var(--bg-accent);
       font-weight: 700;
+      color: var(--text-primary) !important;
     }
 
 
