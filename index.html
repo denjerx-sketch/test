@@ -442,7 +442,7 @@
       font-size: 12px;
       font-weight: 800;
       color: var(--text-dark);
-      background: var(--bg-accent-2);
+      background: var(--bg-page);
       border: 1px solid rgba(181, 139, 96, 0.18);
     }
 
@@ -988,7 +988,7 @@
 
         <div class="warning-card">
           <strong>Важно</strong>
-          <div>Все офферы с витрины партнёров активируются только при наличии <strong>Расчётного счета</strong> в Т-Банке.</div>
+          <div>Все офферы с витрины партнеров активируются только при наличии <strong>Расчетного счета</strong> в Т-Банке.</div>
         </div>
 
         <div class="result-text" id="result-text" aria-live="polite">Выберите предложения, чтобы получить готовую формулировку.</div>
@@ -1363,7 +1363,7 @@
 
       let intro = '';
       if (hasRko) {
-        intro = 'Открой Расчётный счёт';
+        intro = 'Открой Расчетный счет';
         const otherProducts = products.filter((product) => !/расчетн|счет|рко/i.test(product));
         if (otherProducts.length) {
           intro += ` и подключи ${joinWithAnd(otherProducts)}`;
@@ -1422,7 +1422,7 @@
         return;
       }
 
-      const desc = CONFIG.INDUSTRY_DESCS[industry] || 'Для этой отрасли доступен набор банковских продуктов и партнёрских офферов из витрины.';
+      const desc = CONFIG.INDUSTRY_DESCS[industry] || 'Для этой отрасли доступен набор банковских продуктов и партнерских офферов из витрины.';
       const stats = getIndustryStats(industry);
       els.industryDesc.textContent = desc;
       els.industryBadges.innerHTML = `
@@ -1593,7 +1593,7 @@
               <span class="bundle-chip">
                 ${escapeHtml(bundle.product)}
               </span>
-              <span class="bundle-chip">${escapeHtml(bundle.industries[0] || state.selectedIndustry)}</span>
+
             </div>
             <p class="bundle-benefit">${escapeHtml(bundle.benefit)}</p>
             <div class="bundle-actions">
