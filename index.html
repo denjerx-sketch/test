@@ -328,12 +328,6 @@
       margin-bottom: 12px;
     }
 
-    .toolbar-stats {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      justify-content: flex-end;
-    }
 
     .toolbar-stat {
       padding: 9px 12px;
@@ -950,7 +944,6 @@
       .hero, .industry-card, .filters-card, .section-card, .result-card { border-radius: 18px; }
       .status-strip { grid-template-columns: 1fr; }
       .filters-toolbar { grid-template-columns: 1fr; }
-      .toolbar-stats { justify-content: flex-start; }
       .section-head { flex-direction: column; }
       .legend { justify-content: flex-start; }
       .bundles-grid { grid-template-columns: 1fr; }
@@ -1018,7 +1011,6 @@
             </div>
             
           </div>
-          <div class="toolbar-stats" id="product-hints"></div>
           <div class="product-list" id="products-list"></div>
         </section>
 
@@ -1409,15 +1401,15 @@
       const bundlesCount = state.allBundles.length;
       const productsCount = state.allProducts.length;
 
-      const hintsEl = els.productHints;
-      if (!hintsEl) return;
+      // const hintsEl = els.productHints;
+      // if (!hintsEl) return;
 
-      if (!state.selectedIndustry) {
-        hintsEl.innerHTML = `<span class="toolbar-stat">Сначала выберите отрасль</span><span class="toolbar-stat">${productsCount} продуктов</span>`;
-        return;
-      }
+      // if (!state.selectedIndustry) {
+      //   hintsEl.innerHTML = `<span class="toolbar-stat">Сначала выберите отрасль</span><span class="toolbar-stat">${productsCount} продуктов</span>`;
+      //   return;
+      // }
 
-      hintsEl.innerHTML = `<span class="toolbar-stat">${stats.products} продуктов в отрасли</span><span class="toolbar-stat">${stats.offers} офферов</span><span class="toolbar-stat">Всего ${bundlesCount}</span>`;
+      // hintsEl.innerHTML = `<span class="toolbar-stat">${stats.products} продуктов в отрасли</span><span class="toolbar-stat">${stats.offers} офферов</span><span class="toolbar-stat">Всего ${bundlesCount}</span>`;
     }
 
     function renderIndustryInfo() {
@@ -1874,7 +1866,6 @@
       els.industrySelect = document.getElementById('industry-select');
       els.industryInfo = document.getElementById('industry-info');
       els.industryDesc = document.getElementById('industry-desc');
-      els.productHints = document.getElementById('product-hints');
       els.productsList = document.getElementById('products-list');
       els.bundlesGrid = document.getElementById('bundles-grid');
       els.resultText = document.getElementById('result-text');
