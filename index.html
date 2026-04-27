@@ -918,7 +918,6 @@
       max-height: 260px;
       overflow: auto;
 
-      display: none;
       z-index: 50;
     }
 
@@ -1490,6 +1489,8 @@
       const options = getUniqueIndustries();
 
       const wrapper = document.getElementById('industry-select');
+      if (!wrapper) return;
+
       const trigger = wrapper.querySelector('.select-trigger');
       const dropdown = wrapper.querySelector('.select-dropdown');
 
@@ -1502,7 +1503,6 @@
         `;
       }).join('');
 
-      // текст в кнопке
       trigger.textContent = state.selectedIndustry || 'Выберите отрасль…';
     }
 
@@ -1917,7 +1917,8 @@
       const dropdown = selectWrapper.querySelector('.select-dropdown');
 
       // открыть / закрыть
-      trigger.addEventListener('click', () => {
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
         selectWrapper.classList.toggle('open');
       });
 
@@ -1989,7 +1990,7 @@
     async function init() {
       cacheElements();
       restoreState();
-      applySavedStateToUI();
+      // applySavedStateToUI();
       bindEvents();
       updateMetrics();
       renderResult();
@@ -2001,9 +2002,9 @@
       if (!ok) return;
 
       renderIndustries();
-      if (state.selectedIndustry) {
-        els.industrySelect.value = state.selectedIndustry;
-      }
+      // if (state.selectedIndustry) {
+      //   els.industrySelect.value = state.selectedIndustry;
+      // }
       renderIndustryInfo();
       renderProducts();
       renderBundles();
