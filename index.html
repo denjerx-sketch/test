@@ -339,6 +339,7 @@
       overflow: auto;
       padding-right: 4px;
       padding-top: 5px;
+
       scrollbar-width: thin;
     }
 
@@ -1540,7 +1541,7 @@
                 <h3 class="bundle-title">${escapeHtml(bundle.product)}</h3>
                 <div class="bundle-vendor">${escapeHtml(bundle.vendor)}</div>
               </div>
-              <span class="count-pill">${selected ? 'Выбран' : ''}</span>
+              <span class="count-pill">${selected ? 'Выбран' : 'Оффер'}</span>
             </div>
             <div class="bundle-chip-row">
               <span class="bundle-chip">${escapeHtml(actionForProduct(bundle.product))}</span>
