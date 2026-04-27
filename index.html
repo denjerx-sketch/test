@@ -891,6 +891,80 @@
         padding: 14px;
       }
     }
+    /* ===== CUSTOM SELECT ===== */
+
+    .select-trigger {
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.95);
+      text-align: left;
+      cursor: pointer;
+      position: relative;
+    }
+
+    /* dropdown */
+    .select-dropdown {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      right: 0;
+
+      background: white;
+      border-radius: 16px;
+      box-shadow: var(--shadow-md);
+
+      max-height: 260px;
+      overflow: auto;
+
+      display: none;
+      z-index: 50;
+    }
+
+    /* открытие */
+    .select-custom.open .select-dropdown {
+      display: block;
+    }
+
+    /* элементы */
+    .select-option {
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: background var(--transition);
+      font-size: 14px;
+    }
+
+    /* hover */
+    .select-option:hover {
+      background: var(--bg-page);
+    }
+
+    /* активный */
+    .select-option.active {
+      background: var(--bg-accent);
+      font-weight: 700;
+    }
+
+
+    .select-dropdown {
+      opacity: 0;
+      transform: translateY(6px);
+      pointer-events: none;
+      transition: all 0.2s ease;
+    }
+
+    .select-custom.open .select-dropdown {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    @media (max-width: 768px) {
+      .select-dropdown {
+        max-height: 220px;
+      }
+    }
+
 
     .skeleton {
       position: relative;
@@ -973,11 +1047,12 @@
           </div>
           
         </div>
-        <div class="select-wrap select-custom">
-          <label class="sr-only" for="industry-select">Выберите отрасль</label>
-          <select id="industry-select" disabled>
-            <option value="">Загрузка…</option>
-          </select>
+        <div class="select-wrap select-custom" id="industry-select">
+          <button class="select-trigger" type="button">
+            Выберите отрасль…
+          </button>
+
+          <div class="select-dropdown"></div>
         </div>
         <div class="industry-info" id="industry-info" aria-live="polite">
           <div>
@@ -1114,26 +1189,26 @@
         .trim();
     }
 
-    const select = document.getElementById('industry-select');
-    const wrapper = select.closest('.select-custom');
+    // const select = document.getElementById('industry-select');
+    // const wrapper = select.closest('.select-custom');
 
-    select.addEventListener('mousedown', () => {
-      wrapper.classList.add('open');
-    });
+    // select.addEventListener('mousedown', () => {
+    //   wrapper.classList.add('open');
+    // });
 
-    select.addEventListener('blur', () => {
-      wrapper.classList.remove('open');
-    });
+    // select.addEventListener('blur', () => {
+    //   wrapper.classList.remove('open');
+    // });
 
-    select.addEventListener('change', () => {
-      wrapper.classList.remove('open');
-    });
+    // select.addEventListener('change', () => {
+    //   wrapper.classList.remove('open');
+    // });
 
-    document.addEventListener('click', (e) => {
-      if (!wrapper.contains(e.target)) {
-        wrapper.classList.remove('open');
-      }
-    });
+    // document.addEventListener('click', (e) => {
+    //   if (!wrapper.contains(e.target)) {
+    //     wrapper.classList.remove('open');
+    //   }
+    // });
 
     function safeUrl(url) {
       const value = normalizeText(url);
@@ -1413,10 +1488,22 @@
 
     function renderIndustries() {
       const options = getUniqueIndustries();
-      els.industrySelect.innerHTML = '<option value="">Выберите отрасль…</option>' + options.map((industry) => {
-        return `<option value="${escapeHtml(industry)}" ${industry === state.selectedIndustry ? 'selected' : ''}>${escapeHtml(industry)}</option>`;
+
+      const wrapper = document.getElementById('industry-select');
+      const trigger = wrapper.querySelector('.select-trigger');
+      const dropdown = wrapper.querySelector('.select-dropdown');
+
+      dropdown.innerHTML = options.map((industry) => {
+        const active = industry === state.selectedIndustry ? 'active' : '';
+        return `
+          <div class="select-option ${active}" data-value="${escapeHtml(industry)}">
+            ${escapeHtml(industry)}
+          </div>
+        `;
       }).join('');
-      els.industrySelect.disabled = false;
+
+      // текст в кнопке
+      trigger.textContent = state.selectedIndustry || 'Выберите отрасль…';
     }
 
     function renderProducts() {
@@ -1793,8 +1880,8 @@
         setLoading(false);
         els.productsList.innerHTML = '<div class="error-state"><div>Не удалось загрузить данные</div><div>Проверьте подключение к интернету.</div></div>';
         els.bundlesGrid.innerHTML = '<div class="error-state" style="grid-column:1/-1;"><div>Витрина недоступна</div><div>Повторите попытку после обновления страницы.</div></div>';
-        els.industrySelect.innerHTML = '<option value="">Ошибка загрузки</option>';
-        els.industrySelect.disabled = true;
+        // els.industrySelect.innerHTML = '<option value="">Ошибка загрузки</option>';
+        // els.industrySelect.disabled = true;
         return false;
       }
     }
@@ -1814,11 +1901,42 @@
     }
 
     function bindEvents() {
-      els.industrySelect.addEventListener('change', (event) => {
-        state.selectedIndustry = event.target.value;
+      // els.industrySelect.addEventListener('change', (event) => {
+      //   state.selectedIndustry = event.target.value;
+      //   state.selectedProducts = [];
+      //   state.selectedBundleIds = [];
+      //   persistState();
+      //   renderIndustryInfo();
+      //   renderProducts();
+      //   renderBundles();
+      //   updateResult();
+      //   updateMetrics();
+      // });
+      const selectWrapper = document.getElementById('industry-select');
+      const trigger = selectWrapper.querySelector('.select-trigger');
+      const dropdown = selectWrapper.querySelector('.select-dropdown');
+
+      // открыть / закрыть
+      trigger.addEventListener('click', () => {
+        selectWrapper.classList.toggle('open');
+      });
+
+      // выбор
+      dropdown.addEventListener('click', (e) => {
+        const option = e.target.closest('.select-option');
+        if (!option) return;
+
+        const value = option.dataset.value;
+
+        state.selectedIndustry = value;
         state.selectedProducts = [];
         state.selectedBundleIds = [];
+
         persistState();
+
+        selectWrapper.classList.remove('open');
+
+        renderIndustries();
         renderIndustryInfo();
         renderProducts();
         renderBundles();
@@ -1826,6 +1944,12 @@
         updateMetrics();
       });
 
+      // клик вне
+      document.addEventListener('click', (e) => {
+        if (!selectWrapper.contains(e.target)) {
+          selectWrapper.classList.remove('open');
+        }
+      });
       els.copyBtn.addEventListener('click', copyResult);
       els.resetBtn.addEventListener('click', resetSelection);
 
@@ -1842,14 +1966,13 @@
       });
     }
 
-    function applySavedStateToUI() {
-      if (state.selectedIndustry) {
-        els.industrySelect.value = state.selectedIndustry;
-      }
-    }
+    // function applySavedStateToUI() {
+    //   if (state.selectedIndustry) {
+    //     els.industrySelect.value = state.selectedIndustry;
+    //   }
+    // }
 
     function cacheElements() {
-      els.industrySelect = document.getElementById('industry-select');
       els.industryInfo = document.getElementById('industry-info');
       els.industryDesc = document.getElementById('industry-desc');
       els.productsList = document.getElementById('products-list');
